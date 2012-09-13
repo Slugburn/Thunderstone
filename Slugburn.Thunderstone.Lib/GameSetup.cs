@@ -1,0 +1,84 @@
+﻿using System;
+using System.Linq;
+using Slugburn.Thunderstone.Lib.Randomizers;
+using Slugburn.Thunderstone.Lib.Randomizers.Heroes;
+using Slugburn.Thunderstone.Lib.Randomizers.Items;
+using Slugburn.Thunderstone.Lib.Randomizers.Monsters;
+using Slugburn.Thunderstone.Lib.Randomizers.Spells;
+using Slugburn.Thunderstone.Lib.Randomizers.ThunderstoneBearers;
+using Slugburn.Thunderstone.Lib.Randomizers.Villagers;
+using Slugburn.Thunderstone.Lib.Randomizers.Weapons;
+
+namespace Slugburn.Thunderstone.Lib
+{
+    public class GameSetup
+    {
+        private readonly IRandomizer[] _randomizers;
+
+        public GameSetup()
+        {
+            _randomizers = new IRandomizer[]
+                               {
+                                   new Stramst(),
+                                   new BurnmarkedFire(),
+                                   new OgreHumanoid(),
+                                   new KoboldHumanoid(),
+                                   new Bhoidwood(),
+                                   new Criochan(),
+                                   new Drua(),
+                                   new Thundermage(),
+                                   new FalconArbalest(),
+                                   new SnakeheadFlail(),
+                                   new KingCaelansWrit(),
+                                   new Moonstone(),
+                                   new MassTeleport(),
+                                   new SummonStorm(),
+                                   new BattlescarredSoldier(),
+                                   new BountyHunter()
+                               };
+        }
+
+        public ILookup<CardType, IRandomizer> GetRandomizersByType()
+        {
+            return _randomizers.ToLookup(x => x.Type);
+        }
+
+        public IRandomizer GetRandomizer(string name)
+        {
+            return _randomizers.SingleOrDefault(x => x.Name == name);
+        }
+
+        public void CreateGame(Game game)
+        {
+            game.Players.Each(x=>x.StartGame(game));
+            game.CurrentPlayer = game.Players.PickRandom();
+            game.Dungeon = CreateDungeon();
+            game.Village = CreateVillage();
+            game.Curses = CreateCurses();
+        }
+
+        private static Deck CreateCurses()
+        {
+            return new Deck(new Curse().CreateCards().Shuffle());
+        }
+
+        private Dungeon CreateDungeon()
+        {
+            var thunderstoneBearer = _randomizers.Single(x => x.Type == CardType.ThunderstoneBearer).CreateCards().Single();
+            var monsters = _randomizers.Where(x => x.Type == CardType.Monster).SelectMany(x => x.CreateCards());
+            return new Dungeon(thunderstoneBearer, monsters);
+        }
+
+        private Village CreateVillage()
+        {
+            var randomizers = _randomizers
+                .Where(x=>x.Type==CardType.Hero 
+                    || x.Type == CardType.Weapon 
+                    || x.Type == CardType.Item 
+                    || x.Type== CardType.Spell 
+                    || x.Type==CardType.Villager);
+            return new Village(randomizers);
+        }
+
+    }
+}
