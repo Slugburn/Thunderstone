@@ -137,6 +137,7 @@
     <Compile Include="Randomizers\Weapons\SnakeheadFlail.cs" />
     <Compile Include="Rank.cs" />
     <Compile Include="PlayerExtensions.cs" />
+    <Compile Include="Selectors\ISelectionContext.cs" />
     <Compile Include="Selectors\Sources\HallSource.cs" />
     <Compile Include="Selectors\Sources\HandSource.cs" />
     <Compile Include="Selectors\Sources\HeroDeckSource.cs" />

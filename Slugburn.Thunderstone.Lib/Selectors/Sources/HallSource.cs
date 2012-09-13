@@ -19,7 +19,7 @@ namespace Slugburn.Thunderstone.Lib.Selectors.Sources
             return _dungeon.Ranks.Select(rank => rank.Card).Where(c => c != null);
         }
 
-        public void Destroy(IEnumerable<Card> cards)
+        public void Destroy(IEnumerable<Card> cards, string source)
         {
             throw new NotImplementedException();
         }

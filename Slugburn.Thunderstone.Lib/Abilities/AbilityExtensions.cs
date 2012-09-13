@@ -13,9 +13,9 @@ namespace Slugburn.Thunderstone.Lib.Abilities
             return new AbilityCreationContext(card);
         }
 
-        public static IAbilityCardsSelectedSyntax Destroy(this IAbilitySelectCardsSyntax syntax)
+        public static IAbilityCardsSelectedSyntax Destroy(this IAbilitySelectCardsSyntax syntax, string destructionSource)
         {
-            return OnCardsSelected(syntax, x => x.Source.Destroy(x.Selected));
+            return OnCardsSelected(syntax, x => x.Source.Destroy(x.Selected, destructionSource));
         }
 
         public static IAbilityDescriptionCompleteSyntax Description(this ICreateAbilitySyntax context, string description)
@@ -99,7 +99,7 @@ namespace Slugburn.Thunderstone.Lib.Abilities
             return context
                 .Description(description)
                 .SelectCards(select => @select.FromHand().Filter(filter).Caption("Destroy Card").Message(description))
-                .Destroy()
+                .Destroy(context.Card.Name)
                 .Condition( player => player.Hand.Any(filter));
         }
 
@@ -109,7 +109,7 @@ namespace Slugburn.Thunderstone.Lib.Abilities
             return context
                 .Description("Destroy 1 disease to draw {0} {1}.".Template(drawCount, GetCountText(drawCount)))
                 .SelectCards(select => @select.FromHand().Filter(isDisease).Caption("Destroy Disease").Message("Select 1 card."))
-                .Destroy()
+                .Destroy(context.Card.Name)
                 .DrawCards(1)
                 .Condition(player => player.Hand.Any(isDisease));
         }

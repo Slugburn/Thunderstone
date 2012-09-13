@@ -53,7 +53,7 @@ namespace Slugburn.Thunderstone.Lib
         public List<Card> Draw(int count)
         {
             var drawn = _cards.Take(count).ToList();
-            _cards.RemoveRange(0, count);
+            _cards.RemoveRange(0, drawn.Count);
             return drawn;
         }
 

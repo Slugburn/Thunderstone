@@ -142,7 +142,7 @@ namespace Slugburn.Thunderstone.Lib
             var monster = AttackedRank.Card;
 
             Won = attackTotal + darknessPenalty >= monster.Health;
-            var outcome = Won ? "defeated" : "escaped";
+            var outcome = Won ? "defeated" : "triumphed";
             Log("{0} {1}.".Template(monster.Name, outcome));
 
             UseAftermathAbilities();
@@ -275,7 +275,7 @@ namespace Slugburn.Thunderstone.Lib
                                   var upgrade = x.Selected.First();
                                   x.Source.Discard(new[] {upgrade});
                                   x.Player.Xp -= hero.Xp ?? 0;
-                                  DestroyCard(hero);
+                                  DestroyCard(hero, "Upgrading to {0}".Template(upgrade.Name));
                               })
                 .SendRequest(player => LevelHeroes());
         }
@@ -342,14 +342,15 @@ namespace Slugburn.Thunderstone.Lib
 
         public object CardSelectionContext { get; set; }
 
-        public void DestroyCard(Card card)
+        public void DestroyCard(Card card, string destructionSource)
         {
-            DestroyCards(new[] {card});
+            DestroyCards(new[] {card}, destructionSource);
         }
 
-        public void DestroyCards(IEnumerable<Card> cards)
+        public void DestroyCards(IEnumerable<Card> cards, string source)
         {
             var cardList = cards.ToArray();
+            Log("{0} destroys {1}.".Template(source, string.Join(", ", cardList.Select(c => c.Name))));
             Vp -= cardList.Sum(card => card.Vp ?? 0);
             RemoveFromHand(cardList);
 
@@ -359,18 +360,29 @@ namespace Slugburn.Thunderstone.Lib
 
         public void RemoveFromHand(IEnumerable<Card> cards)
         {
-            cards.Each(card=>
-                           {
-                               card.Reset();
-                               Hand.Remove(card);
-                               ActiveAbilities.RemoveAll(x => x.Card == card);
-                           });
+            cards.Each(_RemoveFromHand);
             SendUpdateHand();
+        }
+
+        private void _RemoveFromHand(Card card)
+        {
+            // Unequip any related card
+            if (card.IsEquipped)
+            {
+                var equipped = card.GetEquipped();
+                equipped.SetEquipped(null);
+                if (equipped.IsHero())
+                    Log("{0} no longer has {1} equipped.".Template(equipped.Name, card.Name));
+            }
+            card.Reset();
+            Hand.Remove(card);
+            ActiveAbilities.RemoveAll(x => x.Card == card);
         }
 
         public void RemoveFromHand(Card card)
         {
-            RemoveFromHand(new[] {card});
+            _RemoveFromHand(card);
+            SendUpdateHand();
         }
 
         public void Equip(Card hero, Card weapon, Action<Player, Card> onEquip)

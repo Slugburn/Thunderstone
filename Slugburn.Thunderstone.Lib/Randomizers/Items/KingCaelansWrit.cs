@@ -22,7 +22,7 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Items
                                      {
                                          var hero = x.Selected.First();
                                          x.Player.AddToTopOfDeck(hero);
-                                         x.Player.DestroyCard(card);
+                                         x.Player.DestroyCard(card, card.Name);
                                      })
                 .Condition(player => new TopOfDeckSource(player, CardType.Hero).GetCards().Any())
                 .ContinueWith(player => player.EndTurn())

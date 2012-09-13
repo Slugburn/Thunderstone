@@ -52,7 +52,7 @@ namespace Slugburn.Thunderstone.Lib
                 .Description("Destroy this card. You cannot use any more abilities this turn.")
                 .Action(player =>
                             {
-                                player.DestroyCard(card);
+                                player.DestroyCard(card, card.Name);
                                 player.ActiveAbilities.RemoveAll(x => x.Card.Owner == CardOwner.Player);
                             })
                 .On(Phase.Village, Phase.Dungeon);
@@ -75,7 +75,7 @@ namespace Slugburn.Thunderstone.Lib
                 .Description("Discard 2 XP to destroy this curse.")
                 .Action(player =>
                             {
-                                player.DestroyCard(card);
+                                player.DestroyCard(card, card.Name);
                                 player.Xp -= 2;
                             })
                 .Condition(player => player.Xp >= 2)

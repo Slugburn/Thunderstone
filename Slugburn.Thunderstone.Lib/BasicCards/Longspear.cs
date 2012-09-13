@@ -3,7 +3,7 @@ using Slugburn.Thunderstone.Lib.Modifiers;
 
 namespace Slugburn.Thunderstone.Lib.BasicCards
 {
-    internal class Longspear : ICardGen
+    public class Longspear : ICardGen
     {
         #region ICardGen Members
 

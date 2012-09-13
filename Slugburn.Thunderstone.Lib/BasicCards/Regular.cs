@@ -2,7 +2,7 @@
 
 namespace Slugburn.Thunderstone.Lib.BasicCards
 {
-    internal class Regular : ICardGen
+    public class Regular : ICardGen
     {
         public Card Create()
         {

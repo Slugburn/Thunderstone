@@ -18,9 +18,9 @@ namespace Slugburn.Thunderstone.Lib.Selectors.Sources
             return Player.Hand;
         }
 
-        public void Destroy(IEnumerable<Card> cards)
+        public void Destroy(IEnumerable<Card> cards, string source)
         {
-            Player.DestroyCards(cards);
+            Player.DestroyCards(cards, source);
         }
 
         public void Draw(IEnumerable<Card> cards)

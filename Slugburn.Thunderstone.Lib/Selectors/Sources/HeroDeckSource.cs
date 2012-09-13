@@ -17,7 +17,7 @@ namespace Slugburn.Thunderstone.Lib.Selectors.Sources
             return Player.Game.Village[CardType.Hero].SelectMany(x => x.GetCards().GroupBy(c => c.Level).Select(g=>g.First()));
         }
 
-        public void Destroy(IEnumerable<Card> cards)
+        public void Destroy(IEnumerable<Card> cards, string source)
         {
             cards.Each(RemoveCardFromDeck);
         }

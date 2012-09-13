@@ -65,7 +65,7 @@ namespace Slugburn.Thunderstone.Lib
             NextPlayer();
         }
 
-        private void AdvanceDungeon()
+        public void AdvanceDungeon()
         {
             var rank1Card = Dungeon.Ranks[0].Card;
             // Rank 1 escapes, penalize the player
@@ -75,8 +75,7 @@ namespace Slugburn.Thunderstone.Lib
                 var lostVp = rank1Card.Vp ?? 0;
                 CurrentPlayer.Log("{0} escapes: {1} VP".Template(rank1Card.Name, -lostVp));
                 CurrentPlayer.Vp -= lostVp;
-                Player tempQualifier = CurrentPlayer;
-                CurrentPlayer.View.UpdateStatus(tempQualifier.CreateStatusMessage());
+                CurrentPlayer.View.UpdateStatus(CurrentPlayer.CreateStatusMessage());
             }
 
             for (var i = 0; i< Dungeon.Ranks.Length -1;i++)

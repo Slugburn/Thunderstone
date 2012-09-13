@@ -29,7 +29,7 @@ namespace Slugburn.Thunderstone.Lib.Selectors.Sources
             return _decks.Select(x => x.TopCard).Where(x => x != null && (_all || x.Type == _type));
         }
 
-        public void Destroy(IEnumerable<Card> cards)
+        public void Destroy(IEnumerable<Card> cards, string source)
         {
             GetSelectedDecks(cards).Each(deck => DrawCardFromDeck(deck));
         }

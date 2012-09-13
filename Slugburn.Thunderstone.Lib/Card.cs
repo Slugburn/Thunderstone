@@ -111,12 +111,13 @@ namespace Slugburn.Thunderstone.Lib
 
         public void AddModifier(IAttributeMod mod)
         {
-            var before = GetAttributeValue(mod.Attribute);
+            var before = GetAttributeValue(mod.Attribute) ?? 0;
             _mods.Add(mod);
-            var after = GetAttributeValue(mod.Attribute);
-            if (before != after)
-                Player.Log("{0} changes {1} of {2} from {3} to {4}".Template(mod.Source.Name, mod.Attribute, Name, before, after));
-
+            var after = GetAttributeValue(mod.Attribute) ?? 0;
+            if (before == after)
+                return;
+            var change = after < before ? "decreases" : "increases";
+            Player.Log("{0} {1} {2} of {3} to {4}".Template(mod.Source.Name, change, mod.Attribute, Name, after));
         }
 
         private int? GetAttributeValue(Attribute attr)
@@ -147,6 +148,11 @@ namespace Slugburn.Thunderstone.Lib
 
         internal void SetEquipped(Card card)
         {
+            // Remove any modifiers from the previous equipped card
+            if (_equipped != null)
+            {
+                _mods.RemoveAll(x => x.Source == _equipped);
+            }
             _equipped = card;
         }
 
