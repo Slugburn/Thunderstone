@@ -34,9 +34,9 @@ namespace Slugburn.Thunderstone.Lib
         {
         }
 
-        public void SendAll(string messageId, object body)
+        public void SendAll(Action<IPlayerView> action)
         {
-            Players.Each(x => x.SendMessage(messageId, body));
+            Players.Each(p=>action(p.View));
         }
 
         public void Initialize(GameSession session)
@@ -55,7 +55,7 @@ namespace Slugburn.Thunderstone.Lib
 
         public void SendUpdateDeck(Deck deck)
         {
-            SendAll("UpdateDeck", deck.CreateMessage());
+            SendAll(view => view.UpdateDeck(deck.CreateMessage()));
         }
 
         public void EndTurn()
@@ -75,7 +75,8 @@ namespace Slugburn.Thunderstone.Lib
                 var lostVp = rank1Card.Vp ?? 0;
                 CurrentPlayer.Log("{0} escapes: {1} VP".Template(rank1Card.Name, -lostVp));
                 CurrentPlayer.Vp -= lostVp;
-                CurrentPlayer.SendUpdateStatus();
+                Player tempQualifier = CurrentPlayer;
+                CurrentPlayer.View.UpdateStatus(tempQualifier.CreateStatusMessage());
             }
 
             for (var i = 0; i< Dungeon.Ranks.Length -1;i++)
@@ -89,7 +90,7 @@ namespace Slugburn.Thunderstone.Lib
 
         public void SendUpdateDungeon()
         {
-            SendAll("UpdateDungeon", Dungeon.CreateMessage());
+            SendAll(view => view.UpdateDungeon(Dungeon.CreateMessage()));
         }
 
         private void NextPlayer()

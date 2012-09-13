@@ -36,7 +36,7 @@ namespace Slugburn.Thunderstone.Lib.Selectors.Sources
                                Player.Game.RemoveCardFromHall(card.Rank);
                                Player.AddToDiscard(card);
                            });
-            Player.SendUpdateStatus();
+            Player.View.UpdateStatus(Player.CreateStatusMessage());
         }
 
         public Player Player { get; private set; }

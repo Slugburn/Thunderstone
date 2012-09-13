@@ -40,30 +40,28 @@ namespace Slugburn.Thunderstone.Lib.Selectors
         {
             var selectFrom = (Filter == null ? Source.GetCards() : Source.GetCards().Where(card => Filter(card))).ToList();
             Action<IEnumerable<long>> callback = selectedIds =>
-                                                     {
-                                                         PreviousSelection = Selected;
-                                                         Selected = selectFrom.Where(card => selectedIds.Contains(card.Id)).ToArray();
-                                                         Callbacks.Each(action => action(this));
-                                                         continuation(Player);
-                                                     };
-            SelectCard(selectFrom, callback);
+            {
+                PreviousSelection = Selected;
+                Selected = selectFrom.Where(card => selectedIds.Contains(card.Id)).ToArray();
+                Callbacks.Each(action => action(this));
+                continuation(Player);
+            };
+            if (selectFrom.Count <= Min)
+            {
+                var selectedIds = selectFrom.Select(card => card.Id);
+                callback(selectedIds);
+            }
+            else
+            {
+                SelectCard(selectFrom, callback);
+            }
         }
 
         private void SelectCard(IEnumerable<Card> cards, Action<IEnumerable<long>> callback)
         {
             var body = new {Caption, Message, Cards = cards.CreateMessage(), Min, Max};
             Player.SelectCardsCallback = callback;
-            Player.SendMessage("SelectCards", body);
+            Player.View.SelectCards(body);
         }
-    }
-
-    public interface ISelectionContext
-    {
-        Player Player { get; }
-        Card TriggeredBy { get; }
-        ICardSource Source { get; }
-        IList<Card> Selected { get; set; }
-        IList<Card> PreviousSelection { get; }
-        Game Game { get; }
     }
 }

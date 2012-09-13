@@ -9,14 +9,14 @@ namespace Slugburn.Thunderstone.Lib
 {
     public class Player
     {
+        public IPlayerView View { get; private set; }
         private readonly Guid _id;
-        private readonly Action<string, object> _onMessage;
         private readonly IEventAggregator _events;
 
-        public Player(Guid id, Action<string, object> onMessage)
+        public Player(Guid id, IPlayerView view)
         {
             _id = id;
-            _onMessage = onMessage;
+            View = view;
             Discard = new List<Card>();
             Hand = new List<Card>();
             ActiveAbilities = new List<Ability>();
@@ -96,15 +96,10 @@ namespace Slugburn.Thunderstone.Lib
 
         public List<Ability> ActiveAbilities { get; private set; }
 
-        public void SendMessage(string messageId, object body=null)
-        {
-            _onMessage(messageId, body);
-        }
-
         public void StartTurn()
         {
             Won = false;
-            SendMessage("StartTurn");
+            View.StartTurn();
         }
 
         public void DoVillage()
@@ -184,7 +179,7 @@ namespace Slugburn.Thunderstone.Lib
 
         public void Log(string message)
         {
-            Game.Players.Each(p => p.SendMessage("Log", message));
+            Game.Players.Each(p => p.View.Log(message));
         }
 
         public void RefillHall()
@@ -221,15 +216,18 @@ namespace Slugburn.Thunderstone.Lib
             SendUpdateHand();
             var phaseAbilities = ActiveAbilities.Where(a => phases.Contains(a.Phase) && a.Condition(this)).ToList();
             if (phaseAbilities.Count > 0)
-                SendMessage("UseAbility", new
-                {
-                    Phase = phaseTag,
-                    Required = required,
-                    Abilities = phaseAbilities.Select(a => a.CreateMessage())
-                });
+            {
+                var message = new
+                    {
+                        Phase = phaseTag, 
+                        Required = required, 
+                        Abilities = phaseAbilities.Select(a => a.CreateMessage())
+                    };
+                View.UseAbility(message);
+            }
             else
             {
-                SendMessage("UseAbility", false);
+                View.HideUseAbility();
                 continuation();
             }
         }
@@ -238,7 +236,7 @@ namespace Slugburn.Thunderstone.Lib
         {
             var availableDecks = Game.GetBuyableDecks(AvailableGold).ToList();
             if (availableDecks.Count > 0)
-                SendMessage("BuyCard", new {AvailableDecks = availableDecks.Select(x => x.Id)});
+                View.BuyCard(availableDecks, new {AvailableDecks = availableDecks.Select(x => x.Id)});
             else
                 LevelHeroes();
         }
@@ -300,7 +298,7 @@ namespace Slugburn.Thunderstone.Lib
 
         public void EndTurn()
         {
-            SendMessage("UseAbility", false);
+            View.HideUseAbility();
             DiscardHand();
             DrawHand();
             Game.EndTurn();
@@ -308,21 +306,16 @@ namespace Slugburn.Thunderstone.Lib
 
         public void SendUpdateHand()
         {
-            SendMessage("UpdateHand", new {Hand = Hand.CreateMessage()});
-            SendUpdateStatus();
+            View.UpdateHand(new { Hand = Hand.CreateMessage() });
+            View.UpdateStatus(CreateStatusMessage());
         }
 
-        public void SendUpdateStatus()
-        {
-            SendMessage("UpdateStatus", CreateStatusMessage());
-        }
-
-        private void DiscardHand()
+        public void DiscardHand()
         {
             ActiveAbilities = new List<Ability>();
             Hand.Each(x=>x.Reset());
             Discard.AddRange(Hand);
-            Hand = null;
+            Hand = new List<Card>();
         }
 
         public void AddToDiscard(Card card)

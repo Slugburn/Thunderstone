@@ -69,6 +69,7 @@
     <Compile Include="Events\EventAggregator.cs" />
     <Compile Include="Events\IEventAggregator.cs" />
     <Compile Include="Events\AttackRankSelected.cs" />
+    <Compile Include="IPlayerView.cs" />
     <Compile Include="MessageHandlers\DungeonHandler.cs" />
     <Compile Include="MessageHandlers\PrepareHandler.cs" />
     <Compile Include="MessageHandlers\RestHandler.cs" />
@@ -100,8 +101,8 @@
     <Compile Include="MessageHandlers\StartGameHandler.cs" />
     <Compile Include="MessageHandlers\UseAbilityHandler.cs" />
     <Compile Include="MessageHandlers\VillageHandler.cs" />
-    <Compile Include="Messenger.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="PlayerView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Randomizers\Heroes\Bhoidwood.cs" />
     <Compile Include="Randomizers\Heroes\Criochan.cs" />

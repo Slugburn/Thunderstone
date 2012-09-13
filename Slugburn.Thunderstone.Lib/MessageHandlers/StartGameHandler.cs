@@ -12,8 +12,7 @@ namespace Slugburn.Thunderstone.Lib.MessageHandlers
         {
             var game = new Game();
             game.Initialize(message.Player.Session);
-            game.Players.Each(
-                player=>player.SendMessage("GameBoard", CreateGameBoardMessage(player)));
+            game.Players.Each(player=>player.View.GameBoard(CreateGameBoardMessage(player)));
             game.CurrentPlayer.StartTurn();
         }
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Slugburn.Thunderstone.Lib
 {
@@ -19,9 +20,9 @@ namespace Slugburn.Thunderstone.Lib
             return new List<Player>(_players);
         }
 
-        public void SendAll(string messageId, object body)
+        public void SendAll(Action<Player> action)
         {
-            _players.Each(x => x.SendMessage(messageId, body));
+            _players.Each(action);
         }
     }
 }

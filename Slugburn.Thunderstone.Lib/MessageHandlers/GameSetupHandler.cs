@@ -26,7 +26,7 @@ namespace Slugburn.Thunderstone.Lib.MessageHandlers
                 Spells = getInfoByType(CardType.Spell),
                 Villagers = getInfoByType(CardType.Villager)
             };
-            player.Session.SendAll("GameSetup", body);
+            player.Session.SendAll(x => x.View.GameSetup(body));
         }
     }
 }
