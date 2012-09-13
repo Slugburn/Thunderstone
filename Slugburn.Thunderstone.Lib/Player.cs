@@ -70,7 +70,11 @@ namespace Slugburn.Thunderstone.Lib
         public void AddCardsToHand(IEnumerable<Card> cards)
         {
             var cardList = cards.ToList();
-            cardList.Each(x=>x.Subscribe(_events));
+            cardList.Each(card=>
+                {
+                    card.SetPlayer(this);
+                    card.Subscribe(_events);
+                });
             Hand.AddRange(cardList);
             ActiveAbilities.AddRange(cardList.SelectMany(x => x.GetAbilities()));
             SendUpdateHand();
@@ -355,6 +359,9 @@ namespace Slugburn.Thunderstone.Lib
             var cardList = cards.ToArray();
             Vp -= cardList.Sum(card => card.Vp ?? 0);
             RemoveFromHand(cardList);
+
+            // Add destroyed curses back to the curse deck
+            Game.Curses.Add(cardList.Where(c => c.Type == CardType.Curse));
         }
 
         public void RemoveFromHand(IEnumerable<Card> cards)
