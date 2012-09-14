@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Slugburn.Thunderstone.Lib.BasicCards;
 using Slugburn.Thunderstone.Lib.Events;
+using Slugburn.Thunderstone.Lib.Messages;
+using Slugburn.Thunderstone.Lib.Models;
 using Slugburn.Thunderstone.Lib.Selectors;
 
 namespace Slugburn.Thunderstone.Lib
@@ -217,12 +219,7 @@ namespace Slugburn.Thunderstone.Lib
             var phaseAbilities = ActiveAbilities.Where(a => phases.Contains(a.Phase) && a.Condition(this)).ToList();
             if (phaseAbilities.Count > 0)
             {
-                var message = new
-                    {
-                        Phase = phaseTag, 
-                        Required = required, 
-                        Abilities = phaseAbilities.Select(a => a.CreateMessage())
-                    };
+                var message = UseAbilityMessage.Create(phaseTag, required, phaseAbilities);
                 View.UseAbility(message);
             }
             else
@@ -236,7 +233,7 @@ namespace Slugburn.Thunderstone.Lib
         {
             var availableDecks = Game.GetBuyableDecks(AvailableGold).ToList();
             if (availableDecks.Count > 0)
-                View.BuyCard(availableDecks, new {AvailableDecks = availableDecks.Select(x => x.Id)});
+                View.BuyCard(BuyCardMessage.From(availableDecks));
             else
                 LevelHeroes();
         }
@@ -302,8 +299,8 @@ namespace Slugburn.Thunderstone.Lib
 
         public void SendUpdateHand()
         {
-            View.UpdateHand(new { Hand = Hand.CreateMessage() });
-            View.UpdateStatus(CreateStatusMessage());
+            View.UpdateHand(UpdateHandMessage.From(Hand));
+            View.UpdateStatus(StatusModel.From(this));
         }
 
         public void DiscardHand()
@@ -327,11 +324,6 @@ namespace Slugburn.Thunderstone.Lib
                                Vp += card.Vp ?? 0;
                                Discard.Add(card);
                            });
-        }
-
-        public object CreateStatusMessage()
-        {
-            return new { Gold = Hand.Sum(x => x.Gold), Xp, Vp };
         }
 
         public Action<IEnumerable<long>> SelectCardsCallback { get; set; }

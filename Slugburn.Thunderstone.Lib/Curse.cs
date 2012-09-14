@@ -57,8 +57,7 @@ namespace Slugburn.Thunderstone.Lib
                             })
                 .On(Phase.Village, Phase.Dungeon);
             // Add event handler that removes this card's abilities when player uses another ability
-            card.AddEventHandler(events => events.Observe<CardAbilityUsed>()
-                .Subscribe(e =>
+            card.AddEventHandler(events => events.Subscribe<CardAbilityUsed>(e =>
                                {
                                    var usedCard = e.Ability.Card;
                                    if (usedCard.Owner == CardOwner.Player && usedCard != card)

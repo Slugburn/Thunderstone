@@ -1,4 +1,5 @@
 ﻿using System;
+using Slugburn.Thunderstone.Lib.Models;
 
 namespace Slugburn.Thunderstone.Lib
 {
@@ -26,9 +27,9 @@ namespace Slugburn.Thunderstone.Lib
             Condition = player => true;
         }
 
-        public object CreateMessage()
+        public AbilityModel CreateMessage()
         {
-            return new {Id, CardName = Card.Name, Description};
+            return new AbilityModel { Id = Id, CardName = Card.Name, Description =  Description};
         }
 
         public Action<Player> Continuation

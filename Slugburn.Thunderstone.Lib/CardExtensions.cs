@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Slugburn.Thunderstone.Lib.Abilities;
+using Slugburn.Thunderstone.Lib.Models;
 
 namespace Slugburn.Thunderstone.Lib
 {
@@ -47,36 +48,6 @@ namespace Slugburn.Thunderstone.Lib
         public static bool IsWeapon(this Card card)
         {
             return card.Type == CardType.Weapon;
-        }
-
-        public static object CreateMessage(this Card card)
-        {
-            return new
-                       {
-                           card.Name,
-                           card.Cost,
-                           card.Gold,
-                           card.Health,
-                           card.Id,
-                           card.Level,
-                           card.Light,
-                           card.MagicAttack,
-                           card.PhysicalAttack,
-                           card.PotentialMagicAttack,
-                           card.PotentialPhysicalAttack,
-                           card.Rank,
-                           card.Strength,
-                           card.Tags,
-                           card.Text,
-                           card.Type,
-                           card.Vp,
-                           card.Xp
-                       };
-        }
-
-        public static object CreateMessage(this IEnumerable<Card> cards)
-        {
-            return cards.Select(card => card.CreateMessage()).ToArray();
         }
 
         public static bool IsSameTypeAs(this Card card1, Card card2)

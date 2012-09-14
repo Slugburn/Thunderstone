@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Slugburn.Thunderstone.Lib.BasicCards;
+using Slugburn.Thunderstone.Lib.Models;
 
 namespace Slugburn.Thunderstone.Lib
 {
@@ -60,11 +61,6 @@ namespace Slugburn.Thunderstone.Lib
         public Card Draw()
         {
             return Draw(1).FirstOrDefault();
-        }
-
-        public object CreateMessage()
-        {
-            return new { Id, TopCard = TopCard.CreateMessage(), Count };
         }
 
         public void AddToTop(Card card)

@@ -29,8 +29,7 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Weapons
                                      hero.AddModifier(new SetMod(card, Attribute.MagicalAttack, 0));
                                  }).On(Phase.Equip);
 
-            card.AddEventHandler(events => events.Observe<AttackRankSelected>()
-                                               .Subscribe(e =>
+            card.AddEventHandler(events => events.Subscribe<AttackRankSelected>(e =>
                                                               {
                                                                   if (e.AttackedRank.Number >= 2 && card.IsEquipped)
                                                                       card.GetEquipped().AddModifier(new PlusMod(card, Attribute.PhysicalAttack, 5));

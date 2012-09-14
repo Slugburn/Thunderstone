@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Slugburn.Thunderstone.Lib.Messages;
+using Slugburn.Thunderstone.Lib.Models;
 using Slugburn.Thunderstone.Lib.Selectors.Sources;
 
 namespace Slugburn.Thunderstone.Lib.Selectors
@@ -60,7 +61,7 @@ namespace Slugburn.Thunderstone.Lib.Selectors
 
         private void SelectCard(IEnumerable<Card> cards, Action<IEnumerable<long>> callback)
         {
-            var message = new SelectCardsMessage {Caption = Caption, Message = Message, Cards = cards.CreateMessage(), Min = Min, Max = Max};
+            var message = new SelectCardsMessage { Caption = Caption, Message = Message, Cards = CardModel.From(cards), Min = Min, Max = Max };
             Player.SelectCardsCallback = callback;
             Player.View.SelectCards(message);
         }

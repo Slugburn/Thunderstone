@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Slugburn.Thunderstone.Lib.Models;
 
 namespace Slugburn.Thunderstone.Lib.Selectors.Sources
 {
@@ -38,7 +39,7 @@ namespace Slugburn.Thunderstone.Lib.Selectors.Sources
                                Player.AddToDiscard(card);
                            });
             game.RefillHallFrom(game.Dungeon.Ranks[0]);
-            Player.View.UpdateStatus(Player.CreateStatusMessage());
+            Player.View.UpdateStatus(StatusModel.From(Player));
         }
 
         public Player Player { get; private set; }

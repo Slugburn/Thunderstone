@@ -6,5 +6,6 @@ namespace Slugburn.Thunderstone.Lib.Events
     {
         void Publish<TEvent>(TEvent ev);
         IObservable<TEvent> Observe<TEvent>();
+        IDisposable Subscribe<TEvent>(Action<TEvent> action);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using NUnit.Framework;
 using Newtonsoft.Json;
+using Slugburn.Thunderstone.Lib.Models;
 using Slugburn.Thunderstone.Lib.Randomizers.Monsters;
 
 namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Monsters
@@ -24,7 +25,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Monsters
             // Assert
             Assert.That(game.Dungeon.Ranks.Last().Card, Is.SameAs(phoenix));
             Assert.That(phoenix.Owner, Is.EqualTo(CardOwner.Dungeon));
-            var message = game.Dungeon.CreateMessage();
+            var message = DungeonModel.From(game.Dungeon);
             var serialized = JsonConvert.SerializeObject(message);
         }
 

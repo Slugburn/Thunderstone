@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using Slugburn.Thunderstone.Lib.Messages;
+using Slugburn.Thunderstone.Lib.Models;
 
 namespace Slugburn.Thunderstone.Lib
 {
@@ -32,7 +32,7 @@ namespace Slugburn.Thunderstone.Lib
             SendMessage("Log", message);
         }
 
-        public void BuyCard(IEnumerable<Deck> availableDecks, object message)
+        public void BuyCard(BuyCardMessage message)
         {
             SendMessage("BuyCard", message);
         }
@@ -47,37 +47,37 @@ namespace Slugburn.Thunderstone.Lib
             SendMessage("SelectCards", message);
         }
 
-        public void UpdateDeck(object message)
+        public void UpdateDeck(DeckModel model)
         {
-            SendMessage("UpdateDeck", message);
+            SendMessage("UpdateDeck", model);
         }
 
-        public void UpdateDungeon(object message)
+        public void UpdateDungeon(DungeonModel model)
         {
-            SendMessage("UpdateDungeon", message);
+            SendMessage("UpdateDungeon", model);
         }
 
-        public void GameSetup(object message)
+        public void GameSetup(GameSetupModel model)
         {
-            SendMessage("GameSetup", message);
+            SendMessage("GameSetup", model);
         }
 
-        public void GameBoard(object gameBoard)
+        public void GameBoard(GameBoardModel model)
         {
-            SendMessage("GameBoard", gameBoard);
+            SendMessage("GameBoard", model);
         }
 
-        public void UpdateHand(object handMessage)
+        public void UpdateHand(UpdateHandMessage message)
         {
-            SendMessage("UpdateHand", handMessage);
+            SendMessage("UpdateHand", message);
         }
 
-        public void UpdateStatus(object statusMessage)
+        public void UpdateStatus(StatusModel model)
         {
-            SendMessage("UpdateStatus", statusMessage);
+            SendMessage("UpdateStatus", model);
         }
 
-        public void UseAbility(object message)
+        public void UseAbility(UseAbilityMessage message)
         {
             SendMessage("UseAbility", message);
         }

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Slugburn.Thunderstone.Lib.Events;
+using Slugburn.Thunderstone.Lib.Messages;
+using Slugburn.Thunderstone.Lib.Models;
 
 namespace Slugburn.Thunderstone.Lib
 {
@@ -59,7 +61,7 @@ namespace Slugburn.Thunderstone.Lib
 
         public void SendUpdateDeck(Deck deck)
         {
-            SendAll(view => view.UpdateDeck(deck.CreateMessage()));
+            SendAll(view => view.UpdateDeck(DeckModel.From(deck)));
         }
 
         public void EndTurn()
@@ -80,7 +82,7 @@ namespace Slugburn.Thunderstone.Lib
                 var lostVp = rank1Card.Vp ?? 0;
                 CurrentPlayer.Log("{0} escapes: {1} VP".Template(rank1Card.Name, -lostVp));
                 CurrentPlayer.Vp -= lostVp;
-                CurrentPlayer.View.UpdateStatus(CurrentPlayer.CreateStatusMessage());
+                CurrentPlayer.View.UpdateStatus(StatusModel.From(CurrentPlayer));
             }
             RemoveCardFromHall(rank1);
 
@@ -114,7 +116,7 @@ namespace Slugburn.Thunderstone.Lib
 
         public void SendUpdateDungeon()
         {
-            SendAll(view => view.UpdateDungeon(Dungeon.CreateMessage()));
+            SendAll(view => view.UpdateDungeon(DungeonModel.From(Dungeon)));
         }
 
         private void NextPlayer()

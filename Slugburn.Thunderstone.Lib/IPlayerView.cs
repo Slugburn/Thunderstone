@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using Slugburn.Thunderstone.Lib.Messages;
+using Slugburn.Thunderstone.Lib.Models;
 
 namespace Slugburn.Thunderstone.Lib
 {
@@ -7,15 +7,15 @@ namespace Slugburn.Thunderstone.Lib
     {
         void StartTurn();
         void Log(string message);
-        void BuyCard(IEnumerable<Deck> availableDecks, object message);
+        void BuyCard(BuyCardMessage message);
         void HideUseAbility();
         void SelectCards(SelectCardsMessage message);
-        void UpdateDeck(object message);
-        void UpdateDungeon(object message);
-        void GameSetup(object message);
-        void GameBoard(object gameBoard);
-        void UpdateHand(object handMessage);
-        void UpdateStatus(object statusMessage);
-        void UseAbility(object message);
+        void UpdateDeck(DeckModel model);
+        void UpdateDungeon(DungeonModel model);
+        void GameSetup(GameSetupModel model);
+        void GameBoard(GameBoardModel model);
+        void UpdateHand(UpdateHandMessage message);
+        void UpdateStatus(StatusModel model);
+        void UseAbility(UseAbilityMessage message);
     }
 }

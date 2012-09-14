@@ -24,8 +24,7 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.ThunderstoneBearers
                 .DestroyCard("Destroy a hero.", c => c.IsHero())
                 .On(Phase.Battle);
 
-            card.AddEventHandler(
-                events => events.Observe<DungeonHallRefilled>().Subscribe(e => KeepStramstFromAdvancing(card, e)));
+            card.AddEventHandler(events => events.Subscribe<DungeonHallRefilled>(e => KeepStramstFromAdvancing(card, e)));
         }
 
         private static void KeepStramstFromAdvancing(Card stramst, DungeonHallRefilled e)

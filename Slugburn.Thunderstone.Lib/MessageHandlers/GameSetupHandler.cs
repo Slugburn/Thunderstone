@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Slugburn.Thunderstone.Lib.Models;
 
 namespace Slugburn.Thunderstone.Lib.MessageHandlers
 {
@@ -14,19 +15,7 @@ namespace Slugburn.Thunderstone.Lib.MessageHandlers
             var player = message.Player;
             var setup = new GameSetup();
             player.Session.Setup = setup;
-            var byType = setup.GetRandomizersByType();
-            Func<CardType, CardInfo[]> getInfoByType = type => byType[type].Select(x => x.GetInfo()).ToArray();
-            var body = new
-            {
-                ThunderstoneBearer = getInfoByType(CardType.ThunderstoneBearer)[0],
-                Monsters = getInfoByType(CardType.Monster),
-                Heroes = getInfoByType(CardType.Hero),
-                Weapons = getInfoByType(CardType.Weapon),
-                Items = getInfoByType(CardType.Item),
-                Spells = getInfoByType(CardType.Spell),
-                Villagers = getInfoByType(CardType.Villager)
-            };
-            player.Session.SendAll(x => x.View.GameSetup(body));
+            player.Session.SendAll(x => x.View.GameSetup(GameSetupModel.From(setup)));
         }
     }
 }

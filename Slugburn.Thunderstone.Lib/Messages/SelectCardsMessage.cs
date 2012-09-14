@@ -1,4 +1,7 @@
-﻿namespace Slugburn.Thunderstone.Lib.Messages
+﻿using System.Collections.Generic;
+using Slugburn.Thunderstone.Lib.Models;
+
+namespace Slugburn.Thunderstone.Lib.Messages
 {
     public class SelectCardsMessage
     {
@@ -6,7 +9,7 @@
 
         public string Message { get; set; }
 
-        public object Cards { get; set; }
+        public IList<CardModel> Cards { get; set; }
 
         public int Min { get; set; }
 

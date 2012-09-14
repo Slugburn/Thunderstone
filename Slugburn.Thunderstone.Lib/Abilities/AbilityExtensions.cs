@@ -83,7 +83,7 @@ namespace Slugburn.Thunderstone.Lib.Abilities
         {
             Func<Card, bool> heroCanEquip = hero => hero.IsHero() && !hero.IsEquipped && hero.Strength >= syntax.Card.Strength;
             return syntax.Description("Equip {0}.".Template(syntax.Card.Name))
-                .SelectCards(select => @select.FromHand().Filter(heroCanEquip))
+                .SelectCards(source => source.FromHand().Filter(heroCanEquip))
                 .OnCardsSelected(x => x.Player.Equip(x.Selected.First(), syntax.Card, onEquip))
                 .Condition(player => !syntax.Card.IsEquipped && player.Hand.Any(heroCanEquip));
         }
