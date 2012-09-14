@@ -102,6 +102,7 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Monsters
                                                         player.RemoveFromHand(card);
                                                         player.Game.Dungeon.Deck.AddToTop(card);
                                                     })
+                                        .On(Phase.Village, Phase.Dungeon)
                        };
         }
 
@@ -117,8 +118,10 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Monsters
                            Vp = 4,
                            Text = "<b>Battle:</b> Each player destroys 1 card.",
                            // TODO: Complete implementation of ability
-                           Modify = card=>
-                               card.CreateAbility().DestroyCard("Each player destroys 1 card.").On(Phase.Battle)
+                           Modify = card =>
+                                    card.CreateAbility()
+                                        .DestroyCard("Each player destroys 1 card.")
+                                        .On(Phase.Battle)
                        };
         }
 
@@ -134,18 +137,19 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Monsters
                            Vp = 3,
                            Text =
                                "<b>Battle:</b> Each player may choose to discard 3 cards. If a player chooses not to, that player loses 1 XP.",
-                               Modify = card=>
-                                   card.CreateAbility()
-                                    // TODO: Complete implementation of ability
-                                   .Description("Each player must discard 3 cards or lose 1 XP")
-                                   .SelectCards(source => source.FromHand().Caption("Discard Cards").Message("Discard 3 cards or lose 1 XP").Min(0).Max(3))
-                                   .OnCardsSelected(x =>
-                                                        {
-                                                            if (x.Selected.Count == 3)
-                                                                x.Source.Discard(x.Selected);
-                                                            else
-                                                                x.Player.Xp = Math.Max(0, x.Player.Xp - 1);
-                                                        })
+                           Modify = card =>
+                                    card.CreateAbility()
+                                        // TODO: Complete implementation of ability
+                                        .Description("Each player must discard 3 cards or lose 1 XP")
+                                        .SelectCards(source => source.FromHand().Caption("Discard Cards").Message("Discard 3 cards or lose 1 XP").Min(0).Max(3))
+                                        .OnCardsSelected(x =>
+                                                             {
+                                                                 if (x.Selected.Count == 3)
+                                                                     x.Source.Discard(x.Selected);
+                                                                 else
+                                                                     x.Player.Xp = Math.Max(0, x.Player.Xp - 1);
+                                                             })
+                                        .On(Phase.Battle)
                        };
         }
     }

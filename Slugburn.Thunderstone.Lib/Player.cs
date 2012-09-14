@@ -243,33 +243,23 @@ namespace Slugburn.Thunderstone.Lib
 
         public void LevelHeroes()
         {
-
-            Func<Card, bool> canLevel = x => x.IsHero() && x.Xp <= Xp && AvailableLevelUps(x).Length > 0;
-            if (!Hand.Any(canLevel))
+            Func<Card, bool> filter = x => x.IsHero() && x.Xp <= Xp && AvailableLevelUps(x).Length > 0;
+            if (!Hand.Any(filter))
             {
                 EndTurn();
                 return;
             }
+
             this.SelectCard()
-                .FromHand()
-                .Filter(canLevel)
-                .Caption("Level Hero")
-                .Message("Select a hero card to level up")
-                .Callback(x => LevelHero(x.Selected.First()))
+                .HeroToLevel(filter)
+                .Callback( x => LevelHero(x.Selected.First()))
                 .SendRequest(player => { });
         }
 
         private void LevelHero(Card hero)
         {
             this.SelectCard()
-                .FromHeroDecks()
-                .Filter(x=>
-                            {
-                                if (hero.Level == 0) return x.Level == 1;
-                                return x.IsSameTypeAs(hero) && x.Level == hero.Level + 1;
-                            })
-                .Caption("Level Hero")
-                .Message("Select upgraded hero")
+                .SelectHeroUpgrade(hero)
                 .Callback(x =>
                               {
                                   var upgrade = x.Selected.First();
@@ -280,7 +270,7 @@ namespace Slugburn.Thunderstone.Lib
                 .SendRequest(player => LevelHeroes());
         }
 
-        private Card[] AvailableLevelUps(Card card)
+        public Card[] AvailableLevelUps(Card card)
         {
             var heroDecks = Game.Village[CardType.Hero];
             if (card.Level == 0)

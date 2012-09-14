@@ -1,4 +1,5 @@
-﻿using Slugburn.Thunderstone.Lib.Selectors.Sources;
+﻿using System;
+using Slugburn.Thunderstone.Lib.Selectors.Sources;
 
 namespace Slugburn.Thunderstone.Lib.Selectors
 {
@@ -45,5 +46,26 @@ namespace Slugburn.Thunderstone.Lib.Selectors
             return c;
         }
 
+        public static IDefineSelection HeroToLevel(this ISelectSource source, Func<Card, bool> filter)
+        {
+            return source
+                .FromHand()
+                .Filter(filter)
+                .Caption("Level Hero")
+                .Message("Select a hero card to level up");
+        }
+
+        public static IDefineSelection SelectHeroUpgrade(this ISelectSource selectSource, Card hero)
+        {
+            return selectSource
+                .FromHeroDecks()
+                .Filter(x=>
+                            {
+                                if (hero.Level == 0) return x.Level == 1;
+                                return x.IsSameTypeAs(hero) && x.Level == hero.Level + 1;
+                            })
+                .Caption("Level Hero")
+                .Message("Select upgraded hero");
+        }
     }
 }

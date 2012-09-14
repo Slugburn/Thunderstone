@@ -3,7 +3,7 @@ using Slugburn.Thunderstone.Lib.Abilities;
 
 namespace Slugburn.Thunderstone.Lib.Randomizers.Heroes
 {
-    class Thundermage : HeroRandomizer
+    public class Thundermage : HeroRandomizer
     {
         public Thundermage() : base("Thundermage", "Human", "Wizard")
         {
