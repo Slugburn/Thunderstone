@@ -32,5 +32,10 @@ namespace Slugburn.Thunderstone.Lib
         {
             return Ranks.SingleOrDefault(x => x.Card == monster);
         }
+
+        public Rank GetRankNumber(int number)
+        {
+            return Ranks.SingleOrDefault(x => x.Number == number);
+        }
     }
 }

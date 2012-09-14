@@ -66,6 +66,7 @@
     <Compile Include="CardOwner.cs" />
     <Compile Include="Curse.cs" />
     <Compile Include="Events\CardAbilityUsed.cs" />
+    <Compile Include="Events\DungeonHallRefilled.cs" />
     <Compile Include="Events\EventAggregator.cs" />
     <Compile Include="Events\IEventAggregator.cs" />
     <Compile Include="Events\AttackRankSelected.cs" />

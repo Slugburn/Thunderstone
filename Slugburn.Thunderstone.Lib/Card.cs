@@ -168,6 +168,8 @@ namespace Slugburn.Thunderstone.Lib
 
         public void Reset()
         {
+            // Remove any rank
+            Rank = null;
             // Unequip
             _equipped = null;
             // Remove modifiers

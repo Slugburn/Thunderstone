@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Slugburn.Thunderstone.Lib.Events;
 
 namespace Slugburn.Thunderstone.Lib
 {
     public class Game
     {
+        private readonly IEventAggregator _events;
+
         public Game()
         {
             Players = new List<Player>();
+            _events = new EventAggregator();
         }
 
         public List<Player> Players { get; private set; }
@@ -67,7 +71,8 @@ namespace Slugburn.Thunderstone.Lib
 
         public void AdvanceDungeon()
         {
-            var rank1Card = Dungeon.Ranks[0].Card;
+            var rank1 = Dungeon.Ranks[0];
+            var rank1Card = rank1.Card;
             // Rank 1 escapes, penalize the player
             if (rank1Card != null)
             {
@@ -77,15 +82,35 @@ namespace Slugburn.Thunderstone.Lib
                 CurrentPlayer.Vp -= lostVp;
                 CurrentPlayer.View.UpdateStatus(CurrentPlayer.CreateStatusMessage());
             }
+            RemoveCardFromHall(rank1);
 
-            for (var i = 0; i< Dungeon.Ranks.Length -1;i++)
+            RefillHallFrom(rank1);
+        }
+
+        public void RefillHallFrom(Rank fromRank)
+        {
+            var ranks = Dungeon.Ranks;
+            var firstRankIndex = fromRank.Number - 1;
+            var lastRankIndex = ranks.Length - 1;
+            for (var i = firstRankIndex; i < lastRankIndex; i++)
             {
-                Dungeon.Ranks[i].Card = Dungeon.Ranks[i + 1].Card;
+                if (ranks[i].Card != null) continue;
+                ranks[i].Card = ranks[i + 1].Card;
+                ranks[i + 1].Card = null;
             }
-            var cardLast = Dungeon.Deck.Draw();
-            Dungeon.Ranks[Dungeon.Ranks.Length - 1].Card = cardLast;
+            if (ranks[lastRankIndex].Card == null)
+            {
+                var drawn = Dungeon.Deck.Draw();
+                if (drawn != null)
+                {
+                    ranks[lastRankIndex].Card = drawn;
+                    drawn.Subscribe(_events);
+                }
+            }
+            _events.Publish(new DungeonHallRefilled(this));
             SendUpdateDungeon();
         }
+
 
         public void SendUpdateDungeon()
         {
@@ -104,26 +129,18 @@ namespace Slugburn.Thunderstone.Lib
         public void RemoveCardFromHall(int? rankNumber)
         {
             var rank = Dungeon.Ranks.Single(x => x.Number == rankNumber);
-            if (rank.Card != null)
-                rank.Card.Rank = null;
-            rank.Card = null;
+            RemoveCardFromHall(rank);
             SendUpdateDungeon();
         }
 
-        public void RefillHall(Rank fromRank)
+        private static void RemoveCardFromHall(Rank rank)
         {
-            var ranks = Dungeon.Ranks;
-            var firstRankIndex = fromRank.Number - 1;
-            var lastRankIndex = ranks.Length - 1;
-            for (var i = firstRankIndex; i < lastRankIndex; i++)
+            var removedCard = rank.Card;
+            if (removedCard != null)
             {
-                if (ranks[i].Card != null) continue;
-                ranks[i].Card = ranks[i + 1].Card;
-                ranks[i + 1].Card = null;
+                removedCard.Reset();
             }
-            if (ranks[lastRankIndex].Card == null)
-                ranks[lastRankIndex].Card = Dungeon.Deck.Draw();
-            SendUpdateDungeon();
+            rank.Card = null;
         }
 
         public void GiveCurseTo(Player player)

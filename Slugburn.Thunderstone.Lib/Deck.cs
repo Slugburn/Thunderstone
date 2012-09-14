@@ -59,7 +59,7 @@ namespace Slugburn.Thunderstone.Lib
 
         public Card Draw()
         {
-            return Draw(1)[0];
+            return Draw(1).FirstOrDefault();
         }
 
         public object CreateMessage()

@@ -41,7 +41,13 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.ThunderstoneBearers
                                Vp = Vp
                            };
             card.SetTags(Tags);
+            Modify(card);
             return new[] {card};
+        }
+
+        protected virtual void Modify(Card card)
+        {
+            // do nothing by default
         }
     }
 }

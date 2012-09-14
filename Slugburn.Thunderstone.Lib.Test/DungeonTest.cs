@@ -42,7 +42,7 @@ namespace Slugburn.Thunderstone.Lib.Test
             Enumerable.Range(0, deck.Count).Each(x => deck.Draw());
 
             // Act
-            game.RefillHall(lastRank);
+            game.RefillHallFrom(lastRank);
 
             // Assert
             Assert.That(lastRank.Card, Is.Null);

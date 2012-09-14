@@ -184,7 +184,7 @@ namespace Slugburn.Thunderstone.Lib
 
         public void RefillHall()
         {
-            Game.RefillHall(AttackedRank);
+            Game.RefillHallFrom(AttackedRank);
             ResolveRaidAndBreachEffects();
         }
 

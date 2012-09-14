@@ -50,8 +50,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DungeonTest.cs" />
     <Compile Include="PlayerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Randomizers\Monsters\StramstTest.cs" />
     <Compile Include="Selectors\SelectionBehaviorTest.cs" />
     <Compile Include="TestFactory.cs" />
   </ItemGroup>
