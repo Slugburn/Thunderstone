@@ -100,7 +100,7 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Monsters
                                                     {
                                                         player.Xp += 3;
                                                         player.RemoveFromHand(card);
-                                                        player.Game.Dungeon.Deck.AddToTop(card);
+                                                        player.Game.Dungeon.AddToTopOfDeck(card);
                                                     })
                                         .On(Phase.Village, Phase.Dungeon)
                        };

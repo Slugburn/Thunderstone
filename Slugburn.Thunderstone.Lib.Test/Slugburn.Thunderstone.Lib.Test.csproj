@@ -54,7 +54,8 @@
     <Compile Include="PlayerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Randomizers\Heroes\WhetmageTest.cs" />
-    <Compile Include="Randomizers\Monsters\StramstTest.cs" />
+    <Compile Include="Randomizers\Monsters\BurnmarkedFireTest.cs" />
+    <Compile Include="Randomizers\ThunderstoneBearers\StramstTest.cs" />
     <Compile Include="Selectors\SelectionBehaviorTest.cs" />
     <Compile Include="TestFactory.cs" />
   </ItemGroup>

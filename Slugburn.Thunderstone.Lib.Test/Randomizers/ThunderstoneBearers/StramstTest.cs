@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using Slugburn.Thunderstone.Lib.Randomizers.ThunderstoneBearers;
 
-namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Monsters
+namespace Slugburn.Thunderstone.Lib.Test.Randomizers.ThunderstoneBearers
 {
     [TestFixture]
     public class StramstTest

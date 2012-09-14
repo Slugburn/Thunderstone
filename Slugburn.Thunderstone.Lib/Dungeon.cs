@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Slugburn.Thunderstone.Lib.Messages;
 
 namespace Slugburn.Thunderstone.Lib
 {
@@ -19,13 +20,13 @@ namespace Slugburn.Thunderstone.Lib
 
         public Rank[] Ranks { get; private set; }
 
-        public object CreateMessage()
+        public DungeonMessage CreateMessage()
         {
-            return new
-                       {
-                           Ranks = Ranks.Select(x => new {x.Number, x.Card, Penalty = x.Darkness}),
-                           DeckCount = Deck.Count
-                       };
+            return new DungeonMessage
+                {
+                    Ranks = Ranks.Select(x => new {x.Number, Card = x.Card == null ? null : x.Card.CreateMessage(), Penalty = x.Darkness}).Cast<dynamic>().ToList(),
+                    DeckCount = Deck.Count
+                };
         }
 
         public Rank GetRankOf(Card monster)
