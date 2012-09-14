@@ -31,11 +31,13 @@ namespace Slugburn.Thunderstone.Lib.Selectors.Sources
 
         public void Discard(IEnumerable<Card> cards)
         {
+            var game = Player.Game;
             cards.Each(card=>
                            {
-                               Player.Game.RemoveCardFromHall(card.Rank);
+                               game.RemoveCardFromHall(card.Rank);
                                Player.AddToDiscard(card);
                            });
+            game.RefillHallFrom(game.Dungeon.Ranks[0]);
             Player.View.UpdateStatus(Player.CreateStatusMessage());
         }
 
