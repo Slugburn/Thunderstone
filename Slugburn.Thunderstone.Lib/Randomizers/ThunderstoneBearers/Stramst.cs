@@ -32,13 +32,14 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.ThunderstoneBearers
         {
             var dungeon = e.Game.Dungeon;
 
-            // do nothing if the dungeon deck is depleted
-            if (dungeon.Deck.Count == 0) return;
-
             // switch Stramst with the monster in front of him
             var oldRank = dungeon.GetRankNumber(stramst.Rank ?? 0);
             var newRank = dungeon.GetRankNumber(oldRank.Number + 1);
-            if (newRank == null) return;
+
+            // if Stramst is in the last rank, or if there is no card to the right of Stramst then do nothing
+            if (newRank == null || newRank.Card == null) return;
+
+            // switch Stramst with the card in the next higher rank
             var switchWith = newRank.Card;
             oldRank.Card = switchWith;
             newRank.Card = stramst;

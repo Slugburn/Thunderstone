@@ -27,3 +27,4 @@ _ReSharper*/
 *.vssscc
 $tf*/
 packages/
+*.ncrunchproject
