@@ -4,7 +4,7 @@ namespace Slugburn.Thunderstone.Lib.Selectors
 {
     public interface ISelectionCallback : IDefineSelectionOrCallback
     {
-        void SendRequest(Action<Player> continuation);
+        void SendRequest(Action<SelectionContext> continuation);
     }
 
     public static class SelectionCallbackExtensions

@@ -23,7 +23,7 @@ namespace Slugburn.Thunderstone.Lib.MessageHandlers
                                x.Player.RemoveFromHand(x.Selected);
                                x.Player.AddToTopOfDeck(x.Selected);
                               } )
-                .SendRequest(p => p.EndTurn());
+                .SendRequest(x => x.Player.EndTurn());
         }
     }
 }

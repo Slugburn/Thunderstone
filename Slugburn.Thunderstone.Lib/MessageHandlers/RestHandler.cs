@@ -16,7 +16,7 @@ namespace Slugburn.Thunderstone.Lib.MessageHandlers
                 .FromHand()
                 .Caption("Rest")
                 .Destroy("Resting")
-                .SendRequest(p=>p.EndTurn());
+                .SendRequest(x => x.Player.EndTurn());
         }
     }
 }

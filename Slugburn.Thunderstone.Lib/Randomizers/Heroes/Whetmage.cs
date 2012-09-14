@@ -93,7 +93,7 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Heroes
                 .OnCardsSelected(x => { })
                 .SelectCards(source =>
                 {
-                    var hero = source.SelectionContext.PreviousSelection.First();
+                    var hero = source.SelectionContext.Selected.First();
                     return source.SelectHeroUpgrade(hero);
                 })
                 .OnCardsSelected(x =>

@@ -52,21 +52,22 @@ namespace Slugburn.Thunderstone.Lib.Abilities
             }
             else
             {
-                Action<Player> nextAction = null;
+                Action<SelectionContext> nextAction = null;
                 CardSelections.Reverse();
                 foreach (var selection in CardSelections)
                 {
                     var localSelection = selection;
                     var localNextAction = nextAction;
-                    Action<Player> action = player =>
+                    Action<SelectionContext> action = context =>
                     {
-                        var selector = localSelection.Select(player.SelectCard(Card));
+                        var selector = localSelection.Select(context);
                         var requestor = localSelection.Callbacks.Select(selector.Callback).ToList().Last();
-                        requestor.SendRequest(localNextAction ?? GetContinuation(phase));
+                        requestor.SendRequest(localNextAction ?? (selectionContext => GetContinuation(phase)));
                     };
                     nextAction = action;
                 }
-                ability = new Ability(phase, Description, nextAction) {Continuation = x => { }};
+                Action<Player> firstAction = player => nextAction((SelectionContext) player.SelectCard(Card));
+                ability = new Ability(phase, Description, firstAction) {Continuation = x => { }};
             }
             ability.Phase = phase;
             if (Condition != null)

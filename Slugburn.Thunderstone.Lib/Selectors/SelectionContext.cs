@@ -36,7 +36,7 @@ namespace Slugburn.Thunderstone.Lib.Selectors
         public int Max { get; set; }
         public Func<Card, bool> Filter { get; set; }
 
-        public void SendRequest(Action<Player> continuation)
+        public void SendRequest(Action<SelectionContext> continuation)
         {
             var selectFrom = (Filter == null ? Source.GetCards() : Source.GetCards().Where(card => Filter(card))).ToList();
             Action<IEnumerable<long>> callback = selectedIds =>
@@ -44,7 +44,7 @@ namespace Slugburn.Thunderstone.Lib.Selectors
                 PreviousSelection = Selected;
                 Selected = selectFrom.Where(card => selectedIds.Contains(card.Id)).ToArray();
                 Callbacks.Each(action => action(this));
-                continuation(Player);
+                continuation(this);
             };
             if (selectFrom.Count <= Min)
             {
