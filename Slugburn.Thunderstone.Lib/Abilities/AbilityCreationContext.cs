@@ -62,7 +62,8 @@ namespace Slugburn.Thunderstone.Lib.Abilities
                     {
                         var selector = localSelection.Select(context);
                         var requestor = localSelection.Callbacks.Select(selector.Callback).ToList().Last();
-                        requestor.SendRequest(localNextAction ?? (selectionContext => GetContinuation(phase)));
+                        var continuation = localNextAction ?? (selectionContext => GetContinuation(phase)(context.Player));
+                        requestor.SendRequest(continuation);
                     };
                     nextAction = action;
                 }

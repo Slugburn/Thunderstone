@@ -75,6 +75,7 @@
     <Compile Include="MessageHandlers\PrepareHandler.cs" />
     <Compile Include="MessageHandlers\RestHandler.cs" />
     <Compile Include="MessageHandlers\SelectCardsHandler.cs" />
+    <Compile Include="Messages\SelectCardsMessage.cs" />
     <Compile Include="Modifiers\AttributeModExtensions.cs" />
     <Compile Include="Modifiers\IAttributeMod.cs" />
     <Compile Include="Modifiers\SetMod.cs" />

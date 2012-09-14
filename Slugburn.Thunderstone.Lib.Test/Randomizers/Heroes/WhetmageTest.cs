@@ -20,6 +20,10 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Heroes
             var ability = honer.GetAbilities().First();
             player.Xp = 2;
 
+            // Fill up the dungeon so the Whetmage has someone to battle
+            while(game.Dungeon.Ranks[0].Card==null)
+                game.AdvanceDungeon();
+
             // Act
             Assert.That(ability.IsUsableByOwner() && ability.Condition(player), "Whetmage ability should be usable");
             ability.Action(player);

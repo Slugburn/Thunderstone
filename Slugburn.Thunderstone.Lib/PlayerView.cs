@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Slugburn.Thunderstone.Lib.Messages;
 
 namespace Slugburn.Thunderstone.Lib
 {
@@ -41,7 +42,7 @@ namespace Slugburn.Thunderstone.Lib
             SendMessage("UseAbility", false);
         }
 
-        public void SelectCards(object message)
+        public void SelectCards(SelectCardsMessage message)
         {
             SendMessage("SelectCards", message);
         }

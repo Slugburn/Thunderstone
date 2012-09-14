@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using Rhino.Mocks;
+using Slugburn.Thunderstone.Lib.Messages;
 using Slugburn.Thunderstone.Lib.Selectors;
 
 namespace Slugburn.Thunderstone.Lib.Test.Selectors
@@ -30,7 +31,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Selectors
                 .SendRequest(p => { continuationExecuted = true; });
 
             // Assert
-            player.View.AssertWasNotCalled(x => x.SelectCards(Arg<object>.Is.Anything));
+            player.View.AssertWasNotCalled(x => x.SelectCards(Arg<SelectCardsMessage>.Is.Anything));
             Assert.That(callbackExecuted, Is.True);
             Assert.That(continuationExecuted, Is.True);
         }

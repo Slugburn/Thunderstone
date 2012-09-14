@@ -2,6 +2,8 @@
 using NUnit.Framework;
 using Rhino.Mocks;
 using Slugburn.Thunderstone.Lib.BasicCards;
+using Slugburn.Thunderstone.Lib.MessageHandlers;
+using Slugburn.Thunderstone.Lib.Messages;
 
 namespace Slugburn.Thunderstone.Lib.Test
 {
@@ -42,6 +44,32 @@ namespace Slugburn.Thunderstone.Lib.Test
             // Assert
             Assert.That(regular.PhysicalAttack, Is.EqualTo(1));
             player.View.AssertWasCalled(x => x.Log("Regular no longer has Longspear equipped."));
+        }
+
+        [Test]
+        public void When_leveling_hero_then_level_up_is_not_required()
+        {
+            // Arrange
+            var game = TestFactory.CreateGame();
+            var player = game.CurrentPlayer;
+            player.Xp = 10;
+            var hero = game.Village[CardType.Hero].First().Draw();
+            player.AddCardToHand(hero);
+            SelectCardsMessage message = null;
+            player.View.Stub(v => v.SelectCards(Arg<SelectCardsMessage>.Is.Anything))
+                .WhenCalled(inv =>
+                    {
+                        message = (SelectCardsMessage) inv.Arguments[0];
+                    });
+
+            // Act
+            player.LevelHeroes();
+            // simulate selection callback
+            player.SelectCardsCallback(new long[0]);
+
+            // Assert
+            Assert.That(message, Is.Not.Null);
+            Assert.That(message.Min, Is.EqualTo(0));
         }
     }
 }

@@ -252,12 +252,18 @@ namespace Slugburn.Thunderstone.Lib
 
             this.SelectCard()
                 .HeroToLevel(filter)
-                .Callback( x => LevelHero(x.Selected.First()))
-                .SendRequest(player => { });
+                .Min(0)
+                .Callback( x => LevelHero(x.Selected.FirstOrDefault()))
+                .SendRequest(x => { });
         }
 
         private void LevelHero(Card hero)
         {
+            if (hero == null)
+            {
+                EndTurn();
+                return;
+            }
             this.SelectCard()
                 .SelectHeroUpgrade(hero)
                 .Callback(x =>
