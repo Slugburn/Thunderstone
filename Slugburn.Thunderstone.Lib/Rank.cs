@@ -3,8 +3,10 @@ namespace Slugburn.Thunderstone.Lib
     public class Rank
     {
         private Card _card;
+        
         public int Number { get; private set; }
         public int Darkness { get; private set; }
+
         public Card Card
         {
             get { return _card; }
@@ -12,7 +14,7 @@ namespace Slugburn.Thunderstone.Lib
             {
                 _card = value;
                 if (_card != null)
-                    _card.Rank = Number;
+                    _card.Rank = this;
             }
         }
 
@@ -37,6 +39,11 @@ namespace Slugburn.Thunderstone.Lib
             }
             if (ranks[lastRankIndex].Card == null)
                 ranks[lastRankIndex].Card = game.Dungeon.Deck.Draw();
+        }
+
+        public override string ToString()
+        {
+            return "Rank {0}".Template(Number);
         }
     }
 }

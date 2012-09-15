@@ -35,7 +35,7 @@ namespace Slugburn.Thunderstone.Lib.Models
 
         public string Text { get; set; }
 
-        public CardType Type { get; set; }
+        public string Type { get; set; }
 
         public int? Vp { get; set; }
 
@@ -62,11 +62,11 @@ namespace Slugburn.Thunderstone.Lib.Models
                                  PhysicalAttack = card.PhysicalAttack,
                                  PotentialMagicAttack = card.PotentialMagicAttack,
                                  PotentialPhysicalAttack = card.PotentialPhysicalAttack,
-                                 Rank = card.Rank,
+                                 Rank = card.Rank == null ? (int?) null : card.Rank.Number,
                                  Strength = card.Strength,
                                  Tags = card.Tags,
                                  Text = card.Text,
-                                 Type = card.Type,
+                                 Type = card.Type.ToString(),
                                  Vp = card.Vp,
                                  Xp = card.Xp,
                                  Owner = card.Owner.ToString(),

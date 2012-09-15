@@ -63,7 +63,7 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Heroes
                                                                            .Filter(x =>
                                                                                        {
                                                                                            var firstCard = source.SelectionContext.PreviousSelection.First();
-                                                                                           return Math.Abs((x.Rank ?? 0) - (firstCard.Rank ?? 0)) == 1;
+                                                                                           return Math.Abs(x.Rank.Number - firstCard.Rank.Number) == 1;
                                                                                        })
                                                                            .Caption("Switch Positions")
                                                                            .Message("Pick second monster to switch"))

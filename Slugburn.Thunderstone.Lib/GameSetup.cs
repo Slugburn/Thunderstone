@@ -22,7 +22,7 @@ namespace Slugburn.Thunderstone.Lib
                                    new Stramst(),
                                    new BurnmarkedFire(),
                                    new OgreHumanoid(),
-                                   new KoboldHumanoid(),
+                                   new UndeadSkeleton(), 
                                    new Whetmage(),
                                    new Criochan(),
                                    new Drua(),

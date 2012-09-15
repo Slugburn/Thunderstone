@@ -19,7 +19,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.ThunderstoneBearers
 
             // Assert
             var lastRank = game.Dungeon.Ranks.Last();
-            Assert.That(stramst.Rank, Is.EqualTo(lastRank.Number), "Stramst should not advance");
+            Assert.That(stramst.Rank, Is.SameAs(lastRank), "Stramst should not advance");
             Assert.That(game.Dungeon.Ranks.All(x=>x.Card != null), Is.True);
         }
 
@@ -40,7 +40,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.ThunderstoneBearers
             // Assert
             var lastRank = game.Dungeon.Ranks.Last();
             Assert.That(lastRank.Card, Is.Not.Null);
-            Assert.That(stramst.Rank, Is.EqualTo(lastRank.Number), "Stramst should not advance");
+            Assert.That(stramst.Rank, Is.SameAs(lastRank), "Stramst should not advance");
             Assert.That(game.Dungeon.Ranks.All(x => x.Card != null), Is.True);
         }
 
@@ -60,7 +60,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.ThunderstoneBearers
 
             // Assert
             var lastRank = game.Dungeon.Ranks.Last();
-            Assert.That(stramst.Rank, Is.EqualTo(lastRank.Number-1), "Stramst should advance");
+            Assert.That(stramst.Rank.Number, Is.EqualTo(lastRank.Number-1), "Stramst should advance");
             Assert.That(lastRank.Card, Is.Null);
         }
 

@@ -57,6 +57,7 @@
     <Compile Include="Randomizers\Heroes\ThundermageTest.cs" />
     <Compile Include="Randomizers\Heroes\WhetmageTest.cs" />
     <Compile Include="Randomizers\Monsters\BurnmarkedFireTest.cs" />
+    <Compile Include="Randomizers\Monsters\UndeadSkeletonTest.cs" />
     <Compile Include="Randomizers\ThunderstoneBearers\StramstTest.cs" />
     <Compile Include="Selectors\SelectionBehaviorTest.cs" />
     <Compile Include="TestFactory.cs" />

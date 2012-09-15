@@ -133,6 +133,7 @@
     <Compile Include="Randomizers\Monsters\MonsterDef.cs" />
     <Compile Include="Randomizers\Monsters\MonsterRandomizer.cs" />
     <Compile Include="Randomizers\Monsters\OgreHumanoid.cs" />
+    <Compile Include="Randomizers\Monsters\UndeadSkeleton.cs" />
     <Compile Include="Randomizers\RandomizerBase.cs" />
     <Compile Include="Randomizers\RandomizerExtensions.cs" />
     <Compile Include="Randomizers\Items\ItemRandomizer.cs" />

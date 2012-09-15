@@ -121,8 +121,15 @@ namespace Slugburn.Thunderstone.Lib
 
         public void SelectMonster()
         {
-            this.SelectCard().FromHall().Caption("Select Monster").Message("Select a monster to fight")
-                .Callback(x => OnSelectMonster(x.Selected.First()) )
+            var validTargets = Game.Dungeon.Ranks
+                .Select(x=>x.Card)
+                .Where(c=>c.AttackCondition == null || c.AttackCondition(this));
+
+            this.SelectCard()
+                .FromHall()
+                .Filter(card => validTargets.Any(x => x == card))
+                .Caption("Select Monster").Message("Select a monster to fight")
+                .Callback(x => OnSelectMonster(x.Selected.First()))
                 .SendRequest(player =>
                                  {
                                      ActiveAbilities.AddRange(AttackedRank.Card.GetAbilities());
@@ -137,17 +144,22 @@ namespace Slugburn.Thunderstone.Lib
 
         private void DetermineBattleResult()
         {
-            var darkness = AttackedRank.Darkness;
-            var light = Hand.Sum(x => x.Light ?? 0);
-            var darknessPenalty = Math.Min(0, light + darkness);
-            var attackTotal = Hand.Sum(x => (x.PhysicalAttack ?? 0) + (x.MagicAttack ?? 0));
             var monster = AttackedRank.Card;
-
-            Won = attackTotal + darknessPenalty >= monster.Health;
+            Won = GetBattleMarginVersus(monster) >= 0;
             var outcome = Won ? "defeated" : "triumphed";
             Log("{0} {1}.".Template(monster.Name, outcome));
 
             UseAftermathAbilities();
+        }
+
+        public int GetBattleMarginVersus(Card monster)
+        {
+            return TotalAttack + Math.Min(0, TotalLight + monster.Darkness) - (monster.Health ?? 0);
+        }
+
+        public int TotalAttack
+        {
+            get { return Hand.Sum(x => (x.PhysicalAttack ?? 0) + (x.MagicAttack ?? 0)); }
         }
 
         public void UseAftermathAbilities()
@@ -330,6 +342,11 @@ namespace Slugburn.Thunderstone.Lib
 
         public object CardSelectionContext { get; set; }
 
+        public int TotalLight
+        {
+            get { return Hand.Sum(x => x.Light ?? 0); }
+        }
+
         public void DestroyCard(Card card, string destructionSource)
         {
             DestroyCards(new[] {card}, destructionSource);
@@ -344,6 +361,18 @@ namespace Slugburn.Thunderstone.Lib
 
             // Add destroyed curses back to the curse deck
             Game.Curses.Add(cardList.Where(c => c.Type == CardType.Curse));
+        }
+
+        public void DiscardCard(Card card)
+        {
+            DiscardCards(new[] {card});
+        }
+
+        public void DiscardCards(IEnumerable<Card> cards)
+        {
+            var cardList = cards.ToList();
+            RemoveFromHand(cardList);
+            Discard.AddRange(cardList);
         }
 
         public void RemoveFromHand(IEnumerable<Card> cards)
@@ -421,7 +450,7 @@ namespace Slugburn.Thunderstone.Lib
             ability.Action(this);
             PublishEvent(new CardAbilityUsed(ability));
             SendUpdateHand();
-            ability.Continuation(this);
+            ability.Continuation(this); 
         }
     }
 }

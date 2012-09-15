@@ -62,7 +62,7 @@ namespace Slugburn.Thunderstone.Lib
 
         public static bool HasPhysicalAttack(this Card card)
         {
-            return (card.PhysicalAttack ?? 0) + (card.PotentialPhysicalAttack) > 0;
+            return (card.PhysicalAttack ?? 0) + (card.PotentialPhysicalAttack ?? 0) > 0;
         }
     }
 }

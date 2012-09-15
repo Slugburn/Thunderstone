@@ -32,7 +32,7 @@ namespace Slugburn.Thunderstone.Lib.Selectors.Sources
         {
             var cardList = cards.ToList();
             Player.RemoveFromHand(cardList);
-            Player.AddToDiscard(cardList);
+            Player.DiscardCards(cardList);
         }
     }
 }

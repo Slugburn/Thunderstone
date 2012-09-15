@@ -135,7 +135,7 @@ namespace Slugburn.Thunderstone.Lib
             }
         }
 
-        public int? Rank { get; set; }
+        public Rank Rank { get; set; }
 
         public bool IsEquipped 
         {
@@ -145,6 +145,13 @@ namespace Slugburn.Thunderstone.Lib
         public int Level { get; set; }
 
         public CardOwner Owner { get; set; }
+
+        public int Darkness
+        {
+            get { return Rank.Darkness; }
+        }
+
+        public Func<Player,bool> AttackCondition { get; set; }
 
         internal void SetEquipped(Card card)
         {

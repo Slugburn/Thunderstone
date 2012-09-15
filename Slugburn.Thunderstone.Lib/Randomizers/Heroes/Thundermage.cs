@@ -61,9 +61,9 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Heroes
                                   +
                                   "<b>Dungeon:</b> Place the monster from rank 1 into your discard pile <i>(you do not collect XP)</i>. End your turn.",
                            MagicAttack = 4,
-                           Modify =  card=>card.CreateAbility()
-                               .DiscardMonster("Place the monster from rank 1 into your discard pile", x => x.Rank==1)
-                               .On(Phase.Dungeon)
+                           Modify = card => card.CreateAbility()
+                                                .DiscardMonster("Place the monster from rank 1 into your discard pile", x => x.Rank.Number == 1)
+                                                .On(Phase.Dungeon)
                        };
         }
     }

@@ -109,10 +109,14 @@ namespace Slugburn.Thunderstone.Lib
                     drawn.Subscribe(_events);
                 }
             }
-            _events.Publish(new DungeonHallRefilled(this));
+            Publish(new DungeonHallRefilled(this));
             SendUpdateDungeon();
         }
 
+        public void Publish<TEvent>(TEvent ev)
+        {
+            _events.Publish(ev);
+        }
 
         public void SendUpdateDungeon()
         {
