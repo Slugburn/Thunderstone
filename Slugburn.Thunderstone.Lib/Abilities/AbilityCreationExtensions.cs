@@ -6,7 +6,7 @@ using Attribute = Slugburn.Thunderstone.Lib.Modifiers.Attribute;
 
 namespace Slugburn.Thunderstone.Lib.Abilities
 {
-    public static class AbilityExtensions
+    public static class AbilityCreationExtensions
     {
         public static ICreateAbilitySyntax CreateAbility(this Card card)
         {
