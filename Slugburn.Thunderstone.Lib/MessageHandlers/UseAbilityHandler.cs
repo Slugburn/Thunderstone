@@ -21,13 +21,7 @@ namespace Slugburn.Thunderstone.Lib.MessageHandlers
                 return;
             }
 
-            var ability = player.ActiveAbilities.Single(x => x.Id == body.AbilityId.Value);
-            player.ActiveAbilities.Remove(ability);
-
-            ability.Action(player);
-            player.PublishEvent(new CardAbilityUsed(ability));
-            player.SendUpdateHand();
-            ability.Continuation(player);
+            player.UseAbility(body.AbilityId.Value);
         }
 
         private static void NextPhase(Player player, Phase phase)

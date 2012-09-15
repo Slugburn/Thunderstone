@@ -48,19 +48,21 @@ namespace Slugburn.Thunderstone.Lib
             card.Name = "Curse of Decay";
             card.Text +=
                 "<b>Village/Dungeon:</b> If this is the first ability you have used this turn, destroy this card. You cannot use any more abilities this turn.";
+            
             card.CreateAbility()
-                .Description("Destroy this card. You cannot use any more abilities this turn.")
+                .Description("If this is the first ability you use this turn, destroy this card. You cannot use any more abilities this turn.")
                 .Action(player =>
                             {
                                 player.DestroyCard(card, card.Name);
                                 player.ActiveAbilities.RemoveAll(x => x.Card.Owner == CardOwner.Player);
                             })
                 .On(Phase.Village, Phase.Dungeon);
-            // Add event handler that removes this card's abilities when player uses another ability
+
+            // Add event handler that removes this card's abilities when player uses another card's ability (except equipping)
             card.AddEventHandler(events => events.Subscribe<CardAbilityUsed>(e =>
                                {
                                    var usedCard = e.Ability.Card;
-                                   if (usedCard.Owner == CardOwner.Player && usedCard != card)
+                                   if (e.Ability.Phase != Phase.Equip && usedCard.Owner == CardOwner.Player && usedCard != card)
                                        usedCard.Player.ActiveAbilities.RemoveAll(x => x.Card == card);
                                }));
         }

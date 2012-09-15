@@ -412,5 +412,16 @@ namespace Slugburn.Thunderstone.Lib
         {
             Enumerable.Range(0, count).Each(x => Game.GiveCurseTo(this));
         }
+
+        public void UseAbility(long abilityId)
+        {
+            var ability = ActiveAbilities.Single(x => x.Id == abilityId);
+            ActiveAbilities.Remove(ability);
+
+            ability.Action(this);
+            PublishEvent(new CardAbilityUsed(ability));
+            SendUpdateHand();
+            ability.Continuation(this);
+        }
     }
 }

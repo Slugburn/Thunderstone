@@ -70,5 +70,10 @@ namespace Slugburn.Thunderstone.Lib
                     throw new NotImplementedException();
             }
         }
+
+        public override string ToString()
+        {
+            return Description;
+        }
     }
 }
