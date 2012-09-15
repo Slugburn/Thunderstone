@@ -8,7 +8,9 @@ namespace Slugburn.Thunderstone.Lib.MessageHandlers
 
         public override void Handle(Message message)
         {
-            message.Player.DoDungeon();
+            var player = message.Player;
+            player.State = PlayerState.Dungeon;
+            player.UseAbilities();
         }
     }
 }

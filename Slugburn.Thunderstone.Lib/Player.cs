@@ -25,6 +25,8 @@ namespace Slugburn.Thunderstone.Lib
             _events = new EventAggregator();
         }
 
+        public PlayerState State { get; set; }
+
         public string Name { get; set; }
 
         public int Vp { get; set; }
@@ -100,23 +102,9 @@ namespace Slugburn.Thunderstone.Lib
 
         public void StartTurn()
         {
+            State = PlayerState.SelectingAction;
             Won = false;
             View.StartTurn();
-        }
-
-        public void DoVillage()
-        {
-            UseVillageAbilities();
-        }
-
-        public void UseVillageAbilities()
-        {
-            UseAbilities(new[] { Phase.Village }, "Village", false, BuyCard);
-        }
-
-        public void UseDungeonAbilities()
-        {
-            UseAbilities(new[] { Phase.Dungeon, Phase.Equip }, "Dungeon", false, SelectMonster);
         }
 
         public void SelectMonster()
@@ -139,10 +127,11 @@ namespace Slugburn.Thunderstone.Lib
 
         public void UseBattleAbilities()
         {
-            UseAbilities(new[] { Phase.Battle }, "Battle", true, DetermineBattleResult);
+            State = PlayerState.Battle;
+            UseAbilities();
         }
 
-        private void DetermineBattleResult()
+        public void DetermineBattleResult()
         {
             var monster = AttackedRank.Card;
             Won = GetBattleMarginVersus(monster) >= 0;
@@ -164,15 +153,17 @@ namespace Slugburn.Thunderstone.Lib
 
         public void UseAftermathAbilities()
         {
-            UseAbilities(new[] {Phase.Aftermath}, "Aftermath", true, EndBattle);
+            State = PlayerState.Aftermath;
+            UseAbilities();
         }
 
         public void UseSpoilsAbilities()
         {
-            UseAbilities(new[] {Phase.Spoils}, "Spoils", false, RefillHall);
+            State = PlayerState.Spoils;
+            UseAbilities();
         }
 
-        private void EndBattle()
+        public void EndBattle()
         {
             var monster = AttackedRank.Card;
             if (Won)
@@ -225,19 +216,19 @@ namespace Slugburn.Thunderstone.Lib
 
         public Rank AttackedRank { get; set; }
 
-        private void UseAbilities(IEnumerable<Phase> phases, string phaseTag, bool required, Action continuation)
+        public void UseAbilities()
         {
             SendUpdateHand();
-            var phaseAbilities = ActiveAbilities.Where(a => phases.Contains(a.Phase) && a.Condition(this)).ToList();
+            var phaseAbilities = ActiveAbilities.Where(a => State.AbilityTypes.Contains(a.Phase) && a.Condition(this)).ToList();
             if (phaseAbilities.Count > 0)
             {
-                var message = UseAbilityMessage.Create(phaseTag, required, phaseAbilities);
+                var message = UseAbilityMessage.Create(State.Tag, phaseAbilities);
                 View.UseAbility(message);
             }
             else
             {
                 View.HideUseAbility();
-                continuation();
+                State.ContinueWith(this);
             }
         }
 
@@ -355,7 +346,7 @@ namespace Slugburn.Thunderstone.Lib
         public void DestroyCards(IEnumerable<Card> cards, string source)
         {
             var cardList = cards.ToArray();
-            Log("{0} destroys {1}.".Template(source, string.Join(", ", cardList.Select(c => c.Name))));
+            Log("{0} destroys {1}.".Template(source, String.Join(", ", cardList.Select(c => c.Name))));
             Vp -= cardList.Sum(card => card.Vp ?? 0);
             RemoveFromHand(cardList);
 
@@ -409,11 +400,6 @@ namespace Slugburn.Thunderstone.Lib
             onEquip(this, hero);
         }
 
-        public void DoDungeon()
-        {
-            UseDungeonAbilities();
-        }
-
         public void AddToTopOfDeck(Card card)
         {
             card.SetPlayer(this);
@@ -450,7 +436,38 @@ namespace Slugburn.Thunderstone.Lib
             ability.Action(this);
             PublishEvent(new CardAbilityUsed(ability));
             SendUpdateHand();
-            ability.Continuation(this); 
+            
+            // If ability overrides the default continuation, use that
+            // Otherwise, just continue to try and use more abilities
+            if (ability.Continuation != null)
+                ability.Continuation(this);
+            else
+                UseAbilities();
+        }
+
+        public void Prepare()
+        {
+            this.SelectCard()
+                .FromHand()
+                .Min(0)
+                .Max(Hand.Count)
+                .Caption("Prepare")
+                .Message("Select cards to place on top of your deck.")
+                .Callback(x =>
+                              {
+                                  x.Player.RemoveFromHand(x.Selected);
+                                  x.Player.AddToTopOfDeck(x.Selected);
+                              })
+                .SendRequest(x => x.Player.EndTurn());
+        }
+
+        public void Rest()
+        {
+            this.SelectCard()
+                .FromHand()
+                .Caption("Rest")
+                .Destroy("Resting")
+                .SendRequest(x => x.Player.EndTurn());
         }
     }
 }

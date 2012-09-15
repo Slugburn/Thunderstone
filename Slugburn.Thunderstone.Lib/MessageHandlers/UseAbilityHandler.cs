@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using Newtonsoft.Json;
-using Slugburn.Thunderstone.Lib.Events;
+﻿using Newtonsoft.Json;
 
 namespace Slugburn.Thunderstone.Lib.MessageHandlers
 {
@@ -17,31 +14,11 @@ namespace Slugburn.Thunderstone.Lib.MessageHandlers
             var body = JsonConvert.DeserializeObject<UseAbilityResponse>(message.Body);
             if (body.AbilityId==null)
             {
-                NextPhase(player, body.Phase);
+                player.State.ContinueWith(player);
                 return;
             }
 
             player.UseAbility(body.AbilityId.Value);
-        }
-
-        private static void NextPhase(Player player, Phase phase)
-        {
-            switch (phase)
-            {
-                case Phase.Village:
-                    player.BuyCard();
-                    break;
-                case Phase.Dungeon:
-                    player.SelectMonster();
-                    break;
-                case Phase.Battle:
-                    break;
-                case Phase.Spoils:
-                    player.RefillHall();
-                    break;
-                default:
-                    throw new NotImplementedException();
-            }
         }
 
         public class UseAbilityResponse

@@ -102,7 +102,7 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Monsters
                                                         player.RemoveFromHand(card);
                                                         player.Game.Dungeon.AddToTopOfDeck(card);
                                                     })
-                                        .On(Phase.Village, Phase.Dungeon)
+                                        .On(Phase.Trophy)
                        };
         }
 

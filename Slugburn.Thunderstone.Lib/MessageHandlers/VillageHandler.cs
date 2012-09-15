@@ -8,7 +8,9 @@
 
         public override void Handle(Message message)
         {
-            message.Player.DoVillage();
+            var player = message.Player;
+            player.State = PlayerState.Village;
+            player.UseAbilities();
         }
     }
 }

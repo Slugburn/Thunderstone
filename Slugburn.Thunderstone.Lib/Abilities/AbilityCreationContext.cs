@@ -48,7 +48,7 @@ namespace Slugburn.Thunderstone.Lib.Abilities
             Ability ability;
             if (CardSelections.Count == 0)
             {
-                ability = new Ability(phase, Description, Action) {Continuation = GetContinuation(phase)};
+                ability = new Ability(phase, Description, Action) {Continuation = Continuation};
             }
             else
             {
@@ -62,7 +62,13 @@ namespace Slugburn.Thunderstone.Lib.Abilities
                     {
                         var selector = localSelection.Select(context);
                         var requestor = localSelection.Callbacks.Select(selector.Callback).ToList().Last();
-                        var continuation = localNextAction ?? (selectionContext => GetContinuation(phase)(context.Player));
+                        var continuation = localNextAction ?? (selectionContext =>
+                                                                   {
+                                                                       if (Continuation != null) 
+                                                                           Continuation(context.Player);
+                                                                       else 
+                                                                           context.Player.UseAbilities();
+                                                                   });
                         requestor.SendRequest(continuation);
                     };
                     nextAction = action;
@@ -71,29 +77,27 @@ namespace Slugburn.Thunderstone.Lib.Abilities
                 ability = new Ability(phase, Description, firstAction) {Continuation = x => { }};
             }
             ability.Phase = phase;
+            ability.IsRequired = IsRequired ?? Ability.GetDefaultIsRequired(phase);
             if (Condition != null)
                 ability.Condition = Condition;
             Card.AddAbility(ability);
         }
 
-        private Action<Player> GetContinuation(Phase phase)
-        {
-            return Continuation ?? Ability.GetDefaultContinuation(phase);
-        }
-
         public Card Card { get; private set; }
 
-    }
+        public bool? IsRequired { get; set; }
 
-    public class CardSelection
-    {
-        public CardSelection()
+        public class CardSelection
         {
-            Callbacks = new List<Action<ISelectionContext>>();
+            public CardSelection()
+            {
+                Callbacks = new List<Action<ISelectionContext>>();
+            }
+
+            public Func<ISelectSource, IDefineSelection> Select { get; set; }
+            public List<Action<ISelectionContext>> Callbacks { get; private set; }
         }
 
-        public Func<ISelectSource, IDefineSelection> Select { get; set; }
-        public List<Action<ISelectionContext>> Callbacks { get; private set; }
     }
 
 

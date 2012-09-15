@@ -8,5 +8,6 @@ namespace Slugburn.Thunderstone.Lib
         Battle,
         Aftermath,
         Spoils,
+        Trophy
     }
 }

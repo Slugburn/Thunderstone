@@ -130,7 +130,8 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Monsters
                                                                          x.Player.DestroyCard(hero, "Upgrading to {0}".Template(upgrade.Name));
                                                                      })
                                                 .Condition(player => player.Hand.Any(validCardFilter))
-                                                .On(Phase.Village, Phase.Dungeon);
+                                                .Required(false)
+                                                .On(Phase.Trophy);
                                         }
                        };
         }
@@ -146,23 +147,24 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Monsters
                            Xp = 2,
                            Vp = 3,
                            Text = "<small><b>Battle:</b> Gain 2 curses. Each other player gains 1 curse."
-                           +"<br/><br/>"
-                           +"<b>Trophy:</b> You may discard this card to draw a card.",
-                           Modify = card=>card.CreateAbility()
-                               .Description("Gain 2 curses. Each other player gains 1 curse.")
-                               .Action(player =>
-                                           {
-                                               player.GainCurse(2);
-                                               player.Game.Players.Where(x=>x != player).Each(x=>x.GainCurse());
-                                           })
-                                           .On(Phase.Battle)
-                                           .Description("You may discard this card to draw a card.")
-                                           .Action(player =>
-                                                       {
-                                                           player.DiscardCard(card);
-                                                           player.Draw(1);
-                                                       })
-                                           .On(Phase.Dungeon, Phase.Village)
+                                  + "<br/><br/>"
+                                  + "<b>Trophy:</b> You may discard this card to draw a card.",
+                           Modify = card => card.CreateAbility()
+                                                .Description("Gain 2 curses. Each other player gains 1 curse.")
+                                                .Action(player =>
+                                                            {
+                                                                player.GainCurse(2);
+                                                                player.Game.Players.Where(x => x != player).Each(x => x.GainCurse());
+                                                            })
+                                                .On(Phase.Battle)
+                                                .Description("You may discard this card to draw a card.")
+                                                .Action(player =>
+                                                            {
+                                                                player.DiscardCard(card);
+                                                                player.Draw(1);
+                                                            })
+                                                .Required(false)
+                                                .On(Phase.Trophy)
                        };
         }
 

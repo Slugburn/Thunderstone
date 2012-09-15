@@ -12,14 +12,15 @@ namespace Slugburn.Thunderstone.Lib.Messages
 
         public IEnumerable<AbilityModel> Abilities { get; set; }
 
-        public static UseAbilityMessage Create(string phaseTag, bool required, IEnumerable<Ability> phaseAbilities)
+        public static UseAbilityMessage Create(string phaseTag, IEnumerable<Ability> abilities)
         {
+            var abilityList = abilities.ToList();
             var message = new UseAbilityMessage
-                {
-                    Phase = phaseTag,
-                    Required = required,
-                    Abilities = phaseAbilities.Select(a => a.CreateMessage())
-                };
+                              {
+                                  Phase = phaseTag,
+                                  Required = abilityList.Any(a => a.IsRequired),
+                                  Abilities = abilityList.Select(a => a.CreateMessage())
+                              };
             return message;
         }
     }

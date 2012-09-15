@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using NUnit.Framework;
 using Slugburn.Thunderstone.Lib.Randomizers.Heroes;
 
@@ -12,11 +8,12 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Heroes
     public class ThundermageTest
     {
         [Test]
-        public void When_()
+        public void When_thundermage_bolter_discards_monster()
         {
             // Arrange
             var game = TestFactory.CreateGame();
             var player = game.CurrentPlayer;
+            player.State = PlayerState.Dungeon;
             var bolter = new Thundermage().CreateCards().First(c => c.Level == 3);
             var discardRank1Monster = bolter.GetAbilities().First();
 

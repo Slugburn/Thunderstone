@@ -13,6 +13,12 @@ namespace Slugburn.Thunderstone.Lib.Abilities
             return new AbilityCreationContext(card);
         }
 
+        public static IAbilityDefinedSyntax Required(this IAbilityDefinedSyntax syntax, bool isRequired = true)
+        {
+            ((AbilityCreationContext)syntax).IsRequired = isRequired;
+            return syntax;
+        }
+
         public static IAbilityCardsSelectedSyntax Destroy(this IAbilitySelectCardsSyntax syntax, string destructionSource)
         {
             return OnCardsSelected(syntax, x => x.Source.Destroy(x.Selected, destructionSource));

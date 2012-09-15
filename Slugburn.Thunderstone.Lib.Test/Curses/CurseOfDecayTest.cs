@@ -39,6 +39,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Curses
             // Arrange
             var game = TestFactory.CreateGame();
             var player = game.CurrentPlayer;
+            player.State = PlayerState.Dungeon;
             player.DiscardHand();
             var hero = new Regular().Create();
             var longspear = new Longspear().Create();

@@ -1,6 +1,4 @@
-﻿using Slugburn.Thunderstone.Lib.Selectors;
-
-namespace Slugburn.Thunderstone.Lib.MessageHandlers
+﻿namespace Slugburn.Thunderstone.Lib.MessageHandlers
 {
     public class RestHandler : MessageHandlerBase
     {
@@ -11,12 +9,8 @@ namespace Slugburn.Thunderstone.Lib.MessageHandlers
         public override void Handle(Message message)
         {
             var player = message.Player;
-            player
-                .SelectCard()
-                .FromHand()
-                .Caption("Rest")
-                .Destroy("Resting")
-                .SendRequest(x => x.Player.EndTurn());
+            player.State = PlayerState.Rest;
+            player.UseAbilities();
         }
     }
 }

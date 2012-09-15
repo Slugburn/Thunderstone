@@ -13,6 +13,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Heroes
             // Arrange
             var game = TestFactory.CreateGame();
             var player = game.CurrentPlayer;
+            player.State = PlayerState.Dungeon;
             player.DiscardHand();
             var honer = new Whetmage().CreateCards().First(c => c.Level == 1);
             var otherHero = game.Village[CardType.Hero].First(x => x.TopCard.Level > 0).Draw();

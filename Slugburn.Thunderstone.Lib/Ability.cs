@@ -5,8 +5,6 @@ namespace Slugburn.Thunderstone.Lib
 {
     public class Ability
     {
-        private Action<Player> _continuation;
-
         public long Id { get; set; }
         public Card Card { get; set; }
         public Phase Phase { get; set; }
@@ -32,31 +30,9 @@ namespace Slugburn.Thunderstone.Lib
             return new AbilityModel { Id = Id, CardName = Card.Name, Description =  Description};
         }
 
-        public Action<Player> Continuation
-        {
-            get { return _continuation ?? GetDefaultContinuation(Phase); }
-            set { _continuation = value; }
-        }
+        public Action<Player> Continuation { get; set; }
 
-        public static Action<Player> GetDefaultContinuation(Phase phase)
-        {
-            switch (phase)
-            {
-                case Phase.Village:
-                    return (player => player.UseVillageAbilities());
-                case Phase.Dungeon:
-                case Phase.Equip:
-                    return (player => player.UseDungeonAbilities());
-                case Phase.Battle:
-                    return (player => player.UseBattleAbilities());
-                case Phase.Aftermath:
-                    return (player => player.UseAftermathAbilities());
-                case Phase.Spoils:
-                    return (player => player.UseSpoilsAbilities());
-                default:
-                    throw new NotImplementedException();
-            }
-        }
+        public bool IsRequired { get; set; }
 
         public bool IsUsableByOwner()
         {
@@ -74,6 +50,20 @@ namespace Slugburn.Thunderstone.Lib
         public override string ToString()
         {
             return Description;
+        }
+
+        public static bool GetDefaultIsRequired(Phase phase)
+        {
+            switch (phase)
+            {
+                case Phase.Battle:
+                case Phase.Aftermath:
+                case Phase.Trophy:
+                    return true;
+                default:
+                    return false;
+
+            };
         }
     }
 }
