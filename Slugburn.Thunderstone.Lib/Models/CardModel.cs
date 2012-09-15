@@ -45,6 +45,8 @@ namespace Slugburn.Thunderstone.Lib.Models
 
         public string Equipped { get; set; }
 
+        public int? Darkness { get; set; }
+
         public static CardModel From(Card card)
         {
             return card == null
@@ -58,6 +60,7 @@ namespace Slugburn.Thunderstone.Lib.Models
                                  Id = card.Id,
                                  Level = card.Level,
                                  Light = card.Light,
+                                 Darkness =  card.Darkness,
                                  MagicAttack = card.MagicAttack,
                                  PhysicalAttack = card.PhysicalAttack,
                                  PotentialMagicAttack = card.PotentialMagicAttack,

@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abilities\AbilityTest.cs" />
     <Compile Include="Curses\CurseOfDecayTest.cs" />
     <Compile Include="DungeonTest.cs" />
     <Compile Include="PlayerTest.cs" />
@@ -61,6 +62,8 @@
     <Compile Include="Randomizers\Monsters\UndeadSkeletonTest.cs" />
     <Compile Include="Randomizers\ThunderstoneBearers\StramstTest.cs" />
     <Compile Include="Selectors\SelectionBehaviorTest.cs" />
+    <Compile Include="TestContext.cs" />
+    <Compile Include="TestContextExtensions.cs" />
     <Compile Include="TestFactory.cs" />
   </ItemGroup>
   <ItemGroup>

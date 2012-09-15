@@ -146,9 +146,9 @@ namespace Slugburn.Thunderstone.Lib
 
         public CardOwner Owner { get; set; }
 
-        public int Darkness
+        public int? Darkness
         {
-            get { return Rank.Darkness; }
+            get { return Rank != null ? Rank.Darkness : (int?) null; }
         }
 
         public Func<Player,bool> AttackCondition { get; set; }

@@ -49,9 +49,18 @@ namespace Slugburn.Thunderstone.Lib.Test.Abilities
         }
 
         [Test]
-        public void Monster_spoils_abilities_are_not_usable_from_hand()
+        [TestCase(CardOwner.Dungeon, true)]
+        [TestCase(CardOwner.Player, false)]
+        public void Monster_spoils_abilities_are_not_usable_from_hand(CardOwner owner, bool expected)
         {
-            
+            // Arrange
+            var ability = new Ability(Phase.Spoils, "test", player => { }) { Card = new Card { Type = CardType.Monster, Owner = owner } };
+
+            // Act
+            var isUsable = ability.IsUsableByOwner();
+
+            // Assert
+            Assert.That(isUsable, Is.EqualTo(expected));
         }
     }
 }

@@ -143,7 +143,7 @@ namespace Slugburn.Thunderstone.Lib
 
         public int GetBattleMarginVersus(Card monster)
         {
-            return TotalAttack + Math.Min(0, TotalLight + monster.Darkness) - (monster.Health ?? 0);
+            return TotalAttack + Math.Min(0, TotalLight + (monster.Darkness ?? 0)) - (monster.Health ?? 0);
         }
 
         public int TotalAttack

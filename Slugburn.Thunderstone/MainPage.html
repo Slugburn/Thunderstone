@@ -218,7 +218,6 @@
                     <div class="iblock">
                         <div class="block sectionTitle">Rank <span data-bind="text: Number"></span></div>
                         <div data-bind="template: {name: 'minicard-template', data: $.extend(Card, {empty: Card===null}) }"></div>
-                        <span data-bind="text: Penalty" class="center coin black" style=""></span>
                     </div>
                     <!-- /ko -->
                     <div class="iblock">
@@ -266,7 +265,7 @@
                 </div>
                 <!-- /ko -->
             </div>
-            <div style="position: absolute; top:242px;left:460px;height: 190px;width: 222px;border-radius: 12px;background-color: white; box-sizing: border-box;padding: 3px;">
+            <div style="position: absolute; top:222px;left:460px;height: 190px;width: 222px;border-radius: 12px;background-color: white; box-sizing: border-box;padding: 3px;">
                 <div style="position: relative; border:black solid 2px;border-radius: 10px; height: 100%; box-sizing: inherit; padding: 4px; ">
                     <div data-bind="with: Status" class="table" style="margin: 0px auto">
                         <div class="row" style="margin: 0px auto">
@@ -375,6 +374,9 @@
                 <!-- /ko -->
                 <!-- ko if: $data.Owner === 'Dungeon' -->
                 <span data-bind="text: Health, visible:Health" class="coin red" style="left: 44px; top:25px; "></span>
+                <span class="block" style="left: 2px; top:47px; position: absolute;padding: 0px;margin: 0px; ">
+                    <span data-bind="text: Darkness, visible:Darkness" class="coin black cell" style="position: static;"></span>
+                </span>
                 <!-- /ko -->
                 <span style="display: none">
                     <span class="cardPopup" data-bind="template: {name: 'card-template', data: $data }"></span>
