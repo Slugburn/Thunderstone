@@ -39,9 +39,9 @@ namespace Slugburn.Thunderstone.Lib
             switch (Card.Owner)
             {
                 case CardOwner.Player:
-                    return Phase == Phase.Village || Phase == Phase.Dungeon || Phase == Phase.Equip || Phase == Phase.Spoils && Card.Type != CardType.Monster;
+                    return Phase == Phase.Village || Phase == Phase.Dungeon || Phase == Phase.Equip || Phase == Phase.Trophy || Phase == Phase.Spoils && Card.Type != CardType.Monster;
                 case CardOwner.Dungeon:
-                    return Phase == Phase.Battle || Phase == Phase.Aftermath || Phase == Phase.Spoils && Card.Type == CardType.Monster;
+                    return Phase == Phase.Battle || Phase == Phase.Aftermath || Phase == Phase.Trophy || Phase == Phase.Spoils && Card.Type == CardType.Monster;
                 default:
                     throw new NotImplementedException();
             }

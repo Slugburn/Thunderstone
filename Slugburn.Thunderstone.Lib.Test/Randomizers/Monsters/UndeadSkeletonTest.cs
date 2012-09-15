@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Slugburn.Thunderstone.Lib.Messages;
@@ -9,69 +10,57 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Monsters
     [TestFixture]
     public class UndeadSkeletonTest
     {
-        private Game _game;
-        private Player _player;
-        private SelectCardsMessage _message;
-
         [Test]
         public void Ossuous_cannot_be_attacked_if_no_heroes_of_at_least_level_1_are_present()
         {
             // Arrange
-            GivenGame();
-            var ossuous = GivenOssuousInHall();
-            GivenSelectCardsMessageExpected();
+            var context = new TestContext();
+            var hero = context.GivenHeroFromTopOfDeck(x => x.Level == 0);
+            context.GivenPlayerHand(hero);
+            var ossuous = context.GivenMonsterInFirstRank<UndeadSkeleton>("Ossuous");
 
             // Act
-            Assert.That(_game.Dungeon.Ranks[0].Card, Is.SameAs(ossuous));
-            _player.SelectMonster();
+            Assert.That(context.Game.Dungeon.Ranks[0].Card, Is.SameAs(ossuous));
+            context.Player.SelectMonster();
 
             // Assert
-            Assert.That(_message.Cards.Any(x => x.Id == ossuous.Id), Is.False, "Valid targets should not contain Ossuous");
+            Assert.That(context.SelectCardsList.Any(x => x.Id == ossuous.Id), Is.False, "Valid targets should not contain Ossuous");
         }
 
         [Test]
         public void Ossuous_can_be_attacked_if_hero_of_at_least_level_1_is_present()
         {
             // Arrange
-            GivenGame();
-            var ossuous = GivenOssuousInHall();
-            GivenSelectCardsMessageExpected();
-            var hero = GivenLevelOneHero();
-            _player.AddCardToHand(hero);
+            var context = new TestContext();
+            var hero = context.GivenHeroFromTopOfDeck(x => x.Level == 1);
+            context.GivenPlayerHand(hero);
+            var ossuous = context.GivenMonsterInFirstRank<UndeadSkeleton>("Ossuous");
 
             // Act
-            Assert.That(_game.Dungeon.Ranks[0].Card, Is.SameAs(ossuous));
-            _player.SelectMonster();
+            Assert.That(context.Game.Dungeon.Ranks[0].Card, Is.SameAs(ossuous));
+            context.Player.SelectMonster();
 
             // Assert
-            Assert.That(_message.Cards.Any(x => x.Id == ossuous.Id), Is.True, "Valid targets should contain Ossuous");
+            Assert.That(context.SelectCardsList.Any(x => x.Id == ossuous.Id), Is.True, "Valid targets should not contain Ossuous");
         }
 
-        private void GivenSelectCardsMessageExpected()
+        [Test]
+        public void Necrophidius_trophy_ability()
         {
-            _message = null;
-            _player.View.Stub(x => x.SelectCards(null)).IgnoreArguments().WhenCalled(inv => _message = (SelectCardsMessage) inv.Arguments[0]);
-        }
+            // Arrange
+            var context = new TestContext();
+            var necrophidius = context.CreateCard<UndeadSkeleton>("Necrophidius");
+            var hero0 = context.GivenHeroFromTopOfDeck(x => x.Level == 0);
+            var hero1 = context.GivenHeroFromTopOfDeck(x => x.Level == 1);
+            var hero2 = context.GivenHeroFromVillage(x => x.Level == 2);
+            context.GivenPlayerHand(necrophidius, hero0, hero1, hero2);
+            context.GivenPlayerState(PlayerState.Rest);
 
-        private void GivenGame()
-        {
-            _game = TestFactory.CreateGame();
-            _player = _game.CurrentPlayer;
-            _player.DiscardHand();
-        }
+            // Act
+            necrophidius.GetAbilities(Phase.Trophy).Single().Action(context.Player);
 
-        private Card GivenOssuousInHall()
-        {
-            var ossuous = new UndeadSkeleton().CreateCards().First(x => x.Name == "Ossuous");
-            _game.Dungeon.AddToTopOfDeck(ossuous);
-            while (_game.Dungeon.Ranks[0].Card == null)
-                _game.AdvanceDungeon();
-            return ossuous;
-        }
-
-        private Card GivenLevelOneHero()
-        {
-            return _game.Village[CardType.Hero].First(x => x.TopCard.Level == 1).Draw();
+            // Assert
+            Assert.That(context.SelectCardsList.Select(x=>x.Id), Is.EquivalentTo(new long[] {hero0.Id, hero1.Id}));
         }
     }
 }
