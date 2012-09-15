@@ -41,6 +41,10 @@ namespace Slugburn.Thunderstone.Lib.Models
 
         public int? Xp { get; set; }
 
+        public string Owner { get; set; }
+
+        public string Equipped { get; set; }
+
         public static CardModel From(Card card)
         {
             return new CardModel
@@ -62,7 +66,9 @@ namespace Slugburn.Thunderstone.Lib.Models
                     Text = card.Text,
                     Type = card.Type,
                     Vp = card.Vp,
-                    Xp = card.Xp
+                    Xp = card.Xp,
+                    Owner = card.Owner.ToString(),
+                    Equipped = card.IsEquipped ? card.GetEquipped().Name : null
                 };
         }
 

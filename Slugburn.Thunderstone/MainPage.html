@@ -324,10 +324,11 @@
         </script>
 
         <script type="text/html" id="minicard-template">
-            <!-- ko if: !$data.empty && $data && ($data.location !== 'Village' || $parent.Count > 0) -->
+            <!-- ko if: !$data.empty && $data && ($data.Owner !== 'Village' || $parent.Count > 0) -->
             <span class="minicard" >
                 <span data-bind="text: Name, visible: Name" class="name"></span>
-                <!-- ko if: $data.location === 'Hand' -->
+                <!-- ko if: $data.Owner === 'Player' -->
+                <span data-bind="text: Equipped, visible: Equipped" style="position:absolute; top: 25px; display: block; font-style: italic"></span>
                 <span data-bind="text: Gold, visible:Gold || Gold===0" class="coin gold" style="left: 44px; top:25px; "></span>
                 <span class="block" style="left: 2px; top:47px; position: absolute;padding: 0px;margin: 0px; ">
                     <span data-bind="text: PhysicalAttack, visible:PhysicalAttack" class="coin red cell" style="position: static;"></span>
@@ -337,11 +338,11 @@
                     <span data-bind="text: Light, visible:Light" class="coin cell light" style="background-color: lightyellow; position: static;"></span>
                 </span>
                 <!-- /ko -->
-                <!-- ko if: $data.location === 'Village' -->
+                <!-- ko if: $data.Owner === 'Village' -->
                 <span data-bind="text: Cost, visible:Cost|| Cost===0" class="coin orange" style="left: 44px; top:25px; "></span>
                 <span data-bind="text: $parent.Count" class="coin" style="left:80%; top:47px;"></span>
                 <!-- /ko -->
-                <!-- ko if: $data.location === 'Dungeon' -->
+                <!-- ko if: $data.Owner === 'Dungeon' -->
                 <span data-bind="text: Health, visible:Health" class="coin red" style="left: 44px; top:25px; "></span>
                 <!-- /ko -->
                 <span style="display: none">

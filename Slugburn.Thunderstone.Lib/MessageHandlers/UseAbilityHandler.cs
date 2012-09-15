@@ -41,7 +41,9 @@ namespace Slugburn.Thunderstone.Lib.MessageHandlers
                     player.SelectMonster();
                     break;
                 case Phase.Battle:
-
+                    break;
+                case Phase.Spoils:
+                    player.RefillHall();
                     break;
                 default:
                     throw new NotImplementedException();
