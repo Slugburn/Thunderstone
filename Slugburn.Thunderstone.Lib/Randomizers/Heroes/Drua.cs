@@ -28,7 +28,6 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Heroes
                                   + "<br/><br/>"
                                   + "<b>Dungeon:</b> Destroy 1 card in your hand.",
                            PhysicalAttack = 2,
-                           //Modify = card => card.CreateAbility().DestroyCard().On(Phase.Dungeon),
                            Modify = card=>card
                                .CreateAbility()
                                .DestroyCard()

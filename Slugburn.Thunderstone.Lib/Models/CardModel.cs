@@ -47,29 +47,31 @@ namespace Slugburn.Thunderstone.Lib.Models
 
         public static CardModel From(Card card)
         {
-            return new CardModel
-                {
-                    Name = card.Name,
-                    Cost = card.Cost,
-                    Gold = card.Gold,
-                    Health = card.Health,
-                    Id = card.Id,
-                    Level = card.Level,
-                    Light = card.Light,
-                    MagicAttack = card.MagicAttack,
-                    PhysicalAttack = card.PhysicalAttack,
-                    PotentialMagicAttack = card.PotentialMagicAttack,
-                    PotentialPhysicalAttack = card.PotentialPhysicalAttack,
-                    Rank = card.Rank,
-                    Strength = card.Strength,
-                    Tags = card.Tags,
-                    Text = card.Text,
-                    Type = card.Type,
-                    Vp = card.Vp,
-                    Xp = card.Xp,
-                    Owner = card.Owner.ToString(),
-                    Equipped = card.IsEquipped ? card.GetEquipped().Name : null
-                };
+            return card == null
+                       ? null
+                       : new CardModel
+                             {
+                                 Name = card.Name,
+                                 Cost = card.Cost,
+                                 Gold = card.Gold,
+                                 Health = card.Health,
+                                 Id = card.Id,
+                                 Level = card.Level,
+                                 Light = card.Light,
+                                 MagicAttack = card.MagicAttack,
+                                 PhysicalAttack = card.PhysicalAttack,
+                                 PotentialMagicAttack = card.PotentialMagicAttack,
+                                 PotentialPhysicalAttack = card.PotentialPhysicalAttack,
+                                 Rank = card.Rank,
+                                 Strength = card.Strength,
+                                 Tags = card.Tags,
+                                 Text = card.Text,
+                                 Type = card.Type,
+                                 Vp = card.Vp,
+                                 Xp = card.Xp,
+                                 Owner = card.Owner.ToString(),
+                                 Equipped = card.IsEquipped ? card.GetEquipped().Name : null
+                             };
         }
 
         public static IList<CardModel> From(IEnumerable<Card> cards)

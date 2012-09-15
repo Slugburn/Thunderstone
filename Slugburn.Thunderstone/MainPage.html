@@ -79,6 +79,11 @@
                 background: linear-gradient(darkgray, white);
             }
 
+            .minicard {
+                background: blanchedalmond; 
+            }
+
+
             .minicard > .name {
                 position: absolute;
                 width: 104px;
@@ -92,8 +97,18 @@
                 border-radius: 10px 10px 0px 0px;
             }
 
-            .minicard {
-                background: blanchedalmond; 
+            .minicard > .equipped {
+                position: absolute;
+                width: 90px;
+                top: 25px;
+                display: block;
+                text-align: center;
+                background: white;
+                border: solid 1px sandybrown;
+                padding: 4px;
+                border-radius: 16px;
+                font: 8px sans-serif;
+                font-style: italic;
             }
 
             .setupLabel {
@@ -202,7 +217,7 @@
                     <!-- ko foreach: Ranks -->
                     <div class="iblock">
                         <div class="block sectionTitle">Rank <span data-bind="text: Number"></span></div>
-                        <div data-bind="template: {name: 'minicard-template', data: $.extend(Card, {location: 'Dungeon', empty: Card===null}) }"></div>
+                        <div data-bind="template: {name: 'minicard-template', data: $.extend(Card, {empty: Card===null}) }"></div>
                         <span data-bind="text: Penalty" class="center coin black" style=""></span>
                     </div>
                     <!-- /ko -->
@@ -226,19 +241,35 @@
                 </div>
             </div>
             <div id="hand" class="block" >
-                <span class="block sectionTitle" style="width: 664px">Hand</span>
+                <span data-bind="with: Status" class="block sectionTitle" style="width: 664px">
+                    <span class="cell">Hand</span>
+                    <span class="cell" style="width: 30px;">
+                        <span data-bind="text: Gold" class="center coin gold" ></span>
+                    </span>
+                    <span class="cell">/</span>
+                    
+                    <span class="cell" style="width: 30px;">
+                        <span data-bind="text: PhysicalAttack" class="center coin red" ></span>
+                    </span>
+                    <span class="cell" style="width: 30px;">
+                        <span data-bind="text: MagicAttack" class="center coin blue" ></span>
+                    </span>
+                    <span class="cell" style="width: 30px;">
+                        <span data-bind="text: Light" class="center coin light" ></span>
+                    </span>
+                </span>
                 <!-- ko foreach: HandParts -->
                 <div data-bind="foreach: $data" class="block">
                     <div class="iblock">
-                        <div data-bind="template: {name: 'minicard-template', data: $.extend($data, {location: 'Hand'}) }" ></div>
+                        <div data-bind="template: {name: 'minicard-template', data: $data }" ></div>
                     </div>
                 </div>
                 <!-- /ko -->
             </div>
             <div style="position: absolute; top:242px;left:460px;height: 190px;width: 222px;border-radius: 12px;background-color: white; box-sizing: border-box;padding: 3px;">
                 <div style="position: relative; border:black solid 2px;border-radius: 10px; height: 100%; box-sizing: inherit; padding: 4px; ">
-                    <div data-bind="with: Status" class="block" >
-                        <div class="center" style="margin: 0px auto">
+                    <div data-bind="with: Status" class="table" style="margin: 0px auto">
+                        <div class="row" style="margin: 0px auto">
                             <span class="cell sectionTitle">Gold</span>
                             <div class="cell" style="width: 30px;">
                                 <span data-bind="text: Gold" class="center coin gold" ></span>
@@ -250,6 +281,21 @@
                             <span class="sectionTitle cell">Vp</span>
                             <div class="cell" style="width: 30px; ">
                                 <span data-bind="text: Vp" class="center coin vp" style=""></span>
+                            </div>
+                        </div>
+                        <div class="row" style="height: 4px;"></div>
+                        <div class="row" style="margin: 0px auto">
+                            <span class="cell sectionTitle">Physical</span>
+                            <div class="cell" style="width: 30px;">
+                                <span data-bind="text: PhysicalAttack" class="center coin red" ></span>
+                            </div>
+                            <span class="cell sectionTitle">Magic</span>
+                            <div class="cell" style="width: 30px;">
+                                <span data-bind="text: MagicAttack" class="center coin blue" style=""></span>
+                            </div>
+                            <span class="sectionTitle cell">Light</span>
+                            <div class="cell" style="width: 30px; ">
+                                <span data-bind="text: Light" class="center coin light" style=""></span>
                             </div>
                         </div>
                     </div>
@@ -310,7 +356,7 @@
         <script type="text/html" id="deck-section-template">
             <span data-bind="text: SectionName" class="block sectionTitle"></span>
             <div data-bind="foreach: Decks" class="block">
-                <div data-bind="attr: {id: 'deck_' + Id}, template: {name: 'minicard-template', data: $.extend(TopCard, {location: 'Village'}) }" class="iblock" ></div>
+                <div data-bind="attr: {id: 'deck_' + Id}, template: {name: 'minicard-template', data: $.extend(TopCard, {empty: (Count === 0)}) }" class="iblock" ></div>
             </div>
         </script>
 
@@ -324,12 +370,12 @@
         </script>
 
         <script type="text/html" id="minicard-template">
-            <!-- ko if: !$data.empty && $data && ($data.Owner !== 'Village' || $parent.Count > 0) -->
+            <!-- ko if: !$data.empty && $data -->
             <span class="minicard" >
                 <span data-bind="text: Name, visible: Name" class="name"></span>
                 <!-- ko if: $data.Owner === 'Player' -->
-                <span data-bind="text: Equipped, visible: Equipped" style="position:absolute; top: 25px; display: block; font-style: italic"></span>
                 <span data-bind="text: Gold, visible:Gold || Gold===0" class="coin gold" style="left: 44px; top:25px; "></span>
+                <span data-bind="text: Equipped, visible: Equipped" class="equipped"></span>
                 <span class="block" style="left: 2px; top:47px; position: absolute;padding: 0px;margin: 0px; ">
                     <span data-bind="text: PhysicalAttack, visible:PhysicalAttack" class="coin red cell" style="position: static;"></span>
                     <span data-bind="text: PotentialPhysicalAttack, visible:PotentialPhysicalAttack || PotentialPhysicalAttack===0" class="coin cell" style="background-color: rgba(255, 0, 0, 0.40); position: static;"></span>
@@ -340,7 +386,7 @@
                 <!-- /ko -->
                 <!-- ko if: $data.Owner === 'Village' -->
                 <span data-bind="text: Cost, visible:Cost|| Cost===0" class="coin orange" style="left: 44px; top:25px; "></span>
-                <span data-bind="text: $parent.Count" class="coin" style="left:80%; top:47px;"></span>
+                <span data-bind="text: $parent.Count, visible:$parent.Count" class="coin" style="left:80%; top:47px;"></span>
                 <!-- /ko -->
                 <!-- ko if: $data.Owner === 'Dungeon' -->
                 <span data-bind="text: Health, visible:Health" class="coin red" style="left: 44px; top:25px; "></span>
@@ -350,7 +396,7 @@
                 </span>
             </span>
             <!-- /ko -->
-            <!-- ko ifnot: !$data.empty && $data && ($data.location !== 'Village' || $parent.Count > 0) -->
+            <!-- ko ifnot: !$data.empty && $data -->
             <span class="minicard blank" >
             </span>
             <!-- /ko -->
