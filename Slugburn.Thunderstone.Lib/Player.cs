@@ -110,8 +110,16 @@ namespace Slugburn.Thunderstone.Lib
         public void SelectMonster()
         {
             var validTargets = Game.Dungeon.Ranks
-                .Select(x=>x.Card)
-                .Where(c=>c.AttackCondition == null || c.AttackCondition(this));
+                .Select(x => x.Card)
+                .Where(c => c != null)
+                .Where(c => c.AttackCondition == null || c.AttackCondition(this))
+                .ToList();
+
+            if (!validTargets.Any())
+            {
+                EndTurn();
+                return;
+            }
 
             this.SelectCard()
                 .FromHall()
@@ -431,7 +439,8 @@ namespace Slugburn.Thunderstone.Lib
         public void UseAbility(long abilityId)
         {
             var ability = ActiveAbilities.Single(x => x.Id == abilityId);
-            ActiveAbilities.Remove(ability);
+            if (!ability.IsRepeatable)
+                ActiveAbilities.Remove(ability);
 
             ability.Action(this);
             PublishEvent(new CardAbilityUsed(ability));

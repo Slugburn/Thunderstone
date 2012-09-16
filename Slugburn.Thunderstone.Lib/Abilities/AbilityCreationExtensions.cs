@@ -19,6 +19,12 @@ namespace Slugburn.Thunderstone.Lib.Abilities
             return syntax;
         }
 
+        public static IAbilityDefinedSyntax Repeatable(this IAbilityDefinedSyntax syntax)
+        {
+            ((AbilityCreationContext)syntax).IsRepeatable = true;
+            return syntax;
+        }
+
         public static IAbilityCardsSelectedSyntax Destroy(this IAbilitySelectCardsSyntax syntax, string destructionSource)
         {
             return OnCardsSelected(syntax, x => x.Source.Destroy(x.Selected, destructionSource));
@@ -62,15 +68,6 @@ namespace Slugburn.Thunderstone.Lib.Abilities
         {
             ((AbilityCreationContext) syntax).Continuation = continuation;
             return syntax;
-        }
-
-        public static IAbilityDefinedSyntax Custom(this ICreateAbilitySyntax context, string description, Action<Player> action, Func<Player, bool> condition = null)
-        {
-            condition = condition ?? (player => true);
-            return context
-                .Description(description)
-                .Action(action)
-                .Condition(condition);
         }
 
         public static IAbilityDefinedSyntax DrawCards(this ICreateAbilitySyntax syntax, int count)

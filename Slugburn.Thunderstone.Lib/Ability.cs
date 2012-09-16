@@ -34,6 +34,8 @@ namespace Slugburn.Thunderstone.Lib
 
         public bool IsRequired { get; set; }
 
+        public bool IsRepeatable { get; set; }
+
         public bool IsUsableByOwner()
         {
             switch (Card.Owner)

@@ -43,7 +43,6 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Monsters
 
         private static MonsterDef Ogre()
         {
-            Func<Card, bool> filter = x => x.IsHero() && x.Strength <= 3;
             return new MonsterDef
                        {
                            Name = "Ogre",
@@ -59,7 +58,6 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Monsters
 
         private static MonsterDef OgreMage()
         {
-            Func<Card, bool> filter = x => x.IsHero() && x.Strength <= 3;
             return new MonsterDef
                        {
                            Name = "Ogre Mage",
@@ -71,9 +69,9 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Monsters
                            Text = "<b>Battle:</b> Discard 1 card with Magic Attack."
                                   + "<br/><br/>"
                                   + "<b>Aftermath:</b> Destroy 1 hero with Strength 4 or less.",
-                        Modify = card => card.CreateAbility()
-                                             .DiscardCard("Discard 1 card with Magic Attack.", x => x.HasMagicAttack()).On(Phase.Battle)
-                                             .DestroyCard("Destroy 1 hero with Strength 4 or less", x => x.IsHero() && x.Strength <= 4).On(Phase.Aftermath)
+                           Modify = card =>
+                                    card.CreateAbility().DiscardCard("Discard 1 card with Magic Attack.", x => x.HasMagicAttack()).On(Phase.Battle)
+                                        .CreateAbility().DestroyCard("Destroy 1 hero with Strength 4 or less", x => x.IsHero() && x.Strength <= 4).On(Phase.Aftermath)
                        };
         }
 
@@ -90,11 +88,13 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Monsters
                            Text = "<b>Battle:</b> Destroy 1 hero without Magic Attack."
                                   + "<br/><br/>"
                                   + "<b>Aftermath:</b> Destroy 1 hero without Physical Attack.",
-                           Modify = card => card.CreateAbility()
-                                                .DestroyCard("Destroy 1 hero without Magic Attack", x => x.IsHero() && !x.HasMagicAttack())
-                                                .On(Phase.Battle)
-                                                .DestroyCard("Destroy 1 hero without Physical Attack", x => x.IsHero() && !x.HasPhysicalAttack())
-                                                .On(Phase.Aftermath)
+                           Modify = card =>
+                                    card.CreateAbility()
+                                        .DestroyCard("Destroy 1 hero without Magic Attack", x => x.IsHero() && !x.HasMagicAttack())
+                                        .On(Phase.Battle)
+                                        .CreateAbility()
+                                        .DestroyCard("Destroy 1 hero without Physical Attack", x => x.IsHero() && !x.HasPhysicalAttack())
+                                        .On(Phase.Aftermath)
                        };
         }
 

@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Rhino.Mocks;
-using Slugburn.Thunderstone.Lib.Messages;
 using Slugburn.Thunderstone.Lib.Randomizers;
 
 namespace Slugburn.Thunderstone.Lib.Test
@@ -16,7 +14,7 @@ namespace Slugburn.Thunderstone.Lib.Test
             var monster = CreateCard<TRandomizer>(context, name);
             var game = context.Game;
             game.Dungeon.AddToTopOfDeck(monster);
-            while (game.Dungeon.Ranks[0].Card == null)
+            while (game.Dungeon.Ranks[0].Card != monster)
                 game.AdvanceDungeon();
             return monster;
         }
@@ -27,9 +25,10 @@ namespace Slugburn.Thunderstone.Lib.Test
             return randomizer.CreateCards().First(x => x.Name == name);
         }
 
-        public static void GivenSelectCardsMessageExpected(this TestContext context)
+        public static Card CreateBasicCard<T>(this TestContext context) where T : ICardGen
         {
-            context.Player.View.Stub(x => x.SelectCards(null)).IgnoreArguments().WhenCalled(inv => context.Set((SelectCardsMessage) inv.Arguments[0]));
+            var gen = Activator.CreateInstance<T>();
+            return gen.Create();
         }
 
         public static Card GivenHeroFromTopOfDeck(this TestContext context, Func<Card, bool> filter)
@@ -55,5 +54,16 @@ namespace Slugburn.Thunderstone.Lib.Test
         {
             context.Player.State = state;
         }
+
+        public static Ability GetAbility(this Card card)
+        {
+            return card.GetAbilities().First();
+        }
+
+        public static void WhenUsingAbility(this TestContext context, Ability ability)
+        {
+            context.Player.UseAbility(ability.Id);
+        }
+
     }
 }

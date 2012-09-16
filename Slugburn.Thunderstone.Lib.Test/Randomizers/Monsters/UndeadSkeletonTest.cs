@@ -1,8 +1,5 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using NUnit.Framework;
-using Rhino.Mocks;
-using Slugburn.Thunderstone.Lib.Messages;
 using Slugburn.Thunderstone.Lib.Randomizers.Monsters;
 
 namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Monsters
@@ -60,7 +57,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Monsters
             necrophidius.GetAbilities(Phase.Trophy).Single().Action(context.Player);
 
             // Assert
-            Assert.That(context.SelectCardsList.Select(x=>x.Id), Is.EquivalentTo(new long[] {hero0.Id, hero1.Id}));
+            Assert.That(context.SelectCardsList.Select(x=>x.Id), Is.EquivalentTo(new[] {hero0.Id, hero1.Id}));
         }
     }
 }

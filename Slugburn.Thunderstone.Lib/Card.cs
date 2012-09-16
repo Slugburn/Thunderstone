@@ -153,6 +153,7 @@ namespace Slugburn.Thunderstone.Lib
 
         public Func<Player,bool> AttackCondition { get; set; }
 
+
         internal void SetEquipped(Card card)
         {
             // Remove any modifiers from the previous equipped card
@@ -196,5 +197,16 @@ namespace Slugburn.Thunderstone.Lib
             _eventHandlers.Add(func);
         }
 
+        private object _data;
+
+        public T GetData<T>()
+        {
+            return (T) _data;
+        }
+
+        public void SetData<T>(T data)
+        {
+            _data = data;
+        }
     }
 }

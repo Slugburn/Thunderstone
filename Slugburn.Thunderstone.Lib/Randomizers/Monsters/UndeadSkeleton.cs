@@ -63,6 +63,7 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Monsters
                                                 .Action(player => player.GainCurse())
                                                 .Condition(player => (player.TotalLight + card.Darkness) < 0)
                                                 .On(Phase.Battle)
+                                                .CreateAbility()
                                                 .Description("If you defeat this card's Health by 4 or more, each other player gains 1 curse.")
                                                 .Action(player => player.Game.Players
                                                                       .Where(p => p != player)
@@ -157,6 +158,7 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Monsters
                                                                 player.Game.Players.Where(x => x != player).Each(x => x.GainCurse());
                                                             })
                                                 .On(Phase.Battle)
+                                                .CreateAbility()
                                                 .Description("You may discard this card to draw a card.")
                                                 .Action(player =>
                                                             {

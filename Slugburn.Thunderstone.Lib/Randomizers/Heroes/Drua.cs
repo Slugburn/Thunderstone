@@ -49,11 +49,9 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Heroes
                                   + "<br/><br/>"
                                   + "<b>Village/Dungeon:</b> Destroy 1 disease to draw 1 card.",
                            PhysicalAttack = 3,
-                           Modify = card => card.CreateAbility()
-                               .DestroyCard()
-                               .On(Phase.Village, Phase.Dungeon)
-                               .DestroyDiseaseToDrawCard()
-                               .On(Phase.Village, Phase.Dungeon)
+                           Modify = card =>
+                                    card.CreateAbility().DestroyCard().On(Phase.Village, Phase.Dungeon)
+                                        .CreateAbility().DestroyDiseaseToDrawCard().On(Phase.Village, Phase.Dungeon)
                        };
         }
 
@@ -71,11 +69,9 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Heroes
                                   + "<br/><br/>"
                                   + "<b>Village/Dungeon:</b> Destroy 1 disease to draw 2 cards.",
                            PhysicalAttack = 4,
-                           Modify = card => card.CreateAbility()
-                                                .DestroyCard()
-                                                .On(Phase.Village, Phase.Dungeon)
-                                                .DestroyDiseaseToDrawCard(2)
-                                                .On(Phase.Village, Phase.Dungeon)
+                           Modify = card =>
+                                    card.CreateAbility().DestroyCard().On(Phase.Village, Phase.Dungeon)
+                                        .CreateAbility().DestroyDiseaseToDrawCard(2).On(Phase.Village, Phase.Dungeon)
                        };
         }
     }

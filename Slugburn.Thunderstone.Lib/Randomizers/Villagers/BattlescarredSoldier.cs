@@ -19,8 +19,9 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Villagers
             card.CreateAbility()
                 .DrawCards(1)
                 .On(Phase.Village)
-                .Custom("Draw 1 card. If it is a hero it gains Physical Attack +2.",
-                        player =>
+                .CreateAbility()
+                .Description("Draw 1 card. If it is a hero it gains Physical Attack +2.")
+                .Action(player =>
                             {
                                 var drawn = player.Draw(1).FirstOrDefault();
                                 if (drawn != null && drawn.Type == CardType.Hero)

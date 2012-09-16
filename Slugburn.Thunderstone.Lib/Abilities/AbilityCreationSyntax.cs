@@ -19,6 +19,6 @@
 
     public interface IAbilityDefinedSyntax
     {
-        ICreateAbilitySyntax On(params Phase[] phases);
+        Card On(params Phase[] phases);
     }
 }

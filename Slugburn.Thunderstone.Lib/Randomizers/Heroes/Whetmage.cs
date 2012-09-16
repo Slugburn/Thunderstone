@@ -79,8 +79,15 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Heroes
                            Modify = card =>
                            {
                                Func<Card, bool> validCardFilter =
-                                   c => c != card && c.IsHero() && c.Xp <= c.Player.Xp && c.Level <= 1 && c.Player.AvailableLevelUps(c).Any();
-                               CreateLevelUpHeroAbility(card, validCardFilter, "Level up any number of heroes.").On(Phase.Dungeon);
+                                   c => 
+                                       c != card 
+                                       && c.IsHero() 
+                                       && c.Xp <= c.Player.Xp 
+                                       && c.Player.AvailableLevelUps(c).Any()
+                                       && (card.GetData<List<Card>>() == null || !card.GetData<List<Card>>().Contains(c));
+                               CreateLevelUpHeroAbility(card, validCardFilter, "Level up any number of heroes.")
+                                   .Repeatable()
+                                   .On(Phase.Dungeon);
                            }
                        };
         }
@@ -103,6 +110,9 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Heroes
                     x.Source.Draw(new[] { upgrade });
                     x.Player.Xp -= (hero.Xp ?? 0);
                     x.Player.DestroyCard(hero, "Upgrading to {0}".Template(upgrade.Name));
+                    var leveledUp = card.GetData<List<Card>>() ?? new List<Card>();
+                    leveledUp.Add(upgrade);
+                    card.SetData(leveledUp);
                 })
                 .Condition(player => player.Hand.Any(validCardFilter));
         }

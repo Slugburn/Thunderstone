@@ -15,7 +15,12 @@ namespace Slugburn.Thunderstone.Lib.Test
             var game = TestFactory.CreateGame();
             Set(game);
             Set(game.CurrentPlayer);
-            Player.View.Stub(x => x.SelectCards(null)).IgnoreArguments().WhenCalled(inv => Set((SelectCardsMessage)inv.Arguments[0]));
+            Player.View.Stub(x => x.SelectCards(null))
+                .IgnoreArguments()
+                .WhenCalled(inv => Set((SelectCardsMessage) inv.Arguments[0]));
+            // Fill up the dungeon hall
+            while (game.Dungeon.Ranks[0].Card == null)
+                game.AdvanceDungeon();
         }
 
         public void Set<T>(T value, string key = null)

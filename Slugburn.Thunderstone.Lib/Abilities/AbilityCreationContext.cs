@@ -19,10 +19,10 @@ namespace Slugburn.Thunderstone.Lib.Abilities
             CardSelections = new List<CardSelection>();
         }
 
-        public ICreateAbilitySyntax On(params Phase[] phases)
+        public Card On(params Phase[] phases)
         {
             phases.Each(OnPhase);
-            return new AbilityCreationContext(Card);
+            return Card;
         }
 
         public void SetAction(Action<Player> action)
@@ -78,6 +78,7 @@ namespace Slugburn.Thunderstone.Lib.Abilities
             }
             ability.Phase = phase;
             ability.IsRequired = IsRequired ?? Ability.GetDefaultIsRequired(phase);
+            ability.IsRepeatable = IsRepeatable;
             if (Condition != null)
                 ability.Condition = Condition;
             Card.AddAbility(ability);
@@ -86,6 +87,8 @@ namespace Slugburn.Thunderstone.Lib.Abilities
         public Card Card { get; private set; }
 
         public bool? IsRequired { get; set; }
+
+        public bool IsRepeatable { get; set; }
 
         public class CardSelection
         {

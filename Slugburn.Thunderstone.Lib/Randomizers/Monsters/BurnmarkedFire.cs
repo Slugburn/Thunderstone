@@ -70,6 +70,7 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Monsters
                                         .Action(player=>player.GainCurse())
                                         .On(Phase.Battle)
                                         // TODO: Complete implementation of battle ability
+                                        .CreateAbility()
                                         .Description("Gain 1 curse")
                                         .Action(player => player.GainCurse())
                                         .Condition(player => !player.Won)
@@ -95,6 +96,7 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Monsters
                                         .Description("Gain a curse")
                                         .Action(player => player.GainCurse())
                                         .On(Phase.Battle)
+                                        .CreateAbility()
                                         .Description("Gain 3 XP. Place Phoenix on top of the dungeon deck.")
                                         .Action(player =>
                                                     {
