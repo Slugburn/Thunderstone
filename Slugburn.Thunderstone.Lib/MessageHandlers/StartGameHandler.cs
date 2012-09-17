@@ -10,9 +10,15 @@ namespace Slugburn.Thunderstone.Lib.MessageHandlers
 
         public override void Handle(Message message)
         {
+            var player = message.Player;
+            Do(player);
+        }
+
+        public static void Do(Player player)
+        {
             var game = new Game();
-            game.Initialize(message.Player.Session);
-            game.Players.Each(player=>player.View.GameBoard(GameBoardModel.From(player)));
+            game.Initialize(player.Session);
+            game.Players.Each(p => p.View.GameBoard(GameBoardModel.From(p)));
             game.CurrentPlayer.StartTurn();
         }
     }

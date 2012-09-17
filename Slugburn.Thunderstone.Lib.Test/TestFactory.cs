@@ -8,7 +8,7 @@ namespace Slugburn.Thunderstone.Lib.Test
         public static Game CreateGame()
         {
             var session = new GameSession {Setup = new GameSetup()};
-            var player = new Player(Guid.NewGuid(), MockRepository.GenerateStub<IPlayerView>());
+            var player = new Player(null, MockRepository.GenerateStub<IPlayerView>());
             session.Join(player);
             var game = new Game();
             game.Initialize(session);

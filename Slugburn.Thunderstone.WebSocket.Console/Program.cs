@@ -55,7 +55,7 @@ namespace Slugburn.Thunderstone.WebSocket.ConsoleServer
         private void OnSocketOpen(IWebSocketConnection socket)
         {
             var info = socket.ConnectionInfo;
-            var player = new Player(info.Id, new PlayerView((messageId, body) => SendMessage(socket, messageId, body)));
+            var player = new Player(info.Id.ToString(), new PlayerView((messageId, body) => SendMessage(socket, messageId, body)));
             _players.TryAdd(info.Id, player);
 
             var session = new GameSession();

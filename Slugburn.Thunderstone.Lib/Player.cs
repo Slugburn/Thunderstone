@@ -5,7 +5,6 @@ using Slugburn.Thunderstone.Lib.BasicCards;
 using Slugburn.Thunderstone.Lib.Events;
 using Slugburn.Thunderstone.Lib.Messages;
 using Slugburn.Thunderstone.Lib.Models;
-using Slugburn.Thunderstone.Lib.Randomizers.Monsters;
 using Slugburn.Thunderstone.Lib.Selectors;
 
 namespace Slugburn.Thunderstone.Lib
@@ -13,12 +12,11 @@ namespace Slugburn.Thunderstone.Lib
     public class Player
     {
         public IPlayerView View { get; private set; }
-        private readonly Guid _id;
         private readonly IEventAggregator _events;
 
-        public Player(Guid id, IPlayerView view)
+        public Player(string id, IPlayerView view)
         {
-            _id = id;
+            Id = id;
             View = view;
             Discard = new List<Card>();
             Hand = new List<Card>();
@@ -349,6 +347,8 @@ namespace Slugburn.Thunderstone.Lib
         {
             get { return Hand.Sum(x => x.Light ?? 0); }
         }
+
+        public string Id { get; private set; }
 
         public void DestroyCard(Card card, string destructionSource)
         {
