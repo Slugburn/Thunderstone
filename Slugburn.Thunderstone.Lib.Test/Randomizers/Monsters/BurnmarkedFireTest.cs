@@ -14,7 +14,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Monsters
             var game = TestFactory.CreateGame();
             var player = game.CurrentPlayer;
             player.State = PlayerState.Village;
-            var phoenix = new BurnmarkedFire().CreateCards().First(x => x.Name == "Phoenix");
+            var phoenix = new BurnmarkedFire().CreateCards(game).First(x => x.Name == "Phoenix");
             player.AddCardToHand(phoenix);
             var startingXp = player.Xp;
             var trophyAbility = phoenix.GetAbilities(Phase.Trophy).First();

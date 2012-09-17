@@ -26,14 +26,14 @@ namespace Slugburn.Thunderstone.Lib.Randomizers
             return info;
         }
 
-        public override IEnumerable<Card> CreateCards()
+        public override IEnumerable<Card> CreateCards(Game game)
         {
-            return Enumerable.Range(0, 8).Select(x => CreateCard());
+            return Enumerable.Range(0, 8).Select(x => CreateCard(game));
         }
 
-        private Card CreateCard()
+        private Card CreateCard(Game game)
         {
-            var card = new Card
+            var card = new Card(game)
                            {
                                Type = Type,
                                Cost = Cost,

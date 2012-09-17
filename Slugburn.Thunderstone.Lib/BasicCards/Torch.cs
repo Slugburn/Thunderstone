@@ -4,9 +4,9 @@
     {
         #region ICardGen Members
 
-        public Card Create()
+        public Card Create(Game game)
         {
-            var card = new Card
+            var card = new Card(game)
                            {
                                Type = CardType.Item,
                                Name = "Torch",

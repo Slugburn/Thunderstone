@@ -89,6 +89,13 @@ namespace Slugburn.Thunderstone.Lib
             RefillHallFrom(rank1);
         }
 
+        public void RefillHall()
+        {
+            Rank firstEmpty;
+            while ((firstEmpty = Dungeon.Ranks.FirstOrDefault(r => r.Card == null)) != null)
+                RefillHallFrom(firstEmpty);
+        }
+
         public void RefillHallFrom(Rank fromRank)
         {
             var ranks = Dungeon.Ranks;
@@ -107,6 +114,7 @@ namespace Slugburn.Thunderstone.Lib
                 {
                     ranks[lastRankIndex].Card = drawn;
                     drawn.Subscribe(_events);
+                    Publish(new EnteredDungeonHall(drawn));
                 }
             }
             Publish(new DungeonHallRefilled(this));
@@ -139,13 +147,16 @@ namespace Slugburn.Thunderstone.Lib
             SendUpdateDungeon();
         }
 
+        public void RemoveCardFromHall(Card card)
+        {
+            RemoveCardFromHall(card.Rank.Number);
+        }
+
         private static void RemoveCardFromHall(Rank rank)
         {
             var removedCard = rank.Card;
             if (removedCard != null)
-            {
                 removedCard.Reset();
-            }
             rank.Card = null;
         }
 
@@ -156,7 +167,7 @@ namespace Slugburn.Thunderstone.Lib
             player.AddToDiscard(curse);
         }
 
-        private void Log(string message)
+        public void Log(string message)
         {
             Players.Each(p=>p.Log(message));
         }

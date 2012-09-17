@@ -17,19 +17,19 @@ namespace Slugburn.Thunderstone.Lib
             return null;
         }
 
-        public IEnumerable<Card> CreateCards()
+        public IEnumerable<Card> CreateCards(Game game)
         {
-            return CreateCurses(Decay, Hostility);
+            return CreateCurses(game, Decay, Hostility);
         }
 
-        private IEnumerable<Card> CreateCurses(params Action<Card>[] modifications)
+        private IEnumerable<Card> CreateCurses(Game game, params Action<Card>[] modifications)
         {
             // Create 4 of each curse type
             return Enumerable.Range(0, 4)
                 .SelectMany(x =>
                             modifications.Select(modify =>
                                                    {
-                                                       var card = new Card
+                                                       var card = new Card(game)
                                                                       {
                                                                           PhysicalAttack = -1,
                                                                           Text = "<b>Attack -1</b><br/><br/>",

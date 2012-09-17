@@ -68,9 +68,11 @@
     <Compile Include="Curse.cs" />
     <Compile Include="Events\CardAbilityUsed.cs" />
     <Compile Include="Events\DungeonHallRefilled.cs" />
+    <Compile Include="Events\EnteredDungeonHall.cs" />
     <Compile Include="Events\EventAggregator.cs" />
     <Compile Include="Events\IEventAggregator.cs" />
     <Compile Include="Events\AttackRankSelected.cs" />
+    <Compile Include="Events\MonsterDefeated.cs" />
     <Compile Include="IPlayerView.cs" />
     <Compile Include="MessageHandlers\DungeonHandler.cs" />
     <Compile Include="MessageHandlers\PrepareHandler.cs" />
@@ -89,7 +91,6 @@
     <Compile Include="Models\RankModel.cs" />
     <Compile Include="Models\StatusModel.cs" />
     <Compile Include="Models\VillageSectionModel.cs" />
-    <Compile Include="Modifiers\AttributeModExtensions.cs" />
     <Compile Include="Modifiers\IAttributeMod.cs" />
     <Compile Include="Modifiers\SetMod.cs" />
     <Compile Include="Phase.cs" />
@@ -144,7 +145,7 @@
     <Compile Include="Randomizers\ThunderstoneBearers\Stramst.cs" />
     <Compile Include="Randomizers\ThunderstoneBearers\ThunderstoneBearer.cs" />
     <Compile Include="Modifiers\PlusMod.cs" />
-    <Compile Include="Modifiers\Attribute.cs" />
+    <Compile Include="Modifiers\Attr.cs" />
     <Compile Include="Randomizers\Villagers\VillagerRandomizer.cs" />
     <Compile Include="Randomizers\Villagers\BattlescarredSoldier.cs" />
     <Compile Include="Randomizers\VillageRandomizer.cs" />

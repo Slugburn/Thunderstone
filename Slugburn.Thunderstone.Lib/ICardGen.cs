@@ -4,6 +4,6 @@ namespace Slugburn.Thunderstone.Lib
 {
     public interface ICardGen
     {
-        Card Create();
+        Card Create(Game game);
     }
 }

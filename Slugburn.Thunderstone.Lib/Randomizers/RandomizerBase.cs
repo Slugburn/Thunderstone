@@ -29,6 +29,6 @@ namespace Slugburn.Thunderstone.Lib.Randomizers
             };
         }
 
-        public abstract IEnumerable<Card> CreateCards();
+        public abstract IEnumerable<Card> CreateCards(Game game);
     }
 }

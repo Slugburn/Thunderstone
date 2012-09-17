@@ -28,9 +28,9 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.ThunderstoneBearers
                        };
         }
 
-        public override IEnumerable<Card> CreateCards()
+        public override IEnumerable<Card> CreateCards(Game game)
         {
-            var card = new Card
+            var card = new Card(game)
                            {
                                Type = CardType.ThunderstoneBearer,
                                Name = Name,

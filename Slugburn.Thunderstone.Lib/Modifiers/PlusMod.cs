@@ -1,21 +1,31 @@
+using System;
+
 namespace Slugburn.Thunderstone.Lib.Modifiers
 {
     public class PlusMod : IAttributeMod
     {
+        public Func<Card, int> GetAmount { get; set; }
         public Card Source { get; set; }
-        public Attribute Attribute { get; set; }
+        public Attr Attribute { get; set; }
         public int Amount { get; set; }
 
-        public PlusMod(Card source, Attribute attribute, int amount)
+        public PlusMod(Card source, Attr attribute, int amount)
         {
             Source = source;
             Attribute = attribute;
-            Amount = amount;
+            GetAmount = x => amount;
         }
 
-        public int Modify(int startValue)
+        public PlusMod(Card source, Attr attribute, Func<Card, int> getAmount)
         {
-            return startValue + Amount;
+            Source = source;
+            Attribute = attribute;
+            GetAmount = getAmount;
+        }
+
+        public int Modify(Card card, int startValue)
+        {
+            return startValue + GetAmount(card);
         }
     }
 }

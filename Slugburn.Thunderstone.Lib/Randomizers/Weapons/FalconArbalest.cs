@@ -2,7 +2,6 @@
 using Slugburn.Thunderstone.Lib.Events;
 using Slugburn.Thunderstone.Lib.Modifiers;
 using System;
-using Attribute = Slugburn.Thunderstone.Lib.Modifiers.Attribute;
 
 namespace Slugburn.Thunderstone.Lib.Randomizers.Weapons
 {
@@ -25,14 +24,14 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Weapons
             card.CreateAbility()
                 .EquipWeapon((player, hero) =>
                                  {
-                                     hero.AddModifier(new SetMod(card, Attribute.PhysicalAttack, 0));
-                                     hero.AddModifier(new SetMod(card, Attribute.MagicalAttack, 0));
+                                     hero.AddModifier(new SetMod(card, Attr.PhysicalAttack, 0));
+                                     hero.AddModifier(new SetMod(card, Attr.MagicalAttack, 0));
                                  }).On(Phase.Equip);
 
             card.AddEventHandler(events => events.Subscribe<AttackRankSelected>(e =>
                                                               {
                                                                   if (e.AttackedRank.Number >= 2 && card.IsEquipped)
-                                                                      card.GetEquipped().AddModifier(new PlusMod(card, Attribute.PhysicalAttack, 5));
+                                                                      card.GetEquipped().AddModifier(new PlusMod(card, Attr.PhysicalAttack, 5));
                                                               }));
         }
     }

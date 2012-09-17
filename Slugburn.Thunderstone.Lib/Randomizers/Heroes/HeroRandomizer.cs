@@ -10,18 +10,18 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Heroes
             Name = name;
         }
 
-        public override IEnumerable<Card> CreateCards()
+        public override IEnumerable<Card> CreateCards(Game game)
         {
             return HeroDefs
                 .OrderBy(x => x.Level)
-                .SelectMany(def => Enumerable.Range(0, def.Count).Select(x => CreateCard(def)));
+                .SelectMany(def => Enumerable.Range(0, def.Count).Select(x => CreateCard(game, def)));
         }
 
         protected abstract IEnumerable<HeroDef> HeroDefs { get; }
 
-        private Card CreateCard(HeroDef def)
+        private Card CreateCard(Game game, HeroDef def)
         {
-            var card = new Card
+            var card = new Card(game)
                            {
                                Level = def.Level,
                                Type = CardType.Hero,

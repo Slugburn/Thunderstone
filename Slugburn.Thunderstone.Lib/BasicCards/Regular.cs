@@ -4,9 +4,9 @@ namespace Slugburn.Thunderstone.Lib.BasicCards
 {
     public class Regular : ICardGen
     {
-        public Card Create()
+        public Card Create(Game game)
         {
-            var card = new Card
+            var card = new Card(game)
                            {
                                Type = CardType.Hero,
                                Name = "Regular",

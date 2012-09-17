@@ -15,8 +15,8 @@ namespace Slugburn.Thunderstone.Lib.Test.Curses
             var game = TestFactory.CreateGame();
             var player = game.CurrentPlayer;
             player.DiscardHand();
-            var curse = new Curse().CreateCards().First(x => x.Name == "Curse of Decay");
-            var whetmage = new Whetmage().CreateCards().First();
+            var curse = new Curse().CreateCards(game).First(x => x.Name == "Curse of Decay");
+            var whetmage = new Whetmage().CreateCards(game).First();
             player.AddCardsToHand(new[] {curse, whetmage});
             var otherHeroes = game.Village[CardType.Hero].First(x => x.TopCard.Level == 1).Draw(2);
             player.AddCardsToHand(otherHeroes);
@@ -41,9 +41,9 @@ namespace Slugburn.Thunderstone.Lib.Test.Curses
             var player = game.CurrentPlayer;
             player.State = PlayerState.Dungeon;
             player.DiscardHand();
-            var hero = new Regular().Create();
-            var longspear = new Longspear().Create();
-            var curse = new Curse().CreateCards().First(x => x.Name == "Curse of Decay");
+            var hero = new Regular().Create(game);
+            var longspear = new Longspear().Create(game);
+            var curse = new Curse().CreateCards(game).First(x => x.Name == "Curse of Decay");
             player.AddCardsToHand(new[] {hero, longspear, curse});
 
             var equipLongspear = longspear.GetAbilities().First();

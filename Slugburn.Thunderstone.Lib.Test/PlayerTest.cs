@@ -33,8 +33,8 @@ namespace Slugburn.Thunderstone.Lib.Test
             var game = TestFactory.CreateGame();
             var player = game.CurrentPlayer;
             player.State = PlayerState.Dungeon;
-            var regular = new Regular().Create();
-            var spear = new Longspear().Create();
+            var regular = new Regular().Create(game);
+            var spear = new Longspear().Create(game);
             player.DiscardHand();
             player.AddCardsToHand(new[] {regular, spear});
             spear.GetAbilities().First().Action(player);

@@ -1,4 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using Slugburn.Thunderstone.Lib.Events;
+using Slugburn.Thunderstone.Lib.Modifiers;
 
 namespace Slugburn.Thunderstone.Lib.Randomizers.Monsters
 {
@@ -79,10 +82,44 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Monsters
                            Text =
                                "<b>Battle:</b> This card gains Health equal to the total Health of all other kobolds in the hall. "
                                + "If you defeat this card, you also defeat each other kobold in the hall. "
-                               + "You do not get XP for those kobolds."
+                               + "You do not get XP for those kobolds.",
+                           Modify = card =>
+                                        {
+                                            card.AddEventHandler(events
+                                                                 => events.Subscribe<EnteredDungeonHall>(
+                                                                     ev =>
+                                                                         {
+                                                                             if (ev.Card == card)
+                                                                                 card.AddModifier(
+                                                                                     new PlusMod(card, Attr.Health,
+                                                                                                 x =>
+                                                                                                 x.Game.Dungeon.Ranks
+                                                                                                     .Select(rank => rank.Card)
+                                                                                                     .Where(
+                                                                                                         c =>
+                                                                                                         c != null && c != card &&
+                                                                                                         c.HasTag("Kobold"))
+                                                                                                     .Sum(c => c.GetBaseValue(Attr.Health) ?? 0)));
+                                                                         }));
+                                            card.AddEventHandler(events
+                                                =>events.Subscribe<MonsterDefeated>(
+                                                ev=>
+                                                    {
+                                                        if (ev.Monster == card)
+                                                        {
+                                                            var player = ev.Player;
+                                                            var game = player.Game;
+                                                            var otherKobolds =
+                                                                game.Dungeon.Ranks.Select(x => x.Card)
+                                                                    .Where(x => x != null && x != card && x.HasTag("Kobold")).ToArray();
+                                                            player.AddToDiscard(otherKobolds);
+                                                            otherKobolds.Each(game.RemoveCardFromHall);
+                                                            game.RefillHall();
+                                                        }
+                                                    }));
+                                        }
                        };
         }
 
     }
-
 }

@@ -7,9 +7,9 @@ namespace Slugburn.Thunderstone.Lib.BasicCards
     {
         #region ICardGen Members
 
-        public Card Create()
+        public Card Create(Game game)
         {
-            var card = new Card
+            var card = new Card(game)
                            {
                                Type = CardType.Weapon,
                                Name = "Longspear",
@@ -20,7 +20,7 @@ namespace Slugburn.Thunderstone.Lib.BasicCards
                                PhysicalAttack = 1,
                            };
             card.SetTags("Weapon", "Polearm", "Basic");
-            card.CreateAbility().EquipWeapon(Attribute.PhysicalAttack, 1).On(Phase.Equip);
+            card.CreateAbility().EquipWeapon(Attr.PhysicalAttack, 1).On(Phase.Equip);
             return card;
         }
 

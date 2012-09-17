@@ -2,7 +2,7 @@
 {
     public class SetMod : IAttributeMod
     {
-        public SetMod(Card source, Attribute attribute, int to)
+        public SetMod(Card source, Attr attribute, int to)
         {
             Source = source;
             Attribute = attribute;
@@ -11,11 +11,11 @@
 
         public Card Source { get; set; }
         
-        public Attribute Attribute { get; set; }
+        public Attr Attribute { get; set; }
 
         public int To { get; set; }
 
-        public int Modify(int startValue)
+        public int Modify(Card card, int startValue)
         {
             return To;
         }

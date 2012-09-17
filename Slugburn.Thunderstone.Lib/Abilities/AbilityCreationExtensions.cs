@@ -2,7 +2,6 @@
 using System.Linq;
 using Slugburn.Thunderstone.Lib.Modifiers;
 using Slugburn.Thunderstone.Lib.Selectors;
-using Attribute = Slugburn.Thunderstone.Lib.Modifiers.Attribute;
 
 namespace Slugburn.Thunderstone.Lib.Abilities
 {
@@ -91,7 +90,7 @@ namespace Slugburn.Thunderstone.Lib.Abilities
                 .Condition(player => !syntax.Card.IsEquipped && player.Hand.Any(heroCanEquip));
         }
 
-        public static IAbilityDefinedSyntax EquipWeapon(this ICreateAbilitySyntax syntax, Attribute attribute, int amount)
+        public static IAbilityDefinedSyntax EquipWeapon(this ICreateAbilitySyntax syntax, Attr attribute, int amount)
         {
             return syntax.EquipWeapon((player, hero) => hero.AddModifier(new PlusMod(syntax.Card, attribute, amount)));
         }

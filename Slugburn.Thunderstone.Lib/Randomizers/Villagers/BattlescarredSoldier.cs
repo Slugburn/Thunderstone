@@ -25,7 +25,7 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Villagers
                             {
                                 var drawn = player.Draw(1).FirstOrDefault();
                                 if (drawn != null && drawn.Type == CardType.Hero)
-                                    drawn.AddModifier(new PlusMod(card, Attribute.PhysicalAttack, 2));
+                                    drawn.AddModifier(new PlusMod(card, Attr.PhysicalAttack, 2));
                             })
                 .On(Phase.Dungeon);
         }

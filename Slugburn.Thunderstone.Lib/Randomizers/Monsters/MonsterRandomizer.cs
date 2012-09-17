@@ -23,14 +23,14 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Monsters
                        };
         }
 
-        public override IEnumerable<Card> CreateCards()
+        public override IEnumerable<Card> CreateCards(Game game)
         {
-            return MonsterDefs.SelectMany(def => Enumerable.Range(0, def.Count).Select(x => CreateCard(def)));
+            return MonsterDefs.SelectMany(def => Enumerable.Range(0, def.Count).Select(x => CreateCard(game, def)));
         }
 
-        private Card CreateCard(MonsterDef def)
+        private Card CreateCard(Game game, MonsterDef def)
         {
-            var card = new Card
+            var card = new Card(game)
                            {
                                Type = CardType.Monster, 
                                Name = def.Name,

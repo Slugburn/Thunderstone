@@ -1,9 +1,10 @@
 namespace Slugburn.Thunderstone.Lib.Modifiers
 {
-    public enum Attribute
+    public enum Attr
     {
         PhysicalAttack,
         MagicalAttack,
-        Strength
+        Strength,
+        Health
     }
 }

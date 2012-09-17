@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Slugburn.Thunderstone.Lib.Abilities;
-using Slugburn.Thunderstone.Lib.Events;
 using Slugburn.Thunderstone.Lib.Selectors;
 
 namespace Slugburn.Thunderstone.Lib.Randomizers.Monsters

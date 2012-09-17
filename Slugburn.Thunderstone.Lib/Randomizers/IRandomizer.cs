@@ -10,6 +10,6 @@ namespace Slugburn.Thunderstone.Lib.Randomizers
 
         CardInfo GetInfo();
         
-        IEnumerable<Card> CreateCards();
+        IEnumerable<Card> CreateCards(Game game);
     }
 }

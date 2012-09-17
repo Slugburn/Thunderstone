@@ -10,9 +10,9 @@ namespace Slugburn.Thunderstone.Lib
     {
         private static readonly Random Random = new Random();
 
-        public static IEnumerable<Card> Create(this ICardGen gen, int count)
+        public static IEnumerable<Card> Create(this ICardGen gen, Game game, int count)
         {
-            return Enumerable.Range(0, count).Select(x => gen.Create());
+            return Enumerable.Range(0, count).Select(x => gen.Create(game));
         }
 
         public static List<Card> Shuffle(this IEnumerable<Card> cards)

@@ -14,7 +14,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Heroes
             var game = TestFactory.CreateGame();
             var player = game.CurrentPlayer;
             player.State = PlayerState.Dungeon;
-            var bolter = new Thundermage().CreateCards().First(c => c.Level == 3);
+            var bolter = new Thundermage().CreateCards(game).First(c => c.Level == 3);
             var discardRank1Monster = bolter.GetAbilities().First();
 
             // fill the dungeon hall

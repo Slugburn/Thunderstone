@@ -12,23 +12,32 @@ namespace Slugburn.Thunderstone.Lib.Test
         public static Card GivenMonsterInFirstRank<TRandomizer>(this TestContext context, string name) where TRandomizer : IRandomizer
         {
             var monster = CreateCard<TRandomizer>(context, name);
-            var game = context.Game;
-            game.Dungeon.AddToTopOfDeck(monster);
-            while (game.Dungeon.Ranks[0].Card != monster)
-                game.AdvanceDungeon();
+            context.GivenTopOfDungeonDeck(monster);
+            context.WhenMonsterInFirstRank(monster);
             return monster;
+        }
+
+        public static void GivenTopOfDungeonDeck(this TestContext context, params Card[] monsters)
+        {
+            monsters.Reverse().Each(monster => context.Game.Dungeon.AddToTopOfDeck(monster));
+        }
+
+        public static void WhenMonsterInFirstRank(this TestContext context, Card monster)
+        {
+            while (context.Game.Dungeon.Ranks[0].Card != monster)
+                context.Game.AdvanceDungeon();
         }
 
         public static Card CreateCard<TRandomizer>(this TestContext context, string name) where TRandomizer : IRandomizer
         {
             var randomizer = Activator.CreateInstance<TRandomizer>();
-            return randomizer.CreateCards().First(x => x.Name == name);
+            return randomizer.CreateCards(context.Game).First(x => x.Name == name);
         }
 
         public static Card CreateBasicCard<T>(this TestContext context) where T : ICardGen
         {
             var gen = Activator.CreateInstance<T>();
-            return gen.Create();
+            return gen.Create(context.Game);
         }
 
         public static Card GivenHeroFromTopOfDeck(this TestContext context, Func<Card, bool> filter)
@@ -65,5 +74,10 @@ namespace Slugburn.Thunderstone.Lib.Test
             context.Player.UseAbility(ability.Id);
         }
 
+        public static void WhenBattling(this TestContext context, Card laird)
+        {
+            context.Player.OnSelectMonster(laird);
+            context.Player.UseBattleAbilities();
+        }
     }
 }

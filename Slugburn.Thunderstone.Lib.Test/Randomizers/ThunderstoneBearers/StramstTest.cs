@@ -66,7 +66,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.ThunderstoneBearers
 
         private static Card GivenStramstIsInTheLastRank(Game game)
         {
-            var stramst = new Stramst().CreateCards().First();
+            var stramst = new Stramst().CreateCards(game).First();
 
             // Fill up the dungeon with monsters
             var rank1 = game.Dungeon.Ranks[0];

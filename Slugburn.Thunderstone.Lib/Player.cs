@@ -5,6 +5,7 @@ using Slugburn.Thunderstone.Lib.BasicCards;
 using Slugburn.Thunderstone.Lib.Events;
 using Slugburn.Thunderstone.Lib.Messages;
 using Slugburn.Thunderstone.Lib.Models;
+using Slugburn.Thunderstone.Lib.Randomizers.Monsters;
 using Slugburn.Thunderstone.Lib.Selectors;
 
 namespace Slugburn.Thunderstone.Lib
@@ -31,7 +32,7 @@ namespace Slugburn.Thunderstone.Lib
 
         public int Vp { get; set; }
 
-        private Deck Deck { get; set; }
+        public Deck Deck { get; set; }
 
         public List<Card> Hand { get; private set; }
 
@@ -146,6 +147,9 @@ namespace Slugburn.Thunderstone.Lib
             var outcome = Won ? "defeated" : "triumphed";
             Log("{0} {1}.".Template(monster.Name, outcome));
 
+            if (Won)
+                Game.Publish(new MonsterDefeated(this, monster));
+
             UseAftermathAbilities();
         }
 
@@ -211,7 +215,7 @@ namespace Slugburn.Thunderstone.Lib
 
         public bool Won { get; set; }
 
-        private void OnSelectMonster(Card monster)
+        public void OnSelectMonster(Card monster)
         {
             AttackedRank = Game.Dungeon.GetRankOf(monster);
             PublishEvent(new AttackRankSelected {Player = this, AttackedRank = AttackedRank});
@@ -422,10 +426,10 @@ namespace Slugburn.Thunderstone.Lib
         public Deck CreateStartingDeck()
         {
             var deck = new Deck();
-            deck.Add(new Regular().Create(6));
-            deck.Add(new Longspear().Create(2));
-            deck.Add(new Torch().Create(2));
-            deck.Add(new ThunderstoneShard().Create(2));
+            deck.Add(new Regular().Create(Game, 6));
+            deck.Add(new Longspear().Create(Game, 2));
+            deck.Add(new Torch().Create(Game, 2));
+            deck.Add(new ThunderstoneShard().Create(Game, 2));
             deck.Shuffle();
             deck.GetCards().Each(x => x.SetPlayer(this));
             return deck;

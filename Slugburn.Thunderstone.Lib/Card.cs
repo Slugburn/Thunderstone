@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using Slugburn.Thunderstone.Lib.Events;
 using Slugburn.Thunderstone.Lib.Modifiers;
-using Attribute = Slugburn.Thunderstone.Lib.Modifiers.Attribute;
 
 namespace Slugburn.Thunderstone.Lib
 {
     public class Card
     {
-        public Card()
+        public Card(Game game)
         {
+            Game = game;
             Id = UniqueId.Next();
             _abilities = new List<Ability>();
             _tags = new List<string>();
@@ -25,7 +25,7 @@ namespace Slugburn.Thunderstone.Lib
         private int? _physicalAttack;
         private readonly List<IAttributeMod> _mods;
         private readonly List<Func<IEventAggregator, IDisposable>> _eventHandlers = new List<Func<IEventAggregator, IDisposable>>();
-        private readonly List<IDisposable>  _subscriptions = new List<IDisposable>();
+        private readonly List<IDisposable> _subscriptions = new List<IDisposable>();
         private int? _magicAttack;
         private int? _strength;
 
@@ -45,7 +45,7 @@ namespace Slugburn.Thunderstone.Lib
 
         public int? Strength
         {
-            get { return _mods.ApplyTo(Attribute.Strength, _strength); }
+            get { return ApplyModifiers(Attr.Strength); }
             set { _strength = value; }
         }
 
@@ -57,7 +57,7 @@ namespace Slugburn.Thunderstone.Lib
 
         public int? PhysicalAttack
         {
-            get { return Type == CardType.Weapon ? null : _mods.ApplyTo(Attribute.PhysicalAttack, _physicalAttack); }
+            get { return Type == CardType.Weapon ? null : ApplyModifiers(Attr.PhysicalAttack); }
             set { _physicalAttack = value; }
         }
 
@@ -72,7 +72,7 @@ namespace Slugburn.Thunderstone.Lib
 
         public int? MagicAttack
         {
-            get { return Type == CardType.Weapon ? null : _mods.ApplyTo(Attribute.MagicalAttack, _magicAttack); }
+            get { return Type == CardType.Weapon ? null : ApplyModifiers(Attr.MagicalAttack); }
             set { _magicAttack = value; }
         }
 
@@ -81,7 +81,11 @@ namespace Slugburn.Thunderstone.Lib
             get { return Type == CardType.Weapon && !IsEquipped ? _magicAttack : null; }
         }
 
-        public int? Health { get; set; }
+        public int? Health
+        {
+            get { return ApplyModifiers(Attr.Health); }
+            set { _health = value; }
+        }
 
         public string Tags
         {
@@ -117,19 +121,21 @@ namespace Slugburn.Thunderstone.Lib
             if (before == after)
                 return;
             var change = after < before ? "decreases" : "increases";
-            Player.Log("{0} {1} {2} of {3} to {4}".Template(mod.Source.Name, change, mod.Attribute, Name, after));
+            Game.Log("{0} {1} {2} of {3} to {4}".Template(mod.Source.Name, change, mod.Attribute, Name, after));
         }
 
-        private int? GetAttributeValue(Attribute attr)
+        private int? GetAttributeValue(Attr attr)
         {
             switch (attr)
             {
-                case Attribute.Strength:
+                case Attr.Strength:
                     return Strength;
-                case Attribute.PhysicalAttack:
+                case Attr.PhysicalAttack:
                     return PhysicalAttack;
-                case Attribute.MagicalAttack:
+                case Attr.MagicalAttack:
                     return MagicAttack;
+                case Attr.Health:
+                    return Health;
                 default:
                     throw new NotImplementedException();
             }
@@ -151,8 +157,9 @@ namespace Slugburn.Thunderstone.Lib
             get { return Rank != null ? Rank.Darkness : (int?) null; }
         }
 
-        public Func<Player,bool> AttackCondition { get; set; }
+        public Func<Player, bool> AttackCondition { get; set; }
 
+        public Game Game { get; private set; }
 
         internal void SetEquipped(Card card)
         {
@@ -198,6 +205,7 @@ namespace Slugburn.Thunderstone.Lib
         }
 
         private object _data;
+        private int? _health;
 
         public T GetData<T>()
         {
@@ -207,6 +215,34 @@ namespace Slugburn.Thunderstone.Lib
         public void SetData<T>(T data)
         {
             _data = data;
+        }
+
+        public int? GetBaseValue(Attr attr)
+        {
+            switch (attr)
+            {
+                case Attr.Health:
+                    return _health;
+                case Attr.MagicalAttack:
+                    return _magicAttack;
+                case Attr.PhysicalAttack:
+                    return _physicalAttack;
+                case Attr.Strength:
+                    return _strength;
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+        public int? ApplyModifiers(Attr attr)
+        {
+            var applicable = _mods.Where(x => x.Attribute == attr).ToArray();
+            var baseValue = GetBaseValue(attr);
+            if (applicable.Length == 0)
+                return baseValue;
+
+            var modified = applicable.Aggregate(baseValue ?? 0, (i, mod) => mod.Modify(this, i));
+            return (modified == 0 && baseValue == null) ? (int?) null : modified;
         }
     }
 }

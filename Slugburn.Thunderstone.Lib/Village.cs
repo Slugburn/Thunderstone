@@ -7,13 +7,15 @@ namespace Slugburn.Thunderstone.Lib
 {
     public class Village
     {
+        public Game Game { get; private set; }
         private readonly Dictionary<long, Deck> _decksById;
         private readonly ILookup<CardType, Deck> _decksByType;
 
-        public Village(IEnumerable<IRandomizer> randomizers)
+        public Village(Game game, IEnumerable<IRandomizer> randomizers)
         {
+            Game = game;
             var basicDecks = CreateBasicDecks(3);
-            var randomizerDecks = randomizers.Select(x => Deck.Create(x.CreateCards()));
+            var randomizerDecks = randomizers.Select(x => Deck.Create(x.CreateCards(Game)));
             var decks = basicDecks.Concat(randomizerDecks).ToArray();
 
             // Set owner of all cards in village
@@ -23,13 +25,13 @@ namespace Slugburn.Thunderstone.Lib
             _decksByType = decks.ToLookup(x => x.TopCard.Type);
         }
 
-        private static IEnumerable<Deck> CreateBasicDecks(int count)
+        private IEnumerable<Deck> CreateBasicDecks(int count)
         {
             return new[]
                        {
-                           Deck.Create(new Regular().Create(count)),
-                           Deck.Create(new Longspear().Create(count) ),
-                           Deck.Create(new Torch().Create(count))
+                           Deck.Create(new Regular().Create(Game, count)),
+                           Deck.Create(new Longspear().Create(Game, count) ),
+                           Deck.Create(new Torch().Create(Game, count))
                        };
         }
 

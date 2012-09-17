@@ -9,9 +9,9 @@ namespace Slugburn.Thunderstone.Lib.BasicCards
     {
         #region ICardGen Members
 
-        public Card Create()
+        public Card Create(Game game)
         {
-            var card = new Card
+            var card = new Card(game)
                            {
                                Type = CardType.Item,
                                Name = "Thunderstone Shard",
@@ -26,7 +26,7 @@ namespace Slugburn.Thunderstone.Lib.BasicCards
             card.CreateAbility()
                 .Description("One hero gains Strength +2")
                 .SelectCards(select => select.FromHand().Filter(c => c.IsHero()).Caption("Select Hero").Message("Select hero to use Thunderstone Shard"))
-                .OnCardsSelected(x => x.Selected.First().AddModifier(new PlusMod(card, Attribute.Strength, 2)))
+                .OnCardsSelected(x => x.Selected.First().AddModifier(new PlusMod(card, Attr.Strength, 2)))
                 .Condition(player => player.Hand.Any(c => c.IsHero()))
                 .On(Phase.Dungeon);
             card.CreateAbility()

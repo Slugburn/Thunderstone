@@ -21,7 +21,7 @@ namespace Slugburn.Thunderstone.Lib
                                {
                                    new Stramst(),
                                    new BurnmarkedFire(),
-                                   new OgreHumanoid(),
+                                   new KoboldHumanoid(), 
                                    new UndeadSkeleton(), 
                                    new Whetmage(),
                                    new Criochan(),
@@ -52,24 +52,24 @@ namespace Slugburn.Thunderstone.Lib
         {
             game.Players.Each(x=>x.StartGame(game));
             game.CurrentPlayer = game.Players.PickRandom();
-            game.Dungeon = CreateDungeon();
-            game.Village = CreateVillage();
-            game.Curses = CreateCurses();
+            game.Dungeon = CreateDungeon(game);
+            game.Village = CreateVillage(game);
+            game.Curses = CreateCurses(game);
         }
 
-        private static Deck CreateCurses()
+        private static Deck CreateCurses(Game game)
         {
-            return new Deck(new Curse().CreateCards().Shuffle());
+            return new Deck(new Curse().CreateCards(game).Shuffle());
         }
 
-        private Dungeon CreateDungeon()
+        private Dungeon CreateDungeon(Game game)
         {
-            var thunderstoneBearer = _randomizers.Single(x => x.Type == CardType.ThunderstoneBearer).CreateCards().Single();
-            var monsters = _randomizers.Where(x => x.Type == CardType.Monster).SelectMany(x => x.CreateCards());
+            var thunderstoneBearer = _randomizers.Single(x => x.Type == CardType.ThunderstoneBearer).CreateCards(game).Single();
+            var monsters = _randomizers.Where(x => x.Type == CardType.Monster).SelectMany(x => x.CreateCards(game));
             return new Dungeon(thunderstoneBearer, monsters);
         }
 
-        private Village CreateVillage()
+        private Village CreateVillage(Game game)
         {
             var randomizers = _randomizers
                 .Where(x=>x.Type==CardType.Hero 
@@ -77,7 +77,7 @@ namespace Slugburn.Thunderstone.Lib
                     || x.Type == CardType.Item 
                     || x.Type== CardType.Spell 
                     || x.Type==CardType.Villager);
-            return new Village(randomizers);
+            return new Village(game, randomizers);
         }
 
     }

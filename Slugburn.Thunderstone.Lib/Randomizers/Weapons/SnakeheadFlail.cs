@@ -18,7 +18,7 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Weapons
             base.Modify(card);
             card.MagicAttack = 1;
             card.CreateAbility()
-                .EquipWeapon((player, hero) => hero.AddModifier(new PlusMod(card, Attribute.MagicalAttack, 1 + hero.Level)))
+                .EquipWeapon((player, hero) => hero.AddModifier(new PlusMod(card, Attr.MagicalAttack, 1 + hero.Level)))
                 .On(Phase.Equip);
         }
     }
