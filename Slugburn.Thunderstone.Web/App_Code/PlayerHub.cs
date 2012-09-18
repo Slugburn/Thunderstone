@@ -20,66 +20,113 @@ namespace Slugburn.Thunderstone.Web
 
         public void StartGame()
         {
-            var player = PlayerStore.Instance.Get(Context.ConnectionId);
+            var player = GetPlayer();
             StartGameHandler.Do(player);
         }
 
-        public void StartTurn()
+        private Player GetPlayer()
+        {
+            return PlayerStore.Instance.Get(Context.ConnectionId);
+        }
+
+        public void Village()
+        {
+            var player = GetPlayer();
+            VillageHandler.Do(player);
+        }
+
+        public void Dungeon()
+        {
+            var player = GetPlayer();
+            DungeonHandler.Do(player);
+        }
+
+        public void Prepare()
+        {
+            var player = GetPlayer();
+            PrepareHandler.Do(player);
+        }
+
+        public void Rest()
+        {
+            var player = GetPlayer();
+            RestHandler.Do(player);
+        }
+
+        public void UseAbility(UseAbilityResponse message)
+        {
+            var player = GetPlayer();
+            UseAbilityHandler.Do(player, message);
+        }
+
+        public void BuyCard(string deckId)
+        {
+            var player = GetPlayer();
+            BuyCardHandler.Do(player, long.Parse(deckId));
+        }
+
+        public void SelectCards(long[] cardIds)
+        {
+            var player = GetPlayer();
+            SelectCardsHandler.Do(player, cardIds);
+        }
+
+        void IPlayerView.StartTurn()
         {
             Caller.displayStartTurn();
         }
 
-        public void Log(string message)
+        void IPlayerView.Log(string message)
         {
             Caller.displayLog(message);
         }
 
-        public void BuyCard(BuyCardMessage message)
+        void IPlayerView.BuyCard(BuyCardMessage message)
         {
             Caller.displayBuyCard(message);
         }
 
-        public void UseAbility(UseAbilityMessage message)
+        void IPlayerView.UseAbility(UseAbilityMessage message)
         {
             Caller.displayUseAbility(message);
         }
 
-        public void HideUseAbility()
+        void IPlayerView.HideUseAbility()
         {
             Caller.displayUseAbility(false);
         }
 
-        public void SelectCards(SelectCardsMessage message)
+        void IPlayerView.SelectCards(SelectCardsMessage message)
         {
             Caller.displaySelectCards(message);
         }
 
-        public void UpdateDeck(DeckModel model)
+        void IPlayerView.UpdateDeck(DeckModel model)
         {
             Caller.displayDeck(model);
         }
 
-        public void UpdateDungeon(DungeonModel model)
+        void IPlayerView.UpdateDungeon(DungeonModel model)
         {
             Caller.displayDungeon(model);
         }
 
-        public void GameSetup(GameSetupModel model)
+        void IPlayerView.GameSetup(GameSetupModel model)
         {
             Caller.displayGameSetup(model);
         }
 
-        public void GameBoard(GameBoardModel model)
+        void IPlayerView.GameBoard(GameBoardModel model)
         {
             Caller.displayGameBoard(model);
         }
 
-        public void UpdateHand(UpdateHandMessage message)
+        void IPlayerView.UpdateHand(UpdateHandMessage message)
         {
             Caller.displayHand(message);
         }
 
-        public void UpdateStatus(StatusModel model)
+        void IPlayerView.UpdateStatus(StatusModel model)
         {
             Caller.displayStatus(model);
         }

@@ -10,8 +10,14 @@ namespace Slugburn.Thunderstone.Lib.MessageHandlers
 
         public override void Handle(Message message)
         {
+            var player = message.Player;
             var cardIds = JsonConvert.DeserializeObject<long[]>(message.Body);
-            message.Player.SelectCardsCallback(cardIds);
+            Do(player, cardIds);
+        }
+
+        public static void Do(Player player, long[] cardIds)
+        {
+            player.SelectCardsCallback(cardIds);
         }
     }
 }

@@ -11,10 +11,10 @@ namespace Slugburn.Thunderstone.Lib.MessageHandlers
         public override void Handle(Message message)
         {
             var player = message.Player;
-            DoPrepare(player);
+            Do(player);
         }
 
-        public static void DoPrepare(Player player)
+        public static void Do(Player player)
         {
             player.State = PlayerState.Prepare;
             player.Prepare();

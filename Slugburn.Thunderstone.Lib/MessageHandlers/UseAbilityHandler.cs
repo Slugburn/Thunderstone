@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Slugburn.Thunderstone.Lib.Messages;
 
 namespace Slugburn.Thunderstone.Lib.MessageHandlers
 {
@@ -12,7 +13,12 @@ namespace Slugburn.Thunderstone.Lib.MessageHandlers
         {
             var player = message.Player;
             var body = JsonConvert.DeserializeObject<UseAbilityResponse>(message.Body);
-            if (body.AbilityId==null)
+            Do(player, body);
+        }
+
+        public static void Do(Player player, UseAbilityResponse body)
+        {
+            if (body.AbilityId == null)
             {
                 player.State.ContinueWith(player);
                 return;
@@ -20,12 +26,5 @@ namespace Slugburn.Thunderstone.Lib.MessageHandlers
 
             player.UseAbility(body.AbilityId.Value);
         }
-
-        public class UseAbilityResponse
-        {
-            public Phase Phase { get; set; }
-            public long? AbilityId { get; set; }
-        }
     }
-
 }

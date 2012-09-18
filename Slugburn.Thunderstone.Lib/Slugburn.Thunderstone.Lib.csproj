@@ -82,6 +82,7 @@
     <Compile Include="Messages\SelectCardsMessage.cs" />
     <Compile Include="Messages\UpdateHandMessage.cs" />
     <Compile Include="Messages\UseAbilityMessage.cs" />
+    <Compile Include="Messages\UseAbilityResponse.cs" />
     <Compile Include="Models\AbilityModel.cs" />
     <Compile Include="Models\CardModel.cs" />
     <Compile Include="Models\DeckModel.cs" />
