@@ -17,7 +17,7 @@
 
         a.down > .minicard
         {
-            box-shadow: -3px -3px 0px #777;
+            box-shadow: 0px 0px 0px;
             background: burlywood;
             outline-offset: 2px;
         }
@@ -84,6 +84,7 @@
             padding: 3px;
             position: relative;
             display: block;
+            background: blanchedalmond;
         }
 
             .minicard.blank
@@ -91,12 +92,6 @@
                 background: -webkit-linear-gradient(darkgray, white);
                 background: linear-gradient(darkgray, white);
             }
-
-        .minicard
-        {
-            background: blanchedalmond;
-        }
-
 
             .minicard > .name
             {
@@ -116,15 +111,39 @@
             {
                 position: absolute;
                 width: 90px;
-                top: 25px;
+                bottom: 2px;
                 display: block;
                 text-align: center;
-                background: white;
-                border: solid 1px sandybrown;
+                background: transparent;
                 padding: 4px;
-                border-radius: 16px;
                 font: 8px sans-serif;
                 font-style: italic;
+                font-weight: bold;
+            }
+
+            .minicard > .topRight
+            {
+                right: 3px;
+                top: 1px;
+            }
+
+            .minicard > .bottomRight
+            {
+                right: 3px;
+                top: 47px;
+            }
+
+
+            .minicard > .middleMiddle
+            {
+                left: 44px;
+                top: 25px;
+            }
+
+            .minicard > .bottomLeft
+            {
+                left: 2px;
+                top: 47px;
             }
 
         .setupLabel
@@ -163,6 +182,14 @@
             width: 16px;
             box-shadow: 2px 2px 2px darkslategrey;
         }
+
+
+            .coin.count
+            {
+                color: black;
+                background: white;
+                border-radius: 5px;
+            }
 
             .coin.black
             {
@@ -265,7 +292,7 @@
                 <div class="iblock">
                     <span class="block sectionTitle">Deck</span>
                     <div class="minicard" style="position: relative;">
-                        <span data-bind="text: DeckCount" class="coin" style="left: 80%; top: 47px;"></span>
+                        <span data-bind="text: DeckCount" class="coin count topRight"></span>
                     </div>
                 </div>
             </div>
@@ -400,24 +427,27 @@
         <span class="minicard">
             <span data-bind="text: Name, visible: Name" class="name"></span>
             <!-- ko if: $data.Owner === 'Player' -->
-            <span data-bind="text: Gold, visible:Gold || Gold===0" class="coin gold" style="left: 44px; top: 25px;"></span>
+            <span data-bind="text: Gold, visible:Gold || Gold===0" class="coin gold bottomRight"></span>
             <span data-bind="text: Equipped, visible: Equipped" class="equipped"></span>
-            <span class="block" style="left: 2px; top: 47px; position: absolute; padding: 0px; margin: 0px;">
+            <span class="block middleMiddle" style="position: absolute; padding: 0px; margin: 0px;">
                 <span data-bind="text: PhysicalAttack, visible:PhysicalAttack" class="coin red cell" style="position: static;"></span>
                 <span data-bind="text: PotentialPhysicalAttack, visible:PotentialPhysicalAttack || PotentialPhysicalAttack===0" class="coin cell" style="background-color: rgba(255, 0, 0, 0.40); position: static;"></span>
                 <span data-bind="text: MagicAttack, visible:MagicAttack" class="coin blue cell" style="position: static;"></span>
                 <span data-bind="text: PotentialMagicAttack, visible:PotentialMagicAttack || PotentialMagicAttack===0" class="coin cell" style="background: rgba(0,191,255,0.40); position: static;"></span>
-                <span data-bind="text: Light, visible:Light" class="coin cell light" style="background-color: lightyellow; position: static;"></span>
             </span>
+            <span data-bind="text: Light, visible:Light" class="coin light bottomLeft"></span>
             <!-- /ko -->
             <!-- ko if: $data.Owner === 'Village' -->
-            <span data-bind="text: Cost, visible:Cost|| Cost===0" class="coin orange" style="left: 44px; top: 25px;"></span>
-            <span data-bind="text: $parent.Count, visible:$parent.Count" class="coin" style="left: 80%; top: 47px;"></span>
+            <span data-bind="text: $parent.Count, visible:$parent.Count" class="coin count topRight"></span>
+            <span data-bind="text: Cost, visible:Cost|| Cost===0" class="coin orange bottomRight"></span>
             <!-- /ko -->
             <!-- ko if: $data.Owner === 'Dungeon' -->
-            <span data-bind="text: Health, visible:Health" class="coin red" style="left: 44px; top: 25px;"></span>
-            <span class="block" style="left: 2px; top: 47px; position: absolute; padding: 0px; margin: 0px;">
+            <span data-bind="text: Health, visible:Health" class="coin red middleMiddle"></span>
+            <span class="block bottomLeft" style="position: absolute; padding: 0px; margin: 0px;">
                 <span data-bind="text: Darkness, visible:Darkness" class="coin black cell" style="position: static;"></span>
+            </span>
+            <span class="block bottomRight" style="position: absolute; padding: 0px; margin: 0px;">
+                <span data-bind="text: Vp, visible:Vp" class="coin vp cell" style="position: static;"></span>
             </span>
             <!-- /ko -->
             <span style="display: none">
@@ -460,7 +490,7 @@
 
             var selectCards = new SelectCardsVm(hub);
             ko.applyBindings(selectCards, $('#selectCards').get(0));
-            
+
             gameBoard = new GameBoardVm(hub);
             ko.applyBindings(gameBoard, $('#gameBoard').get(0));
 
@@ -615,7 +645,7 @@
             self.playerPanel = new PlayerPanelVm(hub);
 
             self.update = function (model) {
-                var gameDecks = { };
+                var gameDecks = {};
                 self.Decks = gameDecks;
                 self.Dungeon(model.Dungeon);
                 self.HeroDecks.update(model.HeroDecks, gameDecks);
@@ -627,13 +657,13 @@
                 self.Status(model.Status);
             };
         }
-        
+
         function VillageSectionVm() {
             var self = this;
             self.SectionName = ko.observable();
             self.Decks = ko.observableArray();
 
-            self.update = function(m, gameDecks) {
+            self.update = function (m, gameDecks) {
                 self.SectionName(m.SectionName);
                 m.Decks.forEach(function (deck) {
                     var o = ko.observable(deck);
