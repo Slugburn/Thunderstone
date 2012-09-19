@@ -1,6 +1,6 @@
 ﻿namespace Slugburn.Thunderstone.Lib.BasicCards
 {
-    internal class Torch : ICardGen
+    public class Torch : ICardGen
     {
         #region ICardGen Members
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Rhino.Mocks;
 using Slugburn.Thunderstone.Lib.Messages;
 using Slugburn.Thunderstone.Lib.Models;
@@ -46,7 +47,7 @@ namespace Slugburn.Thunderstone.Lib.Test
 
         public Player Player { get { return Get<Player>(); } }
 
-        public IEnumerable<CardModel> SelectCardsList { get { return Get<SelectCardsMessage>().Cards; } }
+        public IEnumerable<long> SelectCardsIds { get { return Get<SelectCardsMessage>().Cards.Select(x=>x.Id); } }
 
     }
 }

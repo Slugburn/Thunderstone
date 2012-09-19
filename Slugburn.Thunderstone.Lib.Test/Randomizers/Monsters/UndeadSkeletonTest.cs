@@ -21,7 +21,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Monsters
             context.Player.SelectMonster();
 
             // Assert
-            Assert.That(context.SelectCardsList.Any(x => x.Id == ossuous.Id), Is.False, "Valid targets should not contain Ossuous");
+            Assert.That(context.SelectCardsIds, Has.No.Member(ossuous.Id), "Valid targets should not contain Ossuous");
         }
 
         [Test]
@@ -38,7 +38,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Monsters
             context.Player.SelectMonster();
 
             // Assert
-            Assert.That(context.SelectCardsList.Any(x => x.Id == ossuous.Id), Is.True, "Valid targets should not contain Ossuous");
+            Assert.That(context.SelectCardsIds, Has.Member(ossuous.Id), "Valid targets should contain Ossuous");
         }
 
         [Test]
@@ -57,7 +57,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Monsters
             necrophidius.GetAbilities(Phase.Trophy).Single().Action(context.Player);
 
             // Assert
-            Assert.That(context.SelectCardsList.Select(x=>x.Id), Is.EquivalentTo(new[] {hero0.Id, hero1.Id}));
+            Assert.That(context.SelectCardsIds, Is.EquivalentTo(new[] {hero0.Id, hero1.Id}));
         }
     }
 }

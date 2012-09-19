@@ -71,6 +71,13 @@ namespace Slugburn.Thunderstone.Lib.Test
             return card.GetAbilities().First();
         }
 
+        public static Ability WhenUsingAbility(this TestContext context, Card card)
+        {
+            var ability = card.GetAbilities().First();
+            context.WhenUsingAbility(ability);
+            return ability;
+        }
+
         public static void WhenUsingAbility(this TestContext context, Ability ability)
         {
             Assert.That(ability.Condition(context.Player), Is.True);
