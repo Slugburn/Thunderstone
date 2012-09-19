@@ -1,3 +1,6 @@
+using Slugburn.Thunderstone.Lib.Abilities;
+using Slugburn.Thunderstone.Lib.Modifiers;
+
 namespace Slugburn.Thunderstone.Lib.Randomizers.Curses
 {
     public class CurseOfShame : CurseRandomizer
@@ -13,7 +16,13 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Curses
 
         protected override void Modify(Card card)
         {
-            // TODO: Implement
+            card.CreateAbility()
+                .Description("Destroy this curse. Draw 2 fewer cards when you draw a new hand.")
+                .Action(player =>
+                {
+                    player.DestroyCard(card, card.Name);
+                })
+                .On(Phase.Village, Phase.Dungeon);
         }
     }
 }

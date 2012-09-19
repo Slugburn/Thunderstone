@@ -39,6 +39,11 @@ namespace Slugburn.Thunderstone.Lib
 
         public List<Card> Discard { get; private set; }
 
+        public int HandSize
+        {
+            get { return this.ApplyModifiers(Attr.HandSize) ?? 0; }
+        }
+
         public void StartGame(Game game)
         {
             Game = game;
@@ -50,7 +55,7 @@ namespace Slugburn.Thunderstone.Lib
         public void DrawHand()
         {
             Hand = new List<Card>();
-            Draw(6);
+            Draw(HandSize);
         }
 
         public IEnumerable<Card> Draw(int count)
@@ -117,6 +122,8 @@ namespace Slugburn.Thunderstone.Lib
                     return PhysicalAttack + MagicAttack;
                 case Attr.Gold:
                     return Hand.Sum(x => x.Gold ?? 0);
+                case Attr.HandSize:
+                    return 6;
                 default:
                     throw new NotImplementedException();
             }
@@ -343,8 +350,8 @@ namespace Slugburn.Thunderstone.Lib
         {
             View.HideUseAbility();
             DiscardHand();
-            _mods.Clear();
             DrawHand();
+            _mods.Clear();
             Game.EndTurn();
         }
 
