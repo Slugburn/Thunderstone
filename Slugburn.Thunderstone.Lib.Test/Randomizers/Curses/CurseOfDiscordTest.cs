@@ -21,7 +21,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Curses
             context.GivenPlayerHand(curse, regular, torch, longspear);
 
             // Act
-            context.WhenUsingAbility(curse);
+            context.WhenUsingAbilityOf(curse);
 
             // Assert
             Assert.That(context.SelectCardsIds, Has.No.Member(curse.Id));

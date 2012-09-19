@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Slugburn.Thunderstone.Lib.Randomizers
 {
-    abstract class VillageRandomizer : RandomizerBase
+    public abstract class VillageRandomizer : RandomizerBase
     {
         protected VillageRandomizer(CardType type, string name, params string[] additionalTags)
             : base(type, name, new[] { type.ToString() }.Concat(additionalTags).ToArray())

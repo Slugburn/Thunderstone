@@ -5,6 +5,8 @@ namespace Slugburn.Thunderstone.Lib.Modifiers
         PhysicalAttack,
         MagicalAttack,
         Strength,
-        Health
+        Health,
+        Light,
+        TotalAttack
     }
 }

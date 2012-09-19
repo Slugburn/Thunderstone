@@ -88,7 +88,9 @@
     <Compile Include="Models\RankModel.cs" />
     <Compile Include="Models\StatusModel.cs" />
     <Compile Include="Models\VillageSectionModel.cs" />
+    <Compile Include="Modifiers\AttrExtensions.cs" />
     <Compile Include="Modifiers\IAttributeMod.cs" />
+    <Compile Include="Modifiers\IAttrSource.cs" />
     <Compile Include="Modifiers\SetMod.cs" />
     <Compile Include="Phase.cs" />
     <Compile Include="BasicCards\Longspear.cs" />

@@ -15,7 +15,7 @@
 
         public int To { get; set; }
 
-        public int Modify(Card card, int startValue)
+        public int Modify(IAttrSource target, int startValue)
         {
             return To;
         }

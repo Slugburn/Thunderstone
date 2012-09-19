@@ -6,7 +6,7 @@ using Slugburn.Thunderstone.Lib.Modifiers;
 
 namespace Slugburn.Thunderstone.Lib
 {
-    public class Card
+    public class Card : IAttrSource
     {
         public Card(Game game)
         {
@@ -45,7 +45,7 @@ namespace Slugburn.Thunderstone.Lib
 
         public int? Strength
         {
-            get { return ApplyModifiers(Attr.Strength); }
+            get { return this.ApplyModifiers(Attr.Strength); }
             set { _strength = value; }
         }
 
@@ -57,7 +57,7 @@ namespace Slugburn.Thunderstone.Lib
 
         public int? PhysicalAttack
         {
-            get { return Type == CardType.Weapon ? null : ApplyModifiers(Attr.PhysicalAttack); }
+            get { return Type == CardType.Weapon ? null : this.ApplyModifiers(Attr.PhysicalAttack); }
             set { _physicalAttack = value; }
         }
 
@@ -72,7 +72,7 @@ namespace Slugburn.Thunderstone.Lib
 
         public int? MagicAttack
         {
-            get { return Type == CardType.Weapon ? null : ApplyModifiers(Attr.MagicalAttack); }
+            get { return Type == CardType.Weapon ? null : this.ApplyModifiers(Attr.MagicalAttack); }
             set { _magicAttack = value; }
         }
 
@@ -83,7 +83,7 @@ namespace Slugburn.Thunderstone.Lib
 
         public int? Health
         {
-            get { return ApplyModifiers(Attr.Health); }
+            get { return this.ApplyModifiers(Attr.Health); }
             set { _health = value; }
         }
 
@@ -217,6 +217,11 @@ namespace Slugburn.Thunderstone.Lib
             _data = data;
         }
 
+        public IAttributeMod[] GetModifiersFor(Attr attr)
+        {
+            return _mods.Where(x => x.Attribute == attr).ToArray();
+        }
+
         public int? GetBaseValue(Attr attr)
         {
             switch (attr)
@@ -234,15 +239,9 @@ namespace Slugburn.Thunderstone.Lib
             }
         }
 
-        public int? ApplyModifiers(Attr attr)
+        public override string ToString()
         {
-            var applicable = _mods.Where(x => x.Attribute == attr).ToArray();
-            var baseValue = GetBaseValue(attr);
-            if (applicable.Length == 0)
-                return baseValue;
-
-            var modified = applicable.Aggregate(baseValue ?? 0, (i, mod) => mod.Modify(this, i));
-            return (modified == 0 && baseValue == null) ? (int?) null : modified;
+            return "{0}[{1}]".Template(Name, Id);
         }
     }
 }

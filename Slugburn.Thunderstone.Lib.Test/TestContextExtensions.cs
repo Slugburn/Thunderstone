@@ -71,16 +71,17 @@ namespace Slugburn.Thunderstone.Lib.Test
             return card.GetAbilities().First();
         }
 
-        public static Ability WhenUsingAbility(this TestContext context, Card card)
+        public static Ability WhenUsingAbilityOf(this TestContext context, Card card)
         {
-            var ability = card.GetAbilities().First();
+            var ability = card.GetAbilities().FirstOrDefault();
+            Assert.That(ability, Is.Not.Null, "No matching ability found");
             context.WhenUsingAbility(ability);
             return ability;
         }
 
         public static void WhenUsingAbility(this TestContext context, Ability ability)
         {
-            Assert.That(ability.Condition(context.Player), Is.True);
+            Assert.That(ability.Condition(context.Player), Is.True, "{0} is not currently valid to use.".Template(ability.Description));
             context.Player.UseAbility(ability.Id);
         }
 
@@ -88,6 +89,11 @@ namespace Slugburn.Thunderstone.Lib.Test
         {
             context.Player.OnSelectMonster(monster);
             context.Player.UseBattleAbilities();
+        }
+
+        public static void GivenTestPlayerState(this TestContext context, params Phase[] abilityTypes)
+        {
+            context.Player.State = new PlayerState(null, p => { }, abilityTypes);
         }
     }
 }

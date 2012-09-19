@@ -2,7 +2,7 @@
 
 namespace Slugburn.Thunderstone.Lib.Randomizers.Items
 {
-    class Moonstone : ItemRandomizer
+    public class Moonstone : ItemRandomizer
     {
         public Moonstone() : base("Moonstone", "Light")
         {

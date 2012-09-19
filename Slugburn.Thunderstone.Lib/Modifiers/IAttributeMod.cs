@@ -4,6 +4,6 @@ namespace Slugburn.Thunderstone.Lib.Modifiers
     {
         Card Source { get; set; }
         Attr Attribute { get; set; }
-        int Modify(Card card, int startValue);
+        int Modify(IAttrSource target, int startValue);
     }
 }

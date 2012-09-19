@@ -5,14 +5,16 @@ using Slugburn.Thunderstone.Lib.BasicCards;
 using Slugburn.Thunderstone.Lib.Events;
 using Slugburn.Thunderstone.Lib.Messages;
 using Slugburn.Thunderstone.Lib.Models;
+using Slugburn.Thunderstone.Lib.Modifiers;
 using Slugburn.Thunderstone.Lib.Selectors;
 
 namespace Slugburn.Thunderstone.Lib
 {
-    public class Player
+    public class Player : IAttrSource
     {
         public IPlayerView View { get; private set; }
         private readonly IEventAggregator _events;
+        private List<IAttributeMod> _mods;
 
         public Player(string id, IPlayerView view)
         {
@@ -21,6 +23,7 @@ namespace Slugburn.Thunderstone.Lib
             Discard = new List<Card>();
             Hand = new List<Card>();
             ActiveAbilities = new List<Ability>();
+            _mods = new List<IAttributeMod>();
             _events = new EventAggregator();
         }
 
@@ -94,6 +97,28 @@ namespace Slugburn.Thunderstone.Lib
         }
 
         public Game Game { get; set; }
+        
+        public IAttributeMod[] GetModifiersFor(Attr attr)
+        {
+            return _mods.Where(x=>x.Attribute==attr).ToArray();
+        }
+
+        public int? GetBaseValue(Attr attr)
+        {
+            switch (attr)
+            {
+                case Attr.Light:
+                    return BaseTotalLight();
+                case Attr.PhysicalAttack:
+                    return BasePhysicalAttack();
+                case Attr.MagicalAttack:
+                    return BaseMagicAttack();
+                case Attr.TotalAttack:
+                    return BaseTotalAttack();
+                default:
+                    throw new NotImplementedException();
+            }
+        }
 
         public GameSession Session { get; set; }
 
@@ -158,7 +183,32 @@ namespace Slugburn.Thunderstone.Lib
 
         public int TotalAttack
         {
-            get { return Hand.Sum(x => (x.PhysicalAttack ?? 0) + (x.MagicAttack ?? 0)); }
+            get { return this.ApplyModifiers(Attr.TotalAttack) ?? 0; }
+        }
+
+        private int BaseTotalAttack()
+        {
+            return PhysicalAttack + MagicAttack;
+        }
+
+        private int MagicAttack
+        {
+            get { return this.ApplyModifiers(Attr.MagicalAttack) ?? 0; }
+        }
+
+        private int BaseMagicAttack()
+        {
+            return Hand.Sum(x => x.MagicAttack ?? 0);
+        }
+
+        private int PhysicalAttack
+        {
+            get { return this.ApplyModifiers(Attr.PhysicalAttack) ?? 0; }
+        }
+
+        private int BasePhysicalAttack()
+        {
+            return Hand.Sum(x => x.PhysicalAttack ?? 0);
         }
 
         public void UseAftermathAbilities()
@@ -306,6 +356,7 @@ namespace Slugburn.Thunderstone.Lib
         {
             View.HideUseAbility();
             DiscardHand();
+            _mods.Clear();
             DrawHand();
             Game.EndTurn();
         }
@@ -345,7 +396,12 @@ namespace Slugburn.Thunderstone.Lib
 
         public int TotalLight
         {
-            get { return Hand.Sum(x => x.Light ?? 0); }
+            get { return this.ApplyModifiers(Attr.Light) ?? 0; }
+        }
+
+        private int BaseTotalLight()
+        {
+            return Hand.Sum(x => x.Light ?? 0);
         }
 
         public string Id { get; private set; }
@@ -481,6 +537,11 @@ namespace Slugburn.Thunderstone.Lib
                 .Caption("Rest")
                 .Destroy("Resting")
                 .SendRequest(x => x.Player.EndTurn());
+        }
+
+        public void AddModifier(IAttributeMod mod)
+        {
+            _mods.Add(mod);
         }
     }
 }

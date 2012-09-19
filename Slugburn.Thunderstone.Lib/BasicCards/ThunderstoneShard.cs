@@ -5,7 +5,7 @@ using Slugburn.Thunderstone.Lib.Selectors;
 
 namespace Slugburn.Thunderstone.Lib.BasicCards
 {
-    internal class ThunderstoneShard : ICardGen
+    public class ThunderstoneShard : ICardGen
     {
         #region ICardGen Members
 
