@@ -20,7 +20,7 @@ namespace Slugburn.Thunderstone.Lib
 
         public IEnumerable<Card> CreateCards(Game game)
         {
-            return CreateCurses(game, Decay, Hostility, Neglect, Discord, Horror, Shame, Sloth);
+            return CreateCurses(game, Decay, Hostility, Neglect, Discord, Horror, Shame, Sloth, War);
         }
 
         private IEnumerable<Card> CreateCurses(Game game, params Action<Card>[] modifications)

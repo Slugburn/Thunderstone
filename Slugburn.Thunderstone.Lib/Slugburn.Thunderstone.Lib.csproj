@@ -122,6 +122,15 @@
     <Compile Include="PlayerState.cs" />
     <Compile Include="PlayerView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Randomizers\Curses\CurseOfDecay.cs" />
+    <Compile Include="Randomizers\Curses\CurseOfDiscord.cs" />
+    <Compile Include="Randomizers\Curses\CurseOfHorror.cs" />
+    <Compile Include="Randomizers\Curses\CurseOfHostility.cs" />
+    <Compile Include="Randomizers\Curses\CurseOfNeglect.cs" />
+    <Compile Include="Randomizers\Curses\CurseOfShame.cs" />
+    <Compile Include="Randomizers\Curses\CurseOfSloth.cs" />
+    <Compile Include="Randomizers\Curses\CurseOfWar.cs" />
+    <Compile Include="Randomizers\Curses\CurseRandomizer.cs" />
     <Compile Include="Randomizers\Heroes\Bhoidwood.cs" />
     <Compile Include="Randomizers\Heroes\Criochan.cs" />
     <Compile Include="Randomizers\Heroes\Drua.cs" />
