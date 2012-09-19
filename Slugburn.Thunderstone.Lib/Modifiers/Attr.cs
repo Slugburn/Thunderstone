@@ -8,6 +8,7 @@ namespace Slugburn.Thunderstone.Lib.Modifiers
         Health,
         Light,
         TotalAttack,
-        Gold
+        Gold,
+        HandSize
     }
 }

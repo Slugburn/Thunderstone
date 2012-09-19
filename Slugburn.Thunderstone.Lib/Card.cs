@@ -161,6 +161,11 @@ namespace Slugburn.Thunderstone.Lib
 
         public Game Game { get; private set; }
 
+        public int? TotalAttack
+        {
+            get { return this.ApplyModifiers(Attr.TotalAttack); }
+        }
+
         internal void SetEquipped(Card card)
         {
             // Remove any modifiers from the previous equipped card
@@ -228,6 +233,8 @@ namespace Slugburn.Thunderstone.Lib
             {
                 case Attr.Health:
                     return _health;
+                case Attr.TotalAttack:
+                    return (PhysicalAttack != null || MagicAttack != null) ? (PhysicalAttack ?? 0) + (MagicAttack ?? 0) : (int?)null;
                 case Attr.MagicalAttack:
                     return _magicAttack;
                 case Attr.PhysicalAttack:

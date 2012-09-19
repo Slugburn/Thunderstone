@@ -1,30 +1,29 @@
-﻿using NUnit.Framework;
-using Slugburn.Thunderstone.Lib.BasicCards;
+using NUnit.Framework;
 using Slugburn.Thunderstone.Lib.Randomizers.Curses;
-using Slugburn.Thunderstone.Lib.Randomizers.Items;
-using Slugburn.Thunderstone.Lib.Randomizers.Monsters;
+using Slugburn.Thunderstone.Lib.Randomizers.Heroes;
 
 namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Curses
 {
     [TestFixture]
-    public class CurseOfHorrorTest
+    public class CurseOfSlothTest
     {
         [Test]
-        public void Using_ability_reduces_player_light_to_zero()
+        public void Using_ability_reduces_total_attack_value_by_3()
         {
             // Arrange
             var context = new TestContext();
             var player = context.Player;
-            var curse = context.CreateCard<CurseOfHorror>();
-            var torch = context.CreateBasicCard<Torch>();
-            context.GivenPlayerHand(curse, torch);
-            context.GivenTestPlayerState(Phase.Dungeon);
+            var curse = context.CreateCard<CurseOfSloth>();
+            var sergeant = context.CreateCard<Criochan>();
+            var summoner = context.CreateCard<Thundermage>();
+            context.GivenPlayerHand(curse, sergeant, summoner);
+            context.GivenTestPlayerState(Phase.Village);
 
             // Act
             context.WhenUsingAbilityOf(curse);
 
             // Assert
-            Assert.That(player.TotalLight, Is.EqualTo(0));
+            Assert.That(player.TotalAttack, Is.EqualTo(sergeant.TotalAttack + summoner.TotalAttack - 3));
         }
 
         [Test]
@@ -33,10 +32,9 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Curses
             // Arrange
             var context = new TestContext();
             var player = context.Player;
-            var curse = context.CreateCard<CurseOfHorror>();
-            var torch = context.CreateBasicCard<Torch>();
-            context.GivenPlayerHand(curse, torch);
-            context.GivenTestPlayerState(Phase.Dungeon);
+            var curse = context.CreateCard<CurseOfSloth>();
+            context.GivenPlayerHand(curse);
+            context.GivenTestPlayerState(Phase.Village);
 
             // Act
             context.WhenUsingAbilityOf(curse);
@@ -55,7 +53,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Curses
             // Arrange
             var context = new TestContext();
             var player = context.Player;
-            var curse = context.CreateCard<CurseOfHorror>();
+            var curse = context.CreateCard<CurseOfSloth>();
             context.GivenPlayerHand(curse);
             var otherAbility = context.AddAbilityStub(phase);
             context.GivenTestPlayerState(Phase.Dungeon);
@@ -66,5 +64,6 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Curses
             // Assert
             Assert.That(player.ActiveAbilities.Contains(otherAbility), Is.EqualTo(isActive));
         }
+
     }
 }

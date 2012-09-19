@@ -21,6 +21,7 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Curses
                 .Action(player =>
                 {
                     player.DestroyCard(card, card.Name);
+                    player.AddModifier(new PlusMod(card, Attr.HandSize, -2));
                 })
                 .On(Phase.Village, Phase.Dungeon);
         }

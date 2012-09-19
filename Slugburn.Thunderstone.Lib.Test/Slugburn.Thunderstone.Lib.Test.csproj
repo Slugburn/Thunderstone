@@ -61,6 +61,8 @@
     <Compile Include="Randomizers\Curses\CurseOfHorrorTest.cs" />
     <Compile Include="Randomizers\Curses\CurseOfHostilityTest.cs" />
     <Compile Include="Randomizers\Curses\CurseOfNeglectTest.cs" />
+    <Compile Include="Randomizers\Curses\CurseOfShameTest.cs" />
+    <Compile Include="Randomizers\Curses\CurseOfSlothTest.cs" />
     <Compile Include="Randomizers\Heroes\ThundermageTest.cs" />
     <Compile Include="Randomizers\Heroes\WhetmageTest.cs" />
     <Compile Include="Randomizers\Monsters\BurnmarkedFireTest.cs" />
