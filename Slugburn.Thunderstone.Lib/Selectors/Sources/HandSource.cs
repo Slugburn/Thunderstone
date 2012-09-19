@@ -13,7 +13,7 @@ namespace Slugburn.Thunderstone.Lib.Selectors.Sources
             Player = player;
         }
 
-        public IEnumerable<Card> GetCards()
+        public virtual IEnumerable<Card> GetCards()
         {
             return Player.Hand;
         }

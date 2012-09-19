@@ -137,7 +137,7 @@ namespace Slugburn.Thunderstone.Lib
         {
             State = PlayerState.SelectingAction;
             Won = false;
-            View.StartTurn();
+            View.StartTurn(new StartTurnMessage());
         }
 
         public void SelectMonster()

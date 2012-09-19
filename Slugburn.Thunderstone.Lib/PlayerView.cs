@@ -22,7 +22,7 @@ namespace Slugburn.Thunderstone.Lib
             _onMessage(messageId, body);
         }
 
-        public void StartTurn()
+        public void StartTurn(StartTurnMessage message)
         {
             SendMessage("StartTurn");
         }

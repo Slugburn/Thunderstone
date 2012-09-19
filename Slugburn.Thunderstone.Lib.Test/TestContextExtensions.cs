@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using Slugburn.Thunderstone.Lib.Messages;
+using Slugburn.Thunderstone.Lib.Models;
 using Slugburn.Thunderstone.Lib.Randomizers;
 
 namespace Slugburn.Thunderstone.Lib.Test
@@ -73,15 +75,22 @@ namespace Slugburn.Thunderstone.Lib.Test
 
         public static Ability WhenUsingAbilityOf(this TestContext context, Card card)
         {
-            var ability = card.GetAbilities().FirstOrDefault();
-            Assert.That(ability, Is.Not.Null, "No matching ability found");
+            var ability = context.GivenAbilityOf(card);
             context.WhenUsingAbility(ability);
+            return ability;
+        }
+
+        public static Ability GivenAbilityOf(this TestContext context, Card card)
+        {
+            Assert.That(context.Player.State, Is.Not.Null, "Player state has not been set.");
+            var ability = card.GetAbilities().FirstOrDefault(x => context.Player.State.AbilityTypes.Contains(x.Phase));
+            Assert.That(ability, Is.Not.Null, "No matching ability found");
             return ability;
         }
 
         public static void WhenUsingAbility(this TestContext context, Ability ability)
         {
-            Assert.That(ability.Condition(context.Player), Is.True, "{0} is not currently valid to use.".Template(ability.Description));
+            Assert.That(ability.Condition(context.Player), Is.True, "Ability not valid: '{0}'".Template(ability.Description));
             context.Player.UseAbility(ability.Id);
         }
 
@@ -101,6 +110,16 @@ namespace Slugburn.Thunderstone.Lib.Test
             var ability = new Ability(phase, "Ability stub", p => { });
             context.Player.ActiveAbilities.Add(ability);
             return ability;
+        }
+
+        public static void GivenSelectCardsBehavior(this TestContext context, Func<SelectCardsMessage, IEnumerable<long>> behavior)
+        {
+            context.Set(behavior);
+        }
+
+        public static void GivenSelectingFirstMatchingCards(this TestContext context)
+        {
+            context.GivenSelectCardsBehavior(message => message.Cards.Take(message.Min).Select(x => x.Id));
         }
     }
 }

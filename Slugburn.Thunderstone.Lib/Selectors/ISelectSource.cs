@@ -18,6 +18,13 @@ namespace Slugburn.Thunderstone.Lib.Selectors
             return c;
         }
 
+        public static IDefineSelection FromRandomHandSelection(this ISelectSource context, int count, Func<Card, bool> selector)
+        {
+            var c = (SelectionContext)context;
+            c.Source = new RandomHandSource(c.Player, count, selector);
+            return c;
+        }
+
         public static IDefineSelection FromHall(this ISelectSource context)
         {
             var c = (SelectionContext) context;

@@ -17,7 +17,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Curses
             var sergeant = context.CreateCard<Criochan>();
             var summoner = context.CreateCard<Thundermage>();
             context.GivenPlayerHand(curse, sergeant, summoner);
-            context.GivenTestPlayerState(Phase.Village);
+            context.GivenTestPlayerState(Phase.Dungeon);
 
             // Act
             context.WhenUsingAbilityOf(curse);
@@ -34,7 +34,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Curses
             var player = context.Player;
             var curse = context.CreateCard<CurseOfSloth>();
             context.GivenPlayerHand(curse);
-            context.GivenTestPlayerState(Phase.Village);
+            context.GivenTestPlayerState(Phase.Dungeon);
 
             // Act
             context.WhenUsingAbilityOf(curse);

@@ -42,6 +42,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Heroes
         {
             // Arrange
             var context = new TestContext();
+            context.GivenTestPlayerState(Phase.Dungeon);
             var polisher = context.CreateCard<Whetmage>("Whetmage Polisher");
             var hero1 = context.GivenHeroFromTopOfDeck(x=>x.Level==1);
             var hero2 = context.GivenHeroFromTopOfDeck(x => x.Level == 1);
@@ -50,7 +51,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Heroes
             var levelUp = polisher.GetAbility();
 
             // Act
-            context.WhenUsingAbility(levelUp);
+            context.WhenUsingAbilityOf(polisher);
 
             // Assert
             Assert.That(context.Player.ActiveAbilities.Any(x=>x.Id == levelUp.Id));

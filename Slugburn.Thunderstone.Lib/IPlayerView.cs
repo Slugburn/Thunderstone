@@ -5,7 +5,7 @@ namespace Slugburn.Thunderstone.Lib
 {
     public interface IPlayerView
     {
-        void StartTurn();
+        void StartTurn(StartTurnMessage message);
         void Log(string message);
         void BuyCard(BuyCardMessage message);
         void HideUseAbility();

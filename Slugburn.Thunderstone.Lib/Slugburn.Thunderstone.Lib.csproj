@@ -76,6 +76,7 @@
     <Compile Include="MessageHandlers\SelectCardsHandler.cs" />
     <Compile Include="Messages\BuyCardMessage.cs" />
     <Compile Include="Messages\SelectCardsMessage.cs" />
+    <Compile Include="Messages\StartTurnMessage.cs" />
     <Compile Include="Messages\UpdateHandMessage.cs" />
     <Compile Include="Messages\UseAbilityMessage.cs" />
     <Compile Include="Messages\UseAbilityResponse.cs" />
@@ -117,6 +118,7 @@
     <Compile Include="MessageHandlers\UseAbilityHandler.cs" />
     <Compile Include="MessageHandlers\VillageHandler.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="PlayerAction.cs" />
     <Compile Include="PlayerState.cs" />
     <Compile Include="PlayerView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -170,6 +172,7 @@
     <Compile Include="Selectors\Sources\HandSource.cs" />
     <Compile Include="Selectors\Sources\HeroDeckSource.cs" />
     <Compile Include="Selectors\Sources\ICardSource.cs" />
+    <Compile Include="Selectors\Sources\RandomHandSource.cs" />
     <Compile Include="Selectors\Sources\TopOfDeckSource.cs" />
     <Compile Include="Selectors\IDefineSelection.cs" />
     <Compile Include="Selectors\ISelectionCallback.cs" />

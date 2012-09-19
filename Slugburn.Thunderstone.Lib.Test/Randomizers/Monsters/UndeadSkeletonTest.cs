@@ -51,10 +51,10 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Monsters
             var hero1 = context.GivenHeroFromTopOfDeck(x => x.Level == 1);
             var hero2 = context.GivenHeroFromVillage(x => x.Level == 2);
             context.GivenPlayerHand(necrophidius, hero0, hero1, hero2);
-            context.GivenPlayerState(PlayerState.Rest);
+            context.GivenTestPlayerState(Phase.Trophy);
 
             // Act
-            necrophidius.GetAbilities(Phase.Trophy).Single().Action(context.Player);
+            context.WhenUsingAbilityOf(necrophidius);
 
             // Assert
             Assert.That(context.SelectCardsIds, Is.EquivalentTo(new[] {hero0.Id, hero1.Id}));

@@ -71,7 +71,7 @@ namespace Slugburn.Thunderstone.Web
             SelectCardsHandler.Do(player, cardIds);
         }
 
-        void IPlayerView.StartTurn()
+        void IPlayerView.StartTurn(StartTurnMessage message)
         {
             Caller.displayStartTurn();
         }

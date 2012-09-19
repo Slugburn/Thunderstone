@@ -18,7 +18,17 @@ namespace Slugburn.Thunderstone.Lib.Test
             Set(game.CurrentPlayer);
             Player.View.Stub(x => x.SelectCards(null))
                 .IgnoreArguments()
-                .WhenCalled(inv => Set((SelectCardsMessage) inv.Arguments[0]));
+                .WhenCalled(inv =>
+                    {
+                        var message = (SelectCardsMessage) inv.Arguments[0];
+                        Set(message);
+                        var selectCardBehavior = Get<Func<SelectCardsMessage, IEnumerable<long>>>();
+                        if (selectCardBehavior != null)
+                            Player.SelectCardsCallback(selectCardBehavior(message));
+                    });
+            Player.View.Stub(x => x.StartTurn(null))
+                .IgnoreArguments()
+                .WhenCalled(inv => Set((StartTurnMessage) inv.Arguments[0]));
             // Fill up the dungeon hall
             while (game.Dungeon.Ranks[0].Card == null)
                 game.AdvanceDungeon();

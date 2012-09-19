@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
+using Slugburn.Thunderstone.Lib.Abilities;
+using Slugburn.Thunderstone.Lib.Selectors;
 
 namespace Slugburn.Thunderstone.Lib.Randomizers.Curses
 {
-    class CurseOfWar : CurseRandomizer
+    public class CurseOfWar : CurseRandomizer
     {
         public CurseOfWar() : base("War")
         {
@@ -24,7 +22,17 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Curses
                    + "<b>Trophy:</b> Attack -1"
                    + "<br/><br/>" + "<b>Village/Dungeon:</b> Select 2 random cards from your hand <i>(excluding this card).</i>  "
                    + "You may destroy 1 of them to destroy this card.";
-            // TODO: Implement
+            card.CreateAbility()
+                .Description("Select 2 random cards from your hand. You may destroy 1 of them to destroy this card.")
+                .SelectCards(source => source.FromRandomHandSelection(2, c => c != card)
+                                           .Caption("Curse of War").Message("Destroy 1 card."))
+                .OnCardsSelected(x =>
+                    {
+                        x.Player.DestroyCard(x.Selected.First(), card.Name);
+                        x.Player.DestroyCard(card, card.Name);
+                    })
+                .Condition(p => p.Hand.Count >= 3)
+                .On(Phase.Village, Phase.Dungeon);
         }
     }
 }

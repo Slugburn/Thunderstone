@@ -20,13 +20,14 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Curses
             var hero1 = context.GivenHeroFromTopOfDeck(x => x.Level == 1);
             var hero2 = context.GivenHeroFromTopOfDeck(x => x.Level == 1);
             context.GivenPlayerHand(curse, whetmage, hero1, hero2);
+            context.GivenTestPlayerState(Phase.Dungeon);
             player.Xp = 2;
 
             var levelOtherHero = whetmage.GetAbilities().First();
             var curseAbility = curse.GetAbilities().First();
 
             // Act
-            context.WhenUsingAbility(levelOtherHero);
+            context.WhenUsingAbilityOf(whetmage);
 
             // Assert
             Assert.That(player.ActiveAbilities, Has.No.Member(curseAbility));
