@@ -95,5 +95,12 @@ namespace Slugburn.Thunderstone.Lib.Test
         {
             context.Player.State = new PlayerState(null, p => { }, abilityTypes);
         }
+
+        public static Ability AddAbilityStub(this TestContext context, Phase phase)
+        {
+            var ability = new Ability(phase, "Ability stub", p => { });
+            context.Player.ActiveAbilities.Add(ability);
+            return ability;
+        }
     }
 }

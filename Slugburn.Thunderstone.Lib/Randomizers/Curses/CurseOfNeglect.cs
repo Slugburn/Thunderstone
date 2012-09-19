@@ -1,3 +1,6 @@
+using Slugburn.Thunderstone.Lib.Abilities;
+using Slugburn.Thunderstone.Lib.Modifiers;
+
 namespace Slugburn.Thunderstone.Lib.Randomizers.Curses
 {
     public class CurseOfNeglect : CurseRandomizer
@@ -13,7 +16,14 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Curses
 
         protected override void Modify(Card card)
         {
-            // TODO: Implement
+            card.CreateAbility()
+                .Description("Lose 2 gold to destroy this curse.")
+                .Action(player =>
+                    {
+                        player.AddModifier(new PlusMod(card, Attr.Gold, -2));
+                        player.DestroyCard(card, card.Name);
+                    })
+                .On(Phase.Village);
         }
     }
 }

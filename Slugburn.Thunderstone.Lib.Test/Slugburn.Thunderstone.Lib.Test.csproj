@@ -59,6 +59,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Randomizers\Curses\CurseOfDiscordTest.cs" />
     <Compile Include="Randomizers\Curses\CurseOfHorrorTest.cs" />
+    <Compile Include="Randomizers\Curses\CurseOfHostilityTest.cs" />
+    <Compile Include="Randomizers\Curses\CurseOfNeglectTest.cs" />
     <Compile Include="Randomizers\Heroes\ThundermageTest.cs" />
     <Compile Include="Randomizers\Heroes\WhetmageTest.cs" />
     <Compile Include="Randomizers\Monsters\BurnmarkedFireTest.cs" />

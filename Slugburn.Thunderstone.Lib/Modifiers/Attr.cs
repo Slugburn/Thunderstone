@@ -7,6 +7,7 @@ namespace Slugburn.Thunderstone.Lib.Modifiers
         Strength,
         Health,
         Light,
-        TotalAttack
+        TotalAttack,
+        Gold
     }
 }

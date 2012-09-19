@@ -93,7 +93,7 @@ namespace Slugburn.Thunderstone.Lib
 
         public int AvailableGold
         {
-            get { return Hand.Sum(x => x.Gold ?? 0); }
+            get { return this.ApplyModifiers(Attr.Gold) ?? 0; }
         }
 
         public Game Game { get; set; }
@@ -108,13 +108,15 @@ namespace Slugburn.Thunderstone.Lib
             switch (attr)
             {
                 case Attr.Light:
-                    return BaseTotalLight();
+                    return Hand.Sum(x => x.Light ?? 0);
                 case Attr.PhysicalAttack:
-                    return BasePhysicalAttack();
+                    return Hand.Sum(x => x.PhysicalAttack ?? 0);
                 case Attr.MagicalAttack:
-                    return BaseMagicAttack();
+                    return Hand.Sum(x => x.MagicAttack ?? 0);
                 case Attr.TotalAttack:
-                    return BaseTotalAttack();
+                    return PhysicalAttack + MagicAttack;
+                case Attr.Gold:
+                    return Hand.Sum(x => x.Gold ?? 0);
                 default:
                     throw new NotImplementedException();
             }
@@ -186,29 +188,14 @@ namespace Slugburn.Thunderstone.Lib
             get { return this.ApplyModifiers(Attr.TotalAttack) ?? 0; }
         }
 
-        private int BaseTotalAttack()
-        {
-            return PhysicalAttack + MagicAttack;
-        }
-
         private int MagicAttack
         {
             get { return this.ApplyModifiers(Attr.MagicalAttack) ?? 0; }
         }
 
-        private int BaseMagicAttack()
-        {
-            return Hand.Sum(x => x.MagicAttack ?? 0);
-        }
-
         private int PhysicalAttack
         {
             get { return this.ApplyModifiers(Attr.PhysicalAttack) ?? 0; }
-        }
-
-        private int BasePhysicalAttack()
-        {
-            return Hand.Sum(x => x.PhysicalAttack ?? 0);
         }
 
         public void UseAftermathAbilities()
@@ -397,11 +384,6 @@ namespace Slugburn.Thunderstone.Lib
         public int TotalLight
         {
             get { return this.ApplyModifiers(Attr.Light) ?? 0; }
-        }
-
-        private int BaseTotalLight()
-        {
-            return Hand.Sum(x => x.Light ?? 0);
         }
 
         public string Id { get; private set; }
