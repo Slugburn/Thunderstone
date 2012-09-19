@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NUnit.Framework;
 using Slugburn.Thunderstone.Lib.Randomizers;
 
 namespace Slugburn.Thunderstone.Lib.Test
@@ -28,10 +29,11 @@ namespace Slugburn.Thunderstone.Lib.Test
                 context.Game.AdvanceDungeon();
         }
 
-        public static Card CreateCard<TRandomizer>(this TestContext context, string name) where TRandomizer : IRandomizer
+        public static Card CreateCard<TRandomizer>(this TestContext context, string name = null) where TRandomizer : IRandomizer
         {
             var randomizer = Activator.CreateInstance<TRandomizer>();
-            return randomizer.CreateCards(context.Game).First(x => x.Name == name);
+            var cards = randomizer.CreateCards(context.Game);
+            return name == null ? cards.First() : cards.First(x => x.Name == name);
         }
 
         public static Card CreateBasicCard<T>(this TestContext context) where T : ICardGen
@@ -71,12 +73,13 @@ namespace Slugburn.Thunderstone.Lib.Test
 
         public static void WhenUsingAbility(this TestContext context, Ability ability)
         {
+            Assert.That(ability.Condition(context.Player), Is.True);
             context.Player.UseAbility(ability.Id);
         }
 
-        public static void WhenBattling(this TestContext context, Card laird)
+        public static void WhenBattling(this TestContext context, Card monster)
         {
-            context.Player.OnSelectMonster(laird);
+            context.Player.OnSelectMonster(monster);
             context.Player.UseBattleAbilities();
         }
     }

@@ -28,4 +28,5 @@ _ReSharper*/
 $tf*/
 packages/
 *.ncrunchproject
+*.ncrunchsolution
 *nCrunchTemp*

@@ -59,7 +59,8 @@ namespace Slugburn.Thunderstone.Lib
 
         private static Deck CreateCurses(Game game)
         {
-            return new Deck(new Curse().CreateCards(game).Shuffle());
+            var cards = RandomizerStore.Instance[CardType.Curse].SelectMany(x => x.CreateCards(game));
+            return new Deck(cards.Shuffle());
         }
 
         private Dungeon CreateDungeon(Game game)

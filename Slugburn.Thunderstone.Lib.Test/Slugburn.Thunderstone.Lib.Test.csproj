@@ -52,7 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abilities\AbilityTest.cs" />
-    <Compile Include="Curses\CurseOfDecayTest.cs" />
+    <Compile Include="Randomizers\Curses\CurseOfDecayTest.cs" />
     <Compile Include="DungeonTest.cs" />
     <Compile Include="GameTest.cs" />
     <Compile Include="PlayerTest.cs" />

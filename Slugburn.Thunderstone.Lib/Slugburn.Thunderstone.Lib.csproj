@@ -62,7 +62,6 @@
     <Compile Include="Abilities\AbilityCreationContext.cs" />
     <Compile Include="Ability.cs" />
     <Compile Include="CardOwner.cs" />
-    <Compile Include="Curse.cs" />
     <Compile Include="Events\CardAbilityUsed.cs" />
     <Compile Include="Events\DungeonHallRefilled.cs" />
     <Compile Include="Events\EnteredDungeonHall.cs" />
@@ -147,6 +146,7 @@
     <Compile Include="Randomizers\RandomizerBase.cs" />
     <Compile Include="Randomizers\RandomizerExtensions.cs" />
     <Compile Include="Randomizers\Items\ItemRandomizer.cs" />
+    <Compile Include="Randomizers\RandomizerStore.cs" />
     <Compile Include="Randomizers\Spells\MassTeleport.cs" />
     <Compile Include="Randomizers\Spells\SummonStorm.cs" />
     <Compile Include="Randomizers\ThunderstoneBearers\Stramst.cs" />
