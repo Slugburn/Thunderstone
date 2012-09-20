@@ -24,7 +24,7 @@ namespace Slugburn.Thunderstone.Lib
             Hand = new List<Card>();
             ActiveAbilities = new List<Ability>();
             _mods = new List<IAttributeMod>();
-            _events = new EventAggregator();
+            _events = new SimpleAggregator();
             ValidActions = GetAllActions();
         }
 

@@ -70,6 +70,7 @@
     <Compile Include="Events\IEventAggregator.cs" />
     <Compile Include="Events\AttackRankSelected.cs" />
     <Compile Include="Events\MonsterDefeated.cs" />
+    <Compile Include="Events\SimpleAggregator.cs" />
     <Compile Include="IPlayerView.cs" />
     <Compile Include="MessageHandlers\DungeonHandler.cs" />
     <Compile Include="MessageHandlers\PrepareHandler.cs" />
@@ -163,6 +164,8 @@
     <Compile Include="Randomizers\VillageRandomizer.cs" />
     <Compile Include="Randomizers\Villagers\BountyHunter.cs" />
     <Compile Include="Randomizers\Spells\SpellRandomizer.cs" />
+    <Compile Include="Randomizers\Weapons\DancingSword.cs" />
+    <Compile Include="Randomizers\Weapons\Pike.cs" />
     <Compile Include="Randomizers\Weapons\WeaponRandomizer.cs" />
     <Compile Include="Randomizers\Weapons\FalconArbalest.cs" />
     <Compile Include="Randomizers\Weapons\SnakeheadFlail.cs" />

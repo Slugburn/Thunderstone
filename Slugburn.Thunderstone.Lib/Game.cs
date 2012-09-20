@@ -14,7 +14,7 @@ namespace Slugburn.Thunderstone.Lib
         public Game()
         {
             Players = new List<Player>();
-            _events = new EventAggregator();
+            _events = new SimpleAggregator();
         }
 
         public List<Player> Players { get; private set; }

@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections.Concurrent;
 
 namespace Slugburn.Thunderstone.Lib.Events
 {
     public interface IEventAggregator
     {
         void Publish<TEvent>(TEvent ev);
-        IObservable<TEvent> Observe<TEvent>();
         IDisposable Subscribe<TEvent>(Action<TEvent> action);
     }
 }
