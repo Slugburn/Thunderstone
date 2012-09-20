@@ -14,7 +14,7 @@ namespace Slugburn.Thunderstone.Lib
     {
         public IPlayerView View { get; private set; }
         private readonly IEventAggregator _events;
-        private List<IAttributeMod> _mods;
+        private readonly List<IAttributeMod> _mods;
 
         public Player(string id, IPlayerView view)
         {
@@ -25,6 +25,12 @@ namespace Slugburn.Thunderstone.Lib
             ActiveAbilities = new List<Ability>();
             _mods = new List<IAttributeMod>();
             _events = new EventAggregator();
+            ValidActions = GetAllActions();
+        }
+
+        private static IEnumerable<PlayerAction> GetAllActions()
+        {
+            return new[] {PlayerAction.Village, PlayerAction.Dungeon, PlayerAction.Prepare, PlayerAction.Rest};
         }
 
         public PlayerState State { get; set; }
@@ -88,6 +94,7 @@ namespace Slugburn.Thunderstone.Lib
                 });
             Hand.AddRange(cardList);
             ActiveAbilities.AddRange(cardList.SelectMany(x => x.GetAbilities()));
+            Hand.Each(c => PublishEvent(new CardDrawnToHand(c)));
             SendUpdateHand();
         }
 
@@ -137,8 +144,10 @@ namespace Slugburn.Thunderstone.Lib
         {
             State = PlayerState.SelectingAction;
             Won = false;
-            View.StartTurn(new StartTurnMessage());
+            View.StartTurn(StartTurnMessage.From(ValidActions));
         }
+
+        public IEnumerable<PlayerAction> ValidActions { get; set; }
 
         public void SelectMonster()
         {
@@ -350,6 +359,7 @@ namespace Slugburn.Thunderstone.Lib
         {
             View.HideUseAbility();
             DiscardHand();
+            ValidActions = GetAllActions();
             DrawHand();
             _mods.Clear();
             Game.EndTurn();

@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Slugburn.Thunderstone.Lib.Abilities;
+using Slugburn.Thunderstone.Lib.Events;
 using Slugburn.Thunderstone.Lib.Selectors;
 
 namespace Slugburn.Thunderstone.Lib.Randomizers.Curses
@@ -22,6 +23,15 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Curses
                    + "<b>Trophy:</b> Attack -1"
                    + "<br/><br/>" + "<b>Village/Dungeon:</b> Select 2 random cards from your hand <i>(excluding this card).</i>  "
                    + "You may destroy 1 of them to destroy this card.";
+
+            card.AddEventHandler(
+                events => events.Subscribe<CardDrawnToHand>(
+                    ev =>
+                        {
+                            if (ev.Card == card)
+                                card.Player.ValidActions = card.Player.ValidActions.Except(new[] {PlayerAction.Prepare, PlayerAction.Rest});
+                        }));
+            
             card.CreateAbility()
                 .Description("Select 2 random cards from your hand. You may destroy 1 of them to destroy this card.")
                 .SelectCards(source => source.FromRandomHandSelection(2, c => c != card)

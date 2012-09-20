@@ -73,7 +73,7 @@ namespace Slugburn.Thunderstone.Web
 
         void IPlayerView.StartTurn(StartTurnMessage message)
         {
-            Caller.displayStartTurn();
+            Caller.displayStartTurn(message);
         }
 
         void IPlayerView.Log(string message)

@@ -16,16 +16,14 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Curses
             var context = new TestContext();
             var player = context.Player;
             var curse = context.CreateCard<CurseOfWar>();
+            context.GivenPlayerHand(curse);
             
             // Act
             player.StartTurn();
 
             // Assert
             var message = context.Get<StartTurnMessage>();
-            Assert.That(message.Village, Is.True);
-            Assert.That(message.Dungeon, Is.True);
-            Assert.That(message.Prepare, Is.False);
-            Assert.That(message.Rest, Is.False);
+            Assert.That(message.AvailableActions, Is.EquivalentTo(new[]{"Village", "Dungeon"}));
         }
 
         [Test]

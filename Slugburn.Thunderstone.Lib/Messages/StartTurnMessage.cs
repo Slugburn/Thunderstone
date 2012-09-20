@@ -1,10 +1,17 @@
-﻿namespace Slugburn.Thunderstone.Lib.Messages
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace Slugburn.Thunderstone.Lib.Messages
 {
     public class StartTurnMessage
     {
-        public bool Village { get; set; }
-        public bool Dungeon { get; set; }
-        public bool Prepare { get; set; }
-        public bool Rest { get; set; }
+
+        public IEnumerable<string> AvailableActions { get; set; }
+
+        public static StartTurnMessage From(IEnumerable<PlayerAction> validActions)
+        {
+            return new StartTurnMessage {AvailableActions = validActions.Select(x=>x.ToString())};
+        }
+
     }
 }

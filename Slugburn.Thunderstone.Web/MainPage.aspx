@@ -355,10 +355,10 @@
                 <hr />
                 <div id="playerPanel" data-bind="with: playerPanel">
                     <span data-bind="text: playerPanel.text"></span>
-                    <button data-bind="click: village, visible: commandsVisible" class="center" style="width: 100px;">Village</button>
-                    <button data-bind="click: dungeon, visible: commandsVisible" class="center" style="width: 100px;">Dungeon</button>
-                    <button data-bind="click: prepare, visible: commandsVisible" class="center" style="width: 100px;">Prepare</button>
-                    <button data-bind="click: rest, visible: commandsVisible" class="center" style="width: 100px;">Rest</button>
+                    <button data-bind="click: village, visible: commandsVisible, enable: villageEnabled" class="center" style="width: 100px;">Village</button>
+                    <button data-bind="click: dungeon, visible: commandsVisible, enable: dungeonEnabled" class="center" style="width: 100px;">Dungeon</button>
+                    <button data-bind="click: prepare, visible: commandsVisible, enable: prepareEnabled" class="center" style="width: 100px;">Prepare</button>
+                    <button data-bind="click: rest, visible: commandsVisible, enable: restEnabled" class="center" style="width: 100px;">Rest</button>
                 </div>
             </div>
         </div>
@@ -369,9 +369,9 @@
             <div data-bind="text: Phase" class="block center sectionTitle" style="width: 100%"></div>
             <div class="table">
                 <div class="row">
-                    <span class="cell sectionTitle" style="width: 100px;">Card</span>
-                    <span class="cell sectionTitle">Use</span>
-                    <span class="cell sectionTitle" style="width: 250px;">Ability</span>
+                    <span class="cell sectionTitle" style="width: 110px;">Card</span>
+                    <span class="cell sectionTitle" style="width: 40px;">Use</span>
+                    <span class="cell sectionTitle" style="width: 450px;">Ability</span>
                 </div>
                 <!-- ko foreach: Abilities -->
                 <div class="row">
@@ -507,8 +507,13 @@
                 createTooltips();
             };
 
-            hub.displayStartTurn = function () {
-                displayMenu();
+            hub.displayStartTurn = function (message) {
+                gameBoard.playerPanel.text('');
+                gameBoard.playerPanel.commandsVisible(true);
+                gameBoard.playerPanel.villageEnabled($.inArray('Village', message.AvailableActions) !== -1);
+                gameBoard.playerPanel.dungeonEnabled($.inArray('Dungeon', message.AvailableActions) !== -1);
+                gameBoard.playerPanel.prepareEnabled($.inArray('Prepare', message.AvailableActions) !== -1);
+                gameBoard.playerPanel.restEnabled($.inArray('Rest', message.AvailableActions) !== -1);
             };
 
             hub.displayBuyCard = function (message) {
@@ -580,10 +585,6 @@
                 hub.startGame();
             });
 
-            function displayMenu() {
-                gameBoard.playerPanel.text('');
-                gameBoard.playerPanel.commandsVisible(true);
-            }
 
             function createTooltips(context) {
                 $('.minicard', context).each(function () {
@@ -678,6 +679,10 @@
             self.hub = hub;
             self.text = ko.observable();
             self.commandsVisible = ko.observable(false);
+            self.villageEnabled = ko.observable();
+            self.dungeonEnabled = ko.observable();
+            self.prepareEnabled = ko.observable();
+            self.restEnabled = ko.observable();
 
             self.village = function () {
                 self.commandsVisible(false);
