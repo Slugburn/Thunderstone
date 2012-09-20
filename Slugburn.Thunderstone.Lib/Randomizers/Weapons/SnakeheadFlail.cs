@@ -1,3 +1,4 @@
+using System.Linq;
 using Slugburn.Thunderstone.Lib.Abilities;
 using Slugburn.Thunderstone.Lib.Modifiers;
 
@@ -16,7 +17,7 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Weapons
         protected override void Modify(Card card)
         {
             base.Modify(card);
-            card.MagicAttack = 1;
+            card.PotentialMagicAttack = ()=>card.Player != null ? 1+card.Player.Hand.Where(c=>c.IsHero()).Max(c=>c.Level) : (int?)null;
             card.CreateAbility()
                 .EquipWeapon((player, hero) => hero.AddModifier(new PlusMod(card, Attr.MagicalAttack, 1 + hero.Level)))
                 .On(Phase.Equip);

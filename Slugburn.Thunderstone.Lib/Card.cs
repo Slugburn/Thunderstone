@@ -57,14 +57,13 @@ namespace Slugburn.Thunderstone.Lib
 
         public int? PhysicalAttack
         {
-            get { return Type == CardType.Weapon ? null : this.ApplyModifiers(Attr.PhysicalAttack); }
+            get { return this.ApplyModifiers(Attr.PhysicalAttack); }
             set { _physicalAttack = value; }
         }
 
-        public int? PotentialPhysicalAttack
-        {
-            get { return Type == CardType.Weapon && !IsEquipped ? _physicalAttack : null; }
-        }
+        public Func<int?> PotentialPhysicalAttack { get; set; }
+
+        public Func<int?> PotentialMagicAttack { get; set; }
 
         public int? Xp { get; set; }
 
@@ -72,13 +71,8 @@ namespace Slugburn.Thunderstone.Lib
 
         public int? MagicAttack
         {
-            get { return Type == CardType.Weapon ? null : this.ApplyModifiers(Attr.MagicalAttack); }
+            get { return this.ApplyModifiers(Attr.MagicalAttack); }
             set { _magicAttack = value; }
-        }
-
-        public int? PotentialMagicAttack
-        {
-            get { return Type == CardType.Weapon && !IsEquipped ? _magicAttack : null; }
         }
 
         public int? Health

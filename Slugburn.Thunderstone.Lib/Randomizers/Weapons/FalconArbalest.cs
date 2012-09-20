@@ -19,7 +19,7 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Weapons
         {
             base.Modify(card);
 
-            card.PhysicalAttack = 0;
+            card.PotentialPhysicalAttack = () => 5;
 
             card.CreateAbility()
                 .EquipWeapon((player, hero) =>

@@ -1,41 +1,65 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Slugburn.Thunderstone.Lib.Randomizers;
-using Slugburn.Thunderstone.Lib.Randomizers.Heroes;
-using Slugburn.Thunderstone.Lib.Randomizers.Items;
-using Slugburn.Thunderstone.Lib.Randomizers.Monsters;
-using Slugburn.Thunderstone.Lib.Randomizers.Spells;
-using Slugburn.Thunderstone.Lib.Randomizers.ThunderstoneBearers;
-using Slugburn.Thunderstone.Lib.Randomizers.Villagers;
-using Slugburn.Thunderstone.Lib.Randomizers.Weapons;
 
 namespace Slugburn.Thunderstone.Lib
 {
     public class GameSetup
     {
         private readonly IRandomizer[] _randomizers;
+        private RandomizerStore _store;
 
         public GameSetup()
         {
-            _randomizers = new IRandomizer[]
-                               {
-                                   new Stramst(),
-                                   new BurnmarkedFire(),
-                                   new KoboldHumanoid(), 
-                                   new UndeadSkeleton(), 
-                                   new Whetmage(),
-                                   new Criochan(),
-                                   new Drua(),
-                                   new Thundermage(),
-                                   new FalconArbalest(),
-                                   new SnakeheadFlail(),
-                                   new KingCaelansWrit(),
-                                   new Moonstone(),
-                                   new MassTeleport(),
-                                   new SummonStorm(),
-                                   new BattlescarredSoldier(),
-                                   new BountyHunter()
-                               };
+            _store = RandomizerStore.Instance;
+            _randomizers =  RandomThunderstoneBearers()
+                .Concat(RandomMonsters())
+                .Concat(RandomHeroes())
+                .Concat(RandomVillage())
+                .ToArray();
+        }
+
+        private IEnumerable<IRandomizer> RandomThunderstoneBearers()
+        {
+            return new[] { _store[CardType.ThunderstoneBearer].PickRandom() };
+        }
+
+        private IEnumerable<IRandomizer> RandomMonsters()
+        {
+            return _store[CardType.Monster].Shuffle().Take(3);
+        }
+
+        private IEnumerable<IRandomizer> RandomHeroes()
+        {
+            return _store[CardType.Hero].Shuffle().Take(4);
+        }
+
+        private IEnumerable<IRandomizer> RandomVillage()
+        {
+            var maxCount = new Dictionary<CardType, int>
+                {
+                    {CardType.Weapon, 3},
+                    {CardType.Item, 2},
+                    {CardType.Spell, 3},
+                    {CardType.Villager, 3}
+                };
+            var shuffled = _store[CardType.Weapon]
+                .Concat(_store[CardType.Item])
+                .Concat(_store[CardType.Spell])
+                .Concat(_store[CardType.Villager])
+                .Shuffle();
+            var list = new List<IRandomizer>();
+
+            var i = 0;
+            while(list.Count < 8)
+            {
+                var rand = shuffled[i];
+                var type = rand.Type;
+                if (list.Count(x=>x.Type==type) < maxCount[type])
+                    list.Add(rand);
+                i++;
+            }
+            return list;
         }
 
         public ILookup<CardType, IRandomizer> GetRandomizersByType()

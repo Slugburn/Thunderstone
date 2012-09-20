@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Slugburn.Thunderstone.Lib.Abilities;
-using Slugburn.Thunderstone.Lib.Models;
 
 namespace Slugburn.Thunderstone.Lib
 {
@@ -15,10 +13,10 @@ namespace Slugburn.Thunderstone.Lib
             return Enumerable.Range(0, count).Select(x => gen.Create(game));
         }
 
-        public static List<Card> Shuffle(this IEnumerable<Card> cards)
+        public static List<T> Shuffle<T>(this IEnumerable<T> cards)
         {
-            var list = cards as IList<Card> ?? new List<Card>(cards);
-            var shuffled = new List<Card>();
+            var list = cards as List<T> ?? new List<T>(cards);
+            var shuffled = new List<T>();
             while (list.Count > 0)
             {
                 var randomIndex = Random.Next(list.Count);
@@ -57,12 +55,12 @@ namespace Slugburn.Thunderstone.Lib
 
         public static bool HasMagicAttack(this Card card)
         {
-            return (card.MagicAttack ?? 0) + (card.PotentialMagicAttack ?? 0) > 0;
+            return (card.MagicAttack ?? 0) + (card.PotentialMagicAttack() ?? 0) > 0;
         }
 
         public static bool HasPhysicalAttack(this Card card)
         {
-            return (card.PhysicalAttack ?? 0) + (card.PotentialPhysicalAttack ?? 0) > 0;
+            return (card.PhysicalAttack ?? 0) + (card.PotentialPhysicalAttack() ?? 0) > 0;
         }
     }
 }

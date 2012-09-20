@@ -1,3 +1,6 @@
+using Slugburn.Thunderstone.Lib.Abilities;
+using Slugburn.Thunderstone.Lib.Modifiers;
+
 namespace Slugburn.Thunderstone.Lib.Randomizers.Weapons
 {
     public class DancingSword : WeaponRandomizer
@@ -14,10 +17,12 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Weapons
         protected override void Modify(Card card)
         {
             base.Modify(card);
-            card.PhysicalAttack = 2;
+            card.PotentialPhysicalAttack = () => 2;
             card.MagicAttack = 2;
 
-            // TODO: Implement dancing
+            card.CreateAbility()
+                .EquipWeapon(Attr.PhysicalAttack, 2)
+                .On(Phase.Equip);
         }
     }
 }
