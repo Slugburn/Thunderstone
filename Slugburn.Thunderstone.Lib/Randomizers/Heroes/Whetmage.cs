@@ -99,22 +99,22 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Heroes
                 .SelectCards(source => source.HeroToLevel(validCardFilter))
                 .OnCardsSelected(x => { })
                 .SelectCards(source =>
-                {
-                    var hero = source.SelectionContext.Selected.First();
-                    return source.SelectHeroUpgrade(hero);
-                })
+                    {
+                        var hero = source.SelectionContext.Selected.First();
+                        return source.SelectHeroUpgrade(hero);
+                    })
                 .OnCardsSelected(x =>
-                {
-                    var hero = x.PreviousSelection.First();
-                    var upgrade = x.Selected.First();
-                    x.Source.Draw(new[] { upgrade });
-                    x.Player.Xp -= (hero.Xp ?? 0);
-                    x.Player.DestroyCard(hero, "Upgrading to {0}".Template(upgrade.Name));
-                    var leveledUp = card.GetData<List<Card>>() ?? new List<Card>();
-                    leveledUp.Add(upgrade);
-                    card.SetData(leveledUp);
-                })
-                .Condition(player => player.Hand.Any(validCardFilter));
+                    {
+                        var hero = x.PreviousSelection.First();
+                        var upgrade = x.Selected.First();
+                        x.Source.Draw(new[] {upgrade});
+                        x.Player.Xp -= (hero.Xp ?? 0);
+                        x.Player.DestroyCard(hero, "Upgrading to {0}".Template(upgrade.Name));
+                        var leveledUp = card.GetData<List<Card>>() ?? new List<Card>();
+                        leveledUp.Add(upgrade);
+                        card.SetData(leveledUp);
+                    });
+//                .Condition(player => player.Hand.Any(validCardFilter));
         }
 
     }

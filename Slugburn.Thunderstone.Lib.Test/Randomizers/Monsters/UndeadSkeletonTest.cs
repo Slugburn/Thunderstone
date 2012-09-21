@@ -13,7 +13,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Monsters
             // Arrange
             var context = new TestContext();
             var hero = context.GivenHeroFromTopOfDeck(x => x.Level == 0);
-            context.GivenPlayerHand(hero);
+            context.SetPlayerHand(hero);
             var ossuous = context.GivenMonsterInFirstRank<UndeadSkeleton>("Ossuous");
 
             // Act
@@ -30,7 +30,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Monsters
             // Arrange
             var context = new TestContext();
             var hero = context.GivenHeroFromTopOfDeck(x => x.Level == 1);
-            context.GivenPlayerHand(hero);
+            context.SetPlayerHand(hero);
             var ossuous = context.GivenMonsterInFirstRank<UndeadSkeleton>("Ossuous");
 
             // Act
@@ -50,11 +50,11 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Monsters
             var hero0 = context.GivenHeroFromTopOfDeck(x => x.Level == 0);
             var hero1 = context.GivenHeroFromTopOfDeck(x => x.Level == 1);
             var hero2 = context.GivenHeroFromVillage(x => x.Level == 2);
-            context.GivenPlayerHand(necrophidius, hero0, hero1, hero2);
-            context.GivenTestPlayerState(Phase.Trophy);
+            context.SetPlayerHand(necrophidius, hero0, hero1, hero2);
+            context.SetTestPlayerState(Phase.Trophy);
 
             // Act
-            context.WhenUsingAbilityOf(necrophidius);
+            context.UseAbilityOf(necrophidius);
 
             // Assert
             Assert.That(context.SelectCardsIds, Is.EquivalentTo(new[] {hero0.Id, hero1.Id}));

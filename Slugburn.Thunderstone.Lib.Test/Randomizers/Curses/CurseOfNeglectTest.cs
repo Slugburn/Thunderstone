@@ -15,11 +15,11 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Curses
             var player = context.Player;
             var curse = context.CreateCard<CurseOfNeglect>();
             var longspear = context.CreateBasicCard<Longspear>();
-            context.GivenPlayerHand(curse, longspear);
-            context.GivenTestPlayerState(Phase.Village);
+            context.SetPlayerHand(curse, longspear);
+            context.SetTestPlayerState(Phase.Village);
 
             // Act
-            context.WhenUsingAbilityOf(curse);
+            context.UseAbilityOf(curse);
 
             // Assert
             Assert.That(player.Hand, Has.No.Member(curse));
@@ -33,11 +33,11 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Curses
             var player = context.Player;
             var curse = context.CreateCard<CurseOfNeglect>();
             var longspear = context.CreateBasicCard<Longspear>();
-            context.GivenPlayerHand(curse, longspear);
-            context.GivenTestPlayerState(Phase.Village);
+            context.SetPlayerHand(curse, longspear);
+            context.SetTestPlayerState(Phase.Village);
 
             // Act
-            context.WhenUsingAbilityOf(curse);
+            context.UseAbilityOf(curse);
 
             // Assert
             Assert.That(player.AvailableGold, Is.EqualTo(0));

@@ -24,7 +24,7 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Items
                                          x.Player.AddToTopOfDeck(hero);
                                          x.Player.DestroyCard(card, card.Name);
                                      })
-                .Condition(player => new TopOfDeckSource(player, CardType.Hero).GetCards().Any())
+//                .Condition(player => new TopOfDeckSource(player, CardType.Hero).GetCards().Any())
                 .ContinueWith(player => player.EndTurn())
                 .On(Phase.Village);
 

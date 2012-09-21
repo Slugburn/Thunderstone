@@ -23,7 +23,7 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Curses
                                            .Caption("Curse of Neglect").Message("Discard 2 cards.").Min(2).Max(2))
                 .OnCardsSelected(context => context.Player.DiscardCards(context.Selected))
                 .Action(player => player.DestroyCard(card, card.Name))
-                .Condition(player => player.Hand.Count >= 3)
+//                .Condition(player => player.Hand.Count >= 3)
                 .On(Phase.Village, Phase.Dungeon);
         }
     }

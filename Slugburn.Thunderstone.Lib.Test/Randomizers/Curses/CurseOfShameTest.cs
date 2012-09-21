@@ -13,11 +13,11 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Curses
             var context = new TestContext();
             var player = context.Player;
             var curse = context.CreateCard<CurseOfShame>();
-            context.GivenPlayerHand(curse);
-            context.GivenTestPlayerState(Phase.Village);
+            context.SetPlayerHand(curse);
+            context.SetTestPlayerState(Phase.Village);
 
             // Act
-            context.WhenUsingAbilityOf(curse);
+            context.UseAbilityOf(curse);
 
             // Assert
             Assert.That(player.Hand, Has.No.Member(curse));
@@ -30,11 +30,11 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Curses
             var context = new TestContext();
             var player = context.Player;
             var curse = context.CreateCard<CurseOfShame>();
-            context.GivenPlayerHand(curse);
-            context.GivenTestPlayerState(Phase.Village);
+            context.SetPlayerHand(curse);
+            context.SetTestPlayerState(Phase.Village);
 
             // Act
-            context.WhenUsingAbilityOf(curse);
+            context.UseAbilityOf(curse);
             context.Player.EndTurn();
 
             // Assert

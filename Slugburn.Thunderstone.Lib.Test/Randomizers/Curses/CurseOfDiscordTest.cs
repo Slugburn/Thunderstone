@@ -18,10 +18,10 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Curses
             var regular = context.CreateBasicCard<Regular>();
             var torch = context.CreateBasicCard<Torch>();
             var longspear = context.CreateBasicCard<Longspear>();
-            context.GivenPlayerHand(curse, regular, torch, longspear);
+            context.SetPlayerHand(curse, regular, torch, longspear);
 
             // Act
-            context.WhenUsingAbilityOf(curse);
+            context.UseAbilityOf(curse);
 
             // Assert
             Assert.That(context.SelectCardsIds, Has.No.Member(curse.Id));
@@ -34,7 +34,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Curses
             var context = new TestContext();
             var curse = context.CreateCard<CurseOfDiscord>();
             var regular = context.CreateBasicCard<Regular>();
-            context.GivenPlayerHand(curse, regular);
+            context.SetPlayerHand(curse, regular);
 
             // Act
             var usable = curse.GetAbilities().First().Condition(context.Player);

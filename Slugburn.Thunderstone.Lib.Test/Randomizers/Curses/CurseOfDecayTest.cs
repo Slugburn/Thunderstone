@@ -19,15 +19,15 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Curses
             var whetmage = context.CreateCard<Whetmage>();
             var hero1 = context.GivenHeroFromTopOfDeck(x => x.Level == 1);
             var hero2 = context.GivenHeroFromTopOfDeck(x => x.Level == 1);
-            context.GivenPlayerHand(curse, whetmage, hero1, hero2);
-            context.GivenTestPlayerState(Phase.Dungeon);
+            context.SetPlayerHand(curse, whetmage, hero1, hero2);
+            context.SetTestPlayerState(Phase.Dungeon);
             player.Xp = 2;
 
             var levelOtherHero = whetmage.GetAbilities().First();
             var curseAbility = curse.GetAbilities().First();
 
             // Act
-            context.WhenUsingAbilityOf(whetmage);
+            context.UseAbilityOf(whetmage);
 
             // Assert
             Assert.That(player.ActiveAbilities, Has.No.Member(curseAbility));
@@ -42,14 +42,14 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Curses
             var curse = context.CreateCard<CurseOfDecay>();
             var regular = context.CreateBasicCard<Regular>();
             var longspear = context.CreateBasicCard<Longspear>();
-            context.GivenPlayerHand(curse, regular, longspear);
+            context.SetPlayerHand(curse, regular, longspear);
             player.State = PlayerState.Dungeon;
 
             var equipLongspear = longspear.GetAbilities().First();
             var curseAbility = curse.GetAbilities().First();
 
             // Act
-            context.WhenUsingAbility(equipLongspear);
+            context.UseAbility(equipLongspear);
 
             // Assert
             Assert.That(player.ActiveAbilities, Has.Member(curseAbility));

@@ -168,11 +168,7 @@ namespace Slugburn.Thunderstone.Lib
                 .Filter(card => validTargets.Any(x => x == card))
                 .Caption("Select Monster").Message("Select a monster to fight")
                 .Callback(x => OnSelectMonster(x.Selected.First()))
-                .SendRequest(player =>
-                                 {
-                                     ActiveAbilities.AddRange(AttackedRank.Card.GetAbilities());
-                                     UseBattleAbilities();
-                                 });
+                .SendRequest(player => UseBattleAbilities());
         }
 
         public void UseBattleAbilities()
@@ -269,7 +265,8 @@ namespace Slugburn.Thunderstone.Lib
         public void OnSelectMonster(Card monster)
         {
             AttackedRank = Game.Dungeon.GetRankOf(monster);
-            PublishEvent(new AttackRankSelected {Player = this, AttackedRank = AttackedRank});
+            ActiveAbilities.AddRange(AttackedRank.Card.GetAbilities());
+            PublishEvent(new AttackRankSelected { Player = this, AttackedRank = AttackedRank });
         }
 
         public void PublishEvent<T>(T e)

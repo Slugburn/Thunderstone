@@ -40,7 +40,7 @@ namespace Slugburn.Thunderstone.Lib.Selectors
 
         public void SendRequest(Action<SelectionContext> continuation)
         {
-            var selectFrom = (Filter == null ? Source.GetCards() : Source.GetCards().Where(card => Filter(card))).ToList();
+            var selectFrom = GetSourceCards();
             Action<IEnumerable<long>> callback = selectedIds =>
             {
                 PreviousSelection = Selected;
@@ -57,6 +57,11 @@ namespace Slugburn.Thunderstone.Lib.Selectors
             {
                 SelectCard(selectFrom, callback);
             }
+        }
+
+        public List<Card> GetSourceCards()
+        {
+            return (Filter == null ? Source.GetCards() : Source.GetCards().Where(card => Filter(card))).ToList();
         }
 
         private void SelectCard(IEnumerable<Card> cards, Action<IEnumerable<long>> callback)

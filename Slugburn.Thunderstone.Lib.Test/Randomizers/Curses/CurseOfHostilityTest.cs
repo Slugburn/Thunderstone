@@ -13,12 +13,12 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Curses
             var context = new TestContext();
             var player = context.Player;
             var curse = context.CreateCard<CurseOfHostility>();
-            context.GivenPlayerHand(curse);
-            context.GivenTestPlayerState(Phase.Dungeon);
+            context.SetPlayerHand(curse);
+            context.SetTestPlayerState(Phase.Dungeon);
             player.Xp = 2;
 
             // Act
-            context.WhenUsingAbilityOf(curse);
+            context.UseAbilityOf(curse);
 
             // Assert
             Assert.That(player.Hand, Has.No.Member(curse));

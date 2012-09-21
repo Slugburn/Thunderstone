@@ -16,11 +16,11 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Curses
             var curse = context.CreateCard<CurseOfSloth>();
             var sergeant = context.CreateCard<Criochan>();
             var summoner = context.CreateCard<Thundermage>();
-            context.GivenPlayerHand(curse, sergeant, summoner);
-            context.GivenTestPlayerState(Phase.Dungeon);
+            context.SetPlayerHand(curse, sergeant, summoner);
+            context.SetTestPlayerState(Phase.Dungeon);
 
             // Act
-            context.WhenUsingAbilityOf(curse);
+            context.UseAbilityOf(curse);
 
             // Assert
             Assert.That(player.TotalAttack, Is.EqualTo(sergeant.TotalAttack + summoner.TotalAttack - 3));
@@ -33,11 +33,11 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Curses
             var context = new TestContext();
             var player = context.Player;
             var curse = context.CreateCard<CurseOfSloth>();
-            context.GivenPlayerHand(curse);
-            context.GivenTestPlayerState(Phase.Dungeon);
+            context.SetPlayerHand(curse);
+            context.SetTestPlayerState(Phase.Dungeon);
 
             // Act
-            context.WhenUsingAbilityOf(curse);
+            context.UseAbilityOf(curse);
 
             // Assert
             Assert.That(player.Hand, Has.No.Member(curse));
@@ -54,12 +54,12 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Curses
             var context = new TestContext();
             var player = context.Player;
             var curse = context.CreateCard<CurseOfSloth>();
-            context.GivenPlayerHand(curse);
+            context.SetPlayerHand(curse);
             var otherAbility = context.AddAbilityStub(phase);
-            context.GivenTestPlayerState(Phase.Dungeon);
+            context.SetTestPlayerState(Phase.Dungeon);
 
             // Act
-            context.WhenUsingAbilityOf(curse);
+            context.UseAbilityOf(curse);
 
             // Assert
             Assert.That(player.ActiveAbilities.Contains(otherAbility), Is.EqualTo(isActive));

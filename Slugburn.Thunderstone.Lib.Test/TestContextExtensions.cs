@@ -57,7 +57,7 @@ namespace Slugburn.Thunderstone.Lib.Test
             return card;
         }
 
-        public static void GivenPlayerHand(this TestContext context, params Card[] cards)
+        public static void SetPlayerHand(this TestContext context, params Card[] cards)
         {
             context.Player.DiscardHand();
             context.Player.AddCardsToHand(cards);
@@ -73,14 +73,14 @@ namespace Slugburn.Thunderstone.Lib.Test
             return card.GetAbilities().First();
         }
 
-        public static Ability WhenUsingAbilityOf(this TestContext context, Card card)
+        public static Ability UseAbilityOf(this TestContext context, Card card)
         {
-            var ability = context.GivenAbilityOf(card);
-            context.WhenUsingAbility(ability);
+            var ability = context.GetAbilityOf(card);
+            context.UseAbility(ability);
             return ability;
         }
 
-        public static Ability GivenAbilityOf(this TestContext context, Card card)
+        public static Ability GetAbilityOf(this TestContext context, Card card)
         {
             Assert.That(context.Player.State, Is.Not.Null, "Player state has not been set.");
             var ability = card.GetAbilities().FirstOrDefault(x => context.Player.State.AbilityTypes.Contains(x.Phase));
@@ -88,19 +88,21 @@ namespace Slugburn.Thunderstone.Lib.Test
             return ability;
         }
 
-        public static void WhenUsingAbility(this TestContext context, Ability ability)
+        public static void UseAbility(this TestContext context, Ability ability)
         {
-            Assert.That(ability.Condition(context.Player), Is.True, "Ability not valid: '{0}'".Template(ability.Description));
+            Assert.That(context.IsAbilityUsable(ability), Is.True, "Ability is not currently usable: '{0}'".Template(ability.Description));
             context.Player.UseAbility(ability.Id);
         }
 
         public static void WhenBattling(this TestContext context, Card monster)
         {
             context.Player.OnSelectMonster(monster);
-            context.Player.UseBattleAbilities();
+            context.SetTestPlayerState(Phase.Battle);
+            if (monster.GetAbilities(Phase.Battle).Any())
+                context.UseAbilityOf(monster);
         }
 
-        public static void GivenTestPlayerState(this TestContext context, params Phase[] abilityTypes)
+        public static void SetTestPlayerState(this TestContext context, params Phase[] abilityTypes)
         {
             context.Player.State = new PlayerState(null, p => { }, abilityTypes);
         }
@@ -120,6 +122,18 @@ namespace Slugburn.Thunderstone.Lib.Test
         public static void GivenSelectingFirstMatchingCards(this TestContext context)
         {
             context.GivenSelectCardsBehavior(message => message.Cards.Take(message.Min).Select(x => x.Id));
+        }
+
+        public static void HeroEquipsWeapon(this TestContext context, Card hero, Card weapon)
+        {
+            context.SetTestPlayerState(Phase.Equip);
+            context.GivenSelectCardsBehavior(message => new[] {hero.Id});
+            context.UseAbilityOf(weapon);
+        }
+
+        public static bool IsAbilityUsable(this TestContext context, Ability ability)
+        {
+            return ability.IsUsableByOwner() && ability.Condition(context.Player);
         }
     }
 }

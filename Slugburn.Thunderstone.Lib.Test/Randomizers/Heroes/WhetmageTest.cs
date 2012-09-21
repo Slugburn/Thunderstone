@@ -1,8 +1,6 @@
 ﻿using System.Linq;
 using NUnit.Framework;
-using Slugburn.Thunderstone.Lib.BasicCards;
 using Slugburn.Thunderstone.Lib.Randomizers.Heroes;
-using Slugburn.Thunderstone.Lib.Randomizers.Monsters;
 
 namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Heroes
 {
@@ -38,20 +36,39 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Heroes
         }
 
         [Test]
+        public void Hand_must_contain_another_hero()
+        {
+            // Arrange
+            var context = new TestContext();
+            var player = context.Player;
+            var honer = context.CreateCard<Whetmage>("Whetmage Honer");
+            context.SetPlayerHand(honer);
+            player.Xp = 2;
+            context.SetTestPlayerState(Phase.Dungeon);
+            var ability = context.GetAbilityOf(honer);
+
+            // Act
+            var isUsable = context.IsAbilityUsable(ability);
+
+            // Assert
+            Assert.That(isUsable, Is.False);
+        }
+
+        [Test]
         public void Polisher_can_use_ability_multiple_times()
         {
             // Arrange
             var context = new TestContext();
-            context.GivenTestPlayerState(Phase.Dungeon);
+            context.SetTestPlayerState(Phase.Dungeon);
             var polisher = context.CreateCard<Whetmage>("Whetmage Polisher");
             var hero1 = context.GivenHeroFromTopOfDeck(x=>x.Level==1);
             var hero2 = context.GivenHeroFromTopOfDeck(x => x.Level == 1);
-            context.GivenPlayerHand(polisher, hero1, hero2);
+            context.SetPlayerHand(polisher, hero1, hero2);
             context.Player.Xp = 10;
             var levelUp = polisher.GetAbility();
 
             // Act
-            context.WhenUsingAbilityOf(polisher);
+            context.UseAbilityOf(polisher);
 
             // Assert
             Assert.That(context.Player.ActiveAbilities.Any(x=>x.Id == levelUp.Id));
@@ -66,12 +83,12 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Heroes
             player.State = PlayerState.Dungeon;
             var polisher = context.CreateCard<Whetmage>("Whetmage Polisher");
             var hero = context.GivenHeroFromTopOfDeck(x => x.Level == 1);
-            context.GivenPlayerHand(polisher, hero);
+            context.SetPlayerHand(polisher, hero);
             player.Xp = 10;
             var levelUp = polisher.GetAbility();
 
             // Act
-            context.WhenUsingAbility(levelUp);
+            context.UseAbility(levelUp);
 
             // Assert
             Assert.That(levelUp.Condition(player), Is.False);

@@ -17,11 +17,11 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Curses
             var player = context.Player;
             var curse = context.CreateCard<CurseOfHorror>();
             var torch = context.CreateBasicCard<Torch>();
-            context.GivenPlayerHand(curse, torch);
-            context.GivenTestPlayerState(Phase.Dungeon);
+            context.SetPlayerHand(curse, torch);
+            context.SetTestPlayerState(Phase.Dungeon);
 
             // Act
-            context.WhenUsingAbilityOf(curse);
+            context.UseAbilityOf(curse);
 
             // Assert
             Assert.That(player.TotalLight, Is.EqualTo(0));
@@ -35,11 +35,11 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Curses
             var player = context.Player;
             var curse = context.CreateCard<CurseOfHorror>();
             var torch = context.CreateBasicCard<Torch>();
-            context.GivenPlayerHand(curse, torch);
-            context.GivenTestPlayerState(Phase.Dungeon);
+            context.SetPlayerHand(curse, torch);
+            context.SetTestPlayerState(Phase.Dungeon);
 
             // Act
-            context.WhenUsingAbilityOf(curse);
+            context.UseAbilityOf(curse);
 
             // Assert
             Assert.That(player.Hand, Has.No.Member(curse));
@@ -56,12 +56,12 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Curses
             var context = new TestContext();
             var player = context.Player;
             var curse = context.CreateCard<CurseOfHorror>();
-            context.GivenPlayerHand(curse);
+            context.SetPlayerHand(curse);
             var otherAbility = context.AddAbilityStub(phase);
-            context.GivenTestPlayerState(Phase.Dungeon);
+            context.SetTestPlayerState(Phase.Dungeon);
 
             // Act
-            context.WhenUsingAbilityOf(curse);
+            context.UseAbilityOf(curse);
 
             // Assert
             Assert.That(player.ActiveAbilities.Contains(otherAbility), Is.EqualTo(isActive));

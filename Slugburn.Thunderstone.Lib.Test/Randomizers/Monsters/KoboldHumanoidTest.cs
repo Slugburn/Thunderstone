@@ -60,12 +60,13 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Monsters
             context.GivenTopOfDungeonDeck(kobolds);
             context.WhenMonsterInFirstRank(laird);
             var hand = Enumerable.Range(0, 6).Select(x => context.CreateCard<Criochan>("Criochan Captain")).ToArray();
-            context.GivenPlayerHand(hand);
+            context.SetPlayerHand(hand);
             var startingXp = player.Xp;
             var startingVp = player.Vp;
 
             // Act
             context.WhenBattling(laird);
+            player.DetermineBattleResult();
 
             // Assert
             kobolds.Each(x => Assert.That(player.Discard.Contains(x), "Discard does not contain {0}".Template(x.Name)));

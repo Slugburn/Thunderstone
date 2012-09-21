@@ -30,14 +30,13 @@ namespace Slugburn.Thunderstone.Lib.Test
         public void When_removing_equipped_weapon_from_hand_then_hero_loses_modifier()
         {
             // Arrange
-            var game = TestFactory.CreateGame();
-            var player = game.CurrentPlayer;
-            player.State = PlayerState.Dungeon;
-            var regular = new Regular().Create(game);
-            var spear = new Longspear().Create(game);
-            player.DiscardHand();
-            player.AddCardsToHand(new[] {regular, spear});
-            spear.GetAbilities().First().Action(player);
+            var context = new TestContext();
+            var player = context.Player;
+            var regular = context.CreateBasicCard<Regular>();
+            var spear = context.CreateBasicCard<Longspear>();
+            context.SetPlayerHand(regular, spear);
+            context.SetTestPlayerState(Phase.Dungeon, Phase.Equip);
+            context.HeroEquipsWeapon(regular, spear);
 
             // Act
             player.RemoveFromHand(spear);

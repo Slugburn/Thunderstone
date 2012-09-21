@@ -55,12 +55,12 @@ namespace Slugburn.Thunderstone.Lib
 
         public static bool HasMagicAttack(this Card card)
         {
-            return (card.MagicAttack ?? 0) + (card.PotentialMagicAttack() ?? 0) > 0;
+            return (card.MagicAttack ?? 0) + (card.PotentialMagicAttack == null ? 0 : card.PotentialMagicAttack() ?? 0) > 0;
         }
 
         public static bool HasPhysicalAttack(this Card card)
         {
-            return (card.PhysicalAttack ?? 0) + (card.PotentialPhysicalAttack() ?? 0) > 0;
+            return (card.PhysicalAttack ?? 0) + (card.PotentialPhysicalAttack == null ? 0 : card.PotentialPhysicalAttack() ?? 0) > 0;
         }
     }
 }

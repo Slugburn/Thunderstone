@@ -27,7 +27,7 @@ namespace Slugburn.Thunderstone.Lib.BasicCards
                 .Description("One hero gains Strength +2")
                 .SelectCards(select => select.FromHand().Filter(c => c.IsHero()).Caption("Select Hero").Message("Select hero to use Thunderstone Shard"))
                 .OnCardsSelected(x => x.Selected.First().AddModifier(new PlusMod(card, Attr.Strength, 2)))
-                .Condition(player => player.Hand.Any(c => c.IsHero()))
+//                .Condition(player => player.Hand.Any(c => c.IsHero()))
                 .On(Phase.Dungeon);
             card.CreateAbility()
                 .Description("Gain 1 XP")

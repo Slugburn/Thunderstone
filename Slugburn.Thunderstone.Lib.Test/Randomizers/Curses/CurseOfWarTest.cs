@@ -16,7 +16,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Curses
             var context = new TestContext();
             var player = context.Player;
             var curse = context.CreateCard<CurseOfWar>();
-            context.GivenPlayerHand(curse);
+            context.SetPlayerHand(curse);
             
             // Act
             player.StartTurn();
@@ -34,9 +34,9 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Curses
             var player = context.Player;
             var curse = context.CreateCard<CurseOfWar>();
             var card1 = context.CreateBasicCard<Torch>();
-            context.GivenPlayerHand(curse, card1);
-            context.GivenTestPlayerState(Phase.Dungeon);
-            var ability = context.GivenAbilityOf(curse);
+            context.SetPlayerHand(curse, card1);
+            context.SetTestPlayerState(Phase.Dungeon);
+            var ability = context.GetAbilityOf(curse);
 
             // Act
             var canUse = ability.Condition(player);
@@ -56,12 +56,12 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Curses
             var curse = context.CreateCard<CurseOfWar>();
             var card1 = context.CreateBasicCard<Torch>();
             var card2 = context.CreateBasicCard<Regular>();
-            context.GivenPlayerHand(curse, card1, card2);
-            context.GivenTestPlayerState(phase);
+            context.SetPlayerHand(curse, card1, card2);
+            context.SetTestPlayerState(phase);
             context.GivenSelectingFirstMatchingCards();
 
             // Act
-            context.WhenUsingAbilityOf(curse);
+            context.UseAbilityOf(curse);
 
             // Assert
             Assert.That(player.Hand, Has.No.Member(curse));
@@ -76,12 +76,12 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Curses
             var curse = context.CreateCard<CurseOfWar>();
             var card1 = context.CreateBasicCard<Torch>();
             var card2 = context.CreateBasicCard<Regular>();
-            context.GivenPlayerHand(curse, card1, card2);
-            context.GivenTestPlayerState(Phase.Village);
+            context.SetPlayerHand(curse, card1, card2);
+            context.SetTestPlayerState(Phase.Village);
             context.GivenSelectingFirstMatchingCards();
 
             // Act
-            context.WhenUsingAbilityOf(curse);
+            context.UseAbilityOf(curse);
 
             // Assert
             Assert.That(player.Hand.Count, Is.EqualTo(1));

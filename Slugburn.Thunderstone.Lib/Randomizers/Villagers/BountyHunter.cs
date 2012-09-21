@@ -25,7 +25,7 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Villagers
                                   .Caption("Buy Card")
                                   .Message("Buy 1 village card ({0} gold available).".Template(source.Player.AvailableGold)))
                 .OnCardsSelected(x => x.Source.Discard(x.Selected))
-                .Condition(player => player.Game.GetBuyableDecks(player.AvailableGold).Any())
+//                .Condition(player => player.Game.GetBuyableDecks(player.AvailableGold).Any())
                 .On(Phase.Spoils);
         }
     }

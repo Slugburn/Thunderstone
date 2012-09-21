@@ -129,7 +129,7 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Monsters
                                                                          x.Source.Discard(new[] { upgrade });
                                                                          x.Player.DestroyCard(hero, "Upgrading to {0}".Template(upgrade.Name));
                                                                      })
-                                                .Condition(player => player.Hand.Any(validCardFilter))
+//                                                .Condition(player => player.Hand.Any(validCardFilter))
                                                 .Required(false)
                                                 .On(Phase.Trophy);
                                         }
