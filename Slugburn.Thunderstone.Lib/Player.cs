@@ -15,6 +15,7 @@ namespace Slugburn.Thunderstone.Lib
         public IPlayerView View { get; private set; }
         private readonly IEventAggregator _events;
         private readonly List<IAttributeMod> _mods;
+        private Rank _attackedMonsterRank;
 
         public Player(string id, IPlayerView view)
         {
@@ -179,7 +180,7 @@ namespace Slugburn.Thunderstone.Lib
 
         public void DetermineBattleResult()
         {
-            var monster = AttackedRank.Card;
+            var monster = AttackedCard;
             Won = GetBattleMarginVersus(monster) >= 0;
             var outcome = Won ? "defeated" : "triumphed";
             Log("{0} {1}.".Template(monster.Name, outcome));
@@ -224,10 +225,11 @@ namespace Slugburn.Thunderstone.Lib
 
         public void EndBattle()
         {
-            var monster = AttackedRank.Card;
+            var monster = AttackedCard;
+             _attackedMonsterRank = AttackedCard.Rank;
             if (Won)
             {
-                AttackedRank.Card = null;
+                _attackedMonsterRank.Card = null;
                 Xp += monster.Xp ?? 0;
                 AddToDiscard(monster);
                 UseSpoilsAbilities();
@@ -248,7 +250,7 @@ namespace Slugburn.Thunderstone.Lib
 
         public void RefillHall()
         {
-            Game.RefillHallFrom(AttackedRank);
+            Game.RefillHallFrom(_attackedMonsterRank);
             ResolveRaidAndBreachEffects();
         }
 
@@ -264,9 +266,9 @@ namespace Slugburn.Thunderstone.Lib
 
         public void OnSelectMonster(Card monster)
         {
-            AttackedRank = Game.Dungeon.GetRankOf(monster);
-            ActiveAbilities.AddRange(AttackedRank.Card.GetAbilities());
-            PublishEvent(new AttackRankSelected { Player = this, AttackedRank = AttackedRank });
+            AttackedCard = monster;
+            ActiveAbilities.AddRange(AttackedCard.GetAbilities());
+            PublishEvent(new AttackRankSelected { Player = this, AttackedRank = AttackedCard.Rank });
         }
 
         public void PublishEvent<T>(T e)
@@ -274,7 +276,7 @@ namespace Slugburn.Thunderstone.Lib
             _events.Publish(e);
         }
 
-        public Rank AttackedRank { get; set; }
+        public Card AttackedCard { get; set; }
 
         public void UseAbilities()
         {
