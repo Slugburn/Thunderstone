@@ -1,31 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NUnit.Framework;
 using Slugburn.Thunderstone.Lib.Messages;
-using Slugburn.Thunderstone.Lib.Models;
 using Slugburn.Thunderstone.Lib.Randomizers;
 
 namespace Slugburn.Thunderstone.Lib.Test
 {
     public static class TestContextExtensions
     {
-        public static Card GivenMonsterInFirstRank<TRandomizer>(this TestContext context, string name) where TRandomizer : IRandomizer
+        public static Card SetMonsterInFirstRank<TRandomizer>(this TestContext context, string name) where TRandomizer : IRandomizer
         {
             var monster = CreateCard<TRandomizer>(context, name);
-            context.GivenTopOfDungeonDeck(monster);
-            context.WhenMonsterInFirstRank(monster);
+            context.SetTopOfDungeonDeck(monster);
+            context.AdvanceMonsterToFirstRank(monster);
             return monster;
         }
 
-        public static void GivenTopOfDungeonDeck(this TestContext context, params Card[] monsters)
+        public static void SetTopOfDungeonDeck(this TestContext context, params Card[] monsters)
         {
             monsters.Reverse().Each(monster => context.Game.Dungeon.AddToTopOfDeck(monster));
         }
 
-        public static void WhenMonsterInFirstRank(this TestContext context, Card monster)
+        public static void AdvanceMonsterToFirstRank(this TestContext context, Card monster)
         {
             while (context.Game.Dungeon.Ranks[0].Card != monster)
                 context.Game.AdvanceDungeon();
@@ -44,12 +41,12 @@ namespace Slugburn.Thunderstone.Lib.Test
             return gen.Create(context.Game);
         }
 
-        public static Card GivenHeroFromTopOfDeck(this TestContext context, Func<Card, bool> filter)
+        public static Card GetHeroFromTopOfDeck(this TestContext context, Func<Card, bool> filter)
         {
             return context.Game.Village[CardType.Hero].First(x => filter(x.TopCard)).Draw();
         }
 
-        public static Card GivenHeroFromVillage(this TestContext context, Func<Card, bool> filter)
+        public static Card GetHeroFromVillage(this TestContext context, Func<Card, bool> filter)
         {
             var deck = context.Game.Village[CardType.Hero].First(x => x.GetCards().Any(filter));
             var card = deck.GetCards().First(filter);
@@ -63,7 +60,7 @@ namespace Slugburn.Thunderstone.Lib.Test
             context.Player.AddCardsToHand(cards);
         }
 
-        public static void GivenPlayerState(this TestContext context, PlayerState state)
+        public static void SetPlayerState(this TestContext context, PlayerState state)
         {
             context.Player.State = state;
         }
@@ -114,20 +111,20 @@ namespace Slugburn.Thunderstone.Lib.Test
             return ability;
         }
 
-        public static void GivenSelectCardsBehavior(this TestContext context, Func<SelectCardsMessage, IEnumerable<long>> behavior)
+        public static void SetSelectCardsBehavior(this TestContext context, Func<SelectCardsMessage, IEnumerable<long>> behavior)
         {
             context.Set(behavior);
         }
 
         public static void GivenSelectingFirstMatchingCards(this TestContext context)
         {
-            context.GivenSelectCardsBehavior(message => message.Cards.Take(message.Min).Select(x => x.Id));
+            context.SetSelectCardsBehavior(message => message.Cards.Take(message.Min).Select(x => x.Id));
         }
 
         public static void HeroEquipsWeapon(this TestContext context, Card hero, Card weapon)
         {
             context.SetTestPlayerState(Phase.Equip);
-            context.GivenSelectCardsBehavior(message => new[] {hero.Id});
+            context.SetSelectCardsBehavior(message => new[] {hero.Id});
             context.UseAbilityOf(weapon);
         }
 

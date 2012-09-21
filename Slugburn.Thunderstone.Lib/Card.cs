@@ -21,7 +21,7 @@ namespace Slugburn.Thunderstone.Lib
 
         List<string> _tags;
         readonly List<Ability> _abilities;
-        private Card _equipped;
+        private List<Card> _equipped;
         private int? _physicalAttack;
         private readonly List<IAttributeMod> _mods;
         private readonly List<Func<IEventAggregator, IDisposable>> _eventHandlers = new List<Func<IEventAggregator, IDisposable>>();
@@ -160,17 +160,18 @@ namespace Slugburn.Thunderstone.Lib
             get { return this.ApplyModifiers(Attr.TotalAttack); }
         }
 
-        internal void SetEquipped(Card card)
+        public void AddEquipped(Card card)
         {
-            // Remove any modifiers from the previous equipped card
-            if (_equipped != null)
-            {
-                _mods.RemoveAll(x => x.Source == _equipped);
-            }
-            _equipped = card;
+            (_equipped ?? (_equipped = new List<Card>())).Add(card);
         }
 
-        internal Card GetEquipped()
+        public void RemoveEquipped(Card card)
+        {
+            _equipped.Remove(card);
+            _mods.RemoveAll(x => x.Source == card);
+        }
+
+        public IEnumerable<Card> GetEquipped()
         {
             return _equipped;
         }
@@ -205,6 +206,7 @@ namespace Slugburn.Thunderstone.Lib
 
         private object _data;
         private int? _health;
+        private Func<bool> _canEquip;
 
         public T GetData<T>()
         {
@@ -243,6 +245,12 @@ namespace Slugburn.Thunderstone.Lib
         public override string ToString()
         {
             return "{0}[{1}]".Template(Name, Id);
+        }
+
+        public Func<bool> CanEquip
+        {
+            get { return _canEquip ?? (()=>_equipped==null); }
+            set { _canEquip = value; }
         }
     }
 }

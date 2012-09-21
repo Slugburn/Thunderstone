@@ -43,7 +43,7 @@ namespace Slugburn.Thunderstone.Lib.Models
 
         public string Owner { get; set; }
 
-        public string Equipped { get; set; }
+        public string[] Equipped { get; set; }
 
         public int? Darkness { get; set; }
 
@@ -73,7 +73,7 @@ namespace Slugburn.Thunderstone.Lib.Models
                                  Vp = card.Vp,
                                  Xp = card.Xp,
                                  Owner = card.Owner.ToString(),
-                                 Equipped = card.IsEquipped ? card.GetEquipped().Name : null
+                                 Equipped = card.IsEquipped ? card.GetEquipped().Select(c=>c.Name).ToArray() : null
                              };
         }
 

@@ -17,8 +17,8 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Curses
             var player = context.Player;
             var curse = context.CreateCard<CurseOfDecay>();
             var whetmage = context.CreateCard<Whetmage>();
-            var hero1 = context.GivenHeroFromTopOfDeck(x => x.Level == 1);
-            var hero2 = context.GivenHeroFromTopOfDeck(x => x.Level == 1);
+            var hero1 = context.GetHeroFromTopOfDeck(x => x.Level == 1);
+            var hero2 = context.GetHeroFromTopOfDeck(x => x.Level == 1);
             context.SetPlayerHand(curse, whetmage, hero1, hero2);
             context.SetTestPlayerState(Phase.Dungeon);
             player.Xp = 2;

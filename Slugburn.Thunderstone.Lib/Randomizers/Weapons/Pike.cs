@@ -1,3 +1,4 @@
+using System.Linq;
 using Slugburn.Thunderstone.Lib.Abilities;
 using Slugburn.Thunderstone.Lib.Events;
 using Slugburn.Thunderstone.Lib.Modifiers;
@@ -29,7 +30,7 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Weapons
                     message =>
                         {
                             if (message.TriggeringAbility != null && message.TriggeringAbility.Phase == Phase.Battle && card.IsEquipped)
-                                message.Selection.Remove(card.GetEquipped());
+                                message.Selection.Remove(card.GetEquipped().First());
                         }));
         }
     }

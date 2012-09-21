@@ -4,7 +4,7 @@ using Slugburn.Thunderstone.Lib.Modifiers;
 
 namespace Slugburn.Thunderstone.Lib.Randomizers.Weapons
 {
-    class SnakeheadFlail : WeaponRandomizer
+    public class SnakeheadFlail : WeaponRandomizer
     {
         public SnakeheadFlail() : base("Snakehead Flail", "Magic")
         {

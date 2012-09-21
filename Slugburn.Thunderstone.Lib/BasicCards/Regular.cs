@@ -1,4 +1,5 @@
-﻿using Slugburn.Thunderstone.Lib.Abilities;
+﻿using System.Linq;
+using Slugburn.Thunderstone.Lib.Abilities;
 
 namespace Slugburn.Thunderstone.Lib.BasicCards
 {
@@ -23,7 +24,7 @@ namespace Slugburn.Thunderstone.Lib.BasicCards
             card.SetTags("Level 0", "Basic");
             card.CreateAbility()
                 .DrawCards(1)
-                .Condition(player => card.IsEquipped && card.GetEquipped().HasTag("Polearm"))
+                .Condition(player => card.IsEquipped && card.GetEquipped().First().HasTag("Polearm"))
                 .On(Phase.Dungeon);
 
             return card;

@@ -83,7 +83,7 @@ namespace Slugburn.Thunderstone.Lib.Abilities
 
         public static IAbilityDefinedSyntax EquipWeapon(this ICreateAbilitySyntax syntax, Action<Player, Card> onEquip)
         {
-            Func<Card, bool> heroCanEquip = hero => hero.IsHero() && !hero.IsEquipped && hero.Strength >= syntax.Card.Strength;
+            Func<Card, bool> heroCanEquip = hero => hero.IsHero() && hero.CanEquip() && hero.Strength >= syntax.Card.Strength;
             return syntax.Description("Equip {0}.".Template(syntax.Card.Name))
                 .SelectCards(source => source.FromHand().Filter(heroCanEquip))
                 .OnCardsSelected(x => x.Player.Equip(x.Selected.First(), syntax.Card, onEquip))

@@ -441,10 +441,12 @@ namespace Slugburn.Thunderstone.Lib
             // Unequip any related card
             if (card.IsEquipped)
             {
-                var equipped = card.GetEquipped();
-                equipped.SetEquipped(null);
-                if (equipped.IsHero())
-                    Log("{0} no longer has {1} equipped.".Template(equipped.Name, card.Name));
+                card.GetEquipped().Each(equipped =>
+                    {
+                        equipped.RemoveEquipped(card);
+                        if (equipped.IsHero())
+                            Log("{0} no longer has {1} equipped.".Template(equipped.Name, card.Name));
+                    });
             }
             card.Reset();
             Hand.Remove(card);
@@ -459,8 +461,8 @@ namespace Slugburn.Thunderstone.Lib
 
         public void Equip(Card hero, Card weapon, Action<Player, Card> onEquip)
         {
-            hero.SetEquipped(weapon);
-            weapon.SetEquipped(hero);
+            hero.AddEquipped(weapon);
+            weapon.AddEquipped(hero);
             onEquip(this, hero);
         }
 

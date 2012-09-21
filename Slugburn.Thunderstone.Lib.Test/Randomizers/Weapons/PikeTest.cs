@@ -18,7 +18,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Weapons
             var hero = context.CreateCard<Criochan>();
             var pike = context.CreateCard<Pike>();
             context.SetPlayerHand(hero, pike);
-            var ettin = context.GivenMonsterInFirstRank<OgreHumanoid>("Ettin");
+            var ettin = context.SetMonsterInFirstRank<OgreHumanoid>("Ettin");
 
             // Act
             context.HeroEquipsWeapon(hero, pike);
@@ -37,7 +37,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Weapons
             var hero = context.CreateBasicCard<Regular>();
             var pike = context.CreateCard<Pike>();
             context.SetPlayerHand(hero, pike);
-            var ogre = context.GivenMonsterInFirstRank<OgreHumanoid>("Ogre");
+            var ogre = context.SetMonsterInFirstRank<OgreHumanoid>("Ogre");
 
             // Act
             context.HeroEquipsWeapon(hero, pike);
@@ -59,7 +59,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Weapons
             var unequippedHero = context.CreateCard<Criochan>();
             var pike = context.CreateCard<Pike>();
             context.SetPlayerHand(equippedHero, pike);
-            var ettin = context.GivenMonsterInFirstRank<OgreHumanoid>("Ettin");
+            var ettin = context.SetMonsterInFirstRank<OgreHumanoid>("Ettin");
 
             // Act
             context.HeroEquipsWeapon(equippedHero, pike);
@@ -79,7 +79,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Weapons
             var hero = context.CreateCard<Criochan>();
             var pike = context.CreateCard<Pike>();
             context.SetPlayerHand(hero, pike);
-            var ettin = context.GivenMonsterInFirstRank<OgreHumanoid>("Ettin");
+            var ettin = context.SetMonsterInFirstRank<OgreHumanoid>("Ettin");
 
             // Act
             context.WhenBattling(ettin);

@@ -85,9 +85,9 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Heroes
                                   + "<b>Aftermath:</b> Destroy all other heroes. Place this card on top of your deck.",
                            PhysicalAttack = 8,
                            Modify = card =>
-                                        {
-                                            
-                                        }
+                               {
+                                   card.CanEquip = () => card.GetEquipped() == null || card.GetEquipped().Count() < 2;
+                               }
                        };
         }
 

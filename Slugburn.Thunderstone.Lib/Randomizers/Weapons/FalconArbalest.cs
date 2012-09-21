@@ -1,4 +1,5 @@
-﻿using Slugburn.Thunderstone.Lib.Abilities;
+﻿using System.Linq;
+using Slugburn.Thunderstone.Lib.Abilities;
 using Slugburn.Thunderstone.Lib.Events;
 using Slugburn.Thunderstone.Lib.Modifiers;
 using System;
@@ -31,7 +32,7 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Weapons
             card.AddEventHandler(events => events.Subscribe<AttackRankSelected>(e =>
                                                               {
                                                                   if (e.AttackedRank.Number >= 2 && card.IsEquipped)
-                                                                      card.GetEquipped().AddModifier(new PlusMod(card, Attr.PhysicalAttack, 5));
+                                                                      card.GetEquipped().First().AddModifier(new PlusMod(card, Attr.PhysicalAttack, 5));
                                                               }));
         }
     }

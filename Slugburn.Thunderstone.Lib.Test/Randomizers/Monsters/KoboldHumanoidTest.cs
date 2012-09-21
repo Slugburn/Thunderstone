@@ -18,10 +18,10 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Monsters
             var ambusher = context.CreateCard<KoboldHumanoid>("Drakeclan Ambusher");
             var cutter = context.CreateCard<KoboldHumanoid>("Drakeclan Cutter");
             var shaman = context.CreateCard<KoboldHumanoid>("Drakeclan Shaman");
-            context.GivenTopOfDungeonDeck(laird, ambusher, cutter, shaman);
+            context.SetTopOfDungeonDeck(laird, ambusher, cutter, shaman);
 
             // Act
-            context.WhenMonsterInFirstRank(laird);
+            context.AdvanceMonsterToFirstRank(laird);
 
             // Assert
             Assert.That(laird.Health, Is.EqualTo(laird.GetBaseValue(Attr.Health) + ambusher.Health + cutter.Health + shaman.Health));
@@ -36,10 +36,10 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Monsters
             var laird2 = context.CreateCard<KoboldHumanoid>("Drakeclan Laird");
             var cutter = context.CreateCard<KoboldHumanoid>("Drakeclan Cutter");
             var shaman = context.CreateCard<KoboldHumanoid>("Drakeclan Shaman");
-            context.GivenTopOfDungeonDeck(laird1, laird2, cutter, shaman);
+            context.SetTopOfDungeonDeck(laird1, laird2, cutter, shaman);
 
             // Act
-            context.WhenMonsterInFirstRank(laird1);
+            context.AdvanceMonsterToFirstRank(laird1);
 
             // Assert
             Assert.That(laird1.Health, Is.EqualTo(laird1.GetBaseValue(Attr.Health) + laird2.GetBaseValue(Attr.Health) + cutter.Health + shaman.Health));
@@ -57,8 +57,8 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Monsters
             var cutter = context.CreateCard<KoboldHumanoid>("Drakeclan Cutter");
             var shaman = context.CreateCard<KoboldHumanoid>("Drakeclan Shaman");
             var kobolds = new[] {laird, ambusher, cutter, shaman};
-            context.GivenTopOfDungeonDeck(kobolds);
-            context.WhenMonsterInFirstRank(laird);
+            context.SetTopOfDungeonDeck(kobolds);
+            context.AdvanceMonsterToFirstRank(laird);
             var hand = Enumerable.Range(0, 6).Select(x => context.CreateCard<Criochan>("Criochan Captain")).ToArray();
             context.SetPlayerHand(hand);
             var startingXp = player.Xp;

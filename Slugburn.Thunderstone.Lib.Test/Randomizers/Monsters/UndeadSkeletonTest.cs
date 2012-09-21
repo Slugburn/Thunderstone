@@ -12,9 +12,9 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Monsters
         {
             // Arrange
             var context = new TestContext();
-            var hero = context.GivenHeroFromTopOfDeck(x => x.Level == 0);
+            var hero = context.GetHeroFromTopOfDeck(x => x.Level == 0);
             context.SetPlayerHand(hero);
-            var ossuous = context.GivenMonsterInFirstRank<UndeadSkeleton>("Ossuous");
+            var ossuous = context.SetMonsterInFirstRank<UndeadSkeleton>("Ossuous");
 
             // Act
             Assert.That(context.Game.Dungeon.Ranks[0].Card, Is.SameAs(ossuous));
@@ -29,9 +29,9 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Monsters
         {
             // Arrange
             var context = new TestContext();
-            var hero = context.GivenHeroFromTopOfDeck(x => x.Level == 1);
+            var hero = context.GetHeroFromTopOfDeck(x => x.Level == 1);
             context.SetPlayerHand(hero);
-            var ossuous = context.GivenMonsterInFirstRank<UndeadSkeleton>("Ossuous");
+            var ossuous = context.SetMonsterInFirstRank<UndeadSkeleton>("Ossuous");
 
             // Act
             Assert.That(context.Game.Dungeon.Ranks[0].Card, Is.SameAs(ossuous));
@@ -47,9 +47,9 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Monsters
             // Arrange
             var context = new TestContext();
             var necrophidius = context.CreateCard<UndeadSkeleton>("Necrophidius");
-            var hero0 = context.GivenHeroFromTopOfDeck(x => x.Level == 0);
-            var hero1 = context.GivenHeroFromTopOfDeck(x => x.Level == 1);
-            var hero2 = context.GivenHeroFromVillage(x => x.Level == 2);
+            var hero0 = context.GetHeroFromTopOfDeck(x => x.Level == 0);
+            var hero1 = context.GetHeroFromTopOfDeck(x => x.Level == 1);
+            var hero2 = context.GetHeroFromVillage(x => x.Level == 2);
             context.SetPlayerHand(necrophidius, hero0, hero1, hero2);
             context.SetTestPlayerState(Phase.Trophy);
 
