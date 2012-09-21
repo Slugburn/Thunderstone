@@ -6,7 +6,7 @@ using Slugburn.Thunderstone.Lib.Selectors;
 
 namespace Slugburn.Thunderstone.Lib.Randomizers.Heroes
 {
-    class Bhoidwood : HeroRandomizer
+    public class Bhoidwood : HeroRandomizer
     {
         public Bhoidwood() : base("Bhoidwood", "Elf", "Ranger")
         {

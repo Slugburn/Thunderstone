@@ -75,5 +75,31 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Monsters
             Assert.That(player.Xp, Is.EqualTo(startingXp + laird.Xp));
             Assert.That(player.Vp, Is.EqualTo(startingVp + kobolds.Sum(x => x.Vp)));
         }
+
+        [Test]
+        public void When_laird_is_defeated_then_correct_monsters_are_discarded()
+        {
+            // Arrange
+            var context = new TestContext();
+            var player = context.Player;
+            var ambusher = context.CreateCard<KoboldHumanoid>("Drakeclan Ambusher");
+            var laird = context.CreateCard<KoboldHumanoid>("Drakeclan Laird");
+            var phoenix = context.CreateCard<BurnmarkedFire>("Phoenix");
+            var ogre = context.CreateCard<OgreHumanoid>("Ogre");
+            context.SetDungeonHall(ambusher, laird, phoenix, ogre);
+            var hand = Enumerable.Range(0, 6).Select(x => context.CreateCard<Criochan>("Criochan Captain")).ToArray();
+            context.SetPlayerHand(hand);
+
+            // Act
+            context.WhenBattling(laird);
+            player.DetermineBattleResult();
+
+            // Assert
+            var discardedMonsters = player.Discard.Where(c => c.Type == CardType.Monster);
+            Assert.That(discardedMonsters, Has.Member(laird));
+            Assert.That(discardedMonsters, Has.Member(ambusher));
+            Assert.That(context.GetMonsterInRank(1), Is.SameAs(phoenix));
+            Assert.That(context.GetMonsterInRank(2), Is.SameAs(ogre));
+        }
     }
 }

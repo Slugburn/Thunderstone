@@ -116,9 +116,14 @@ namespace Slugburn.Thunderstone.Lib.Test
             context.Set(behavior);
         }
 
-        public static void GivenSelectingFirstMatchingCards(this TestContext context)
+        public static void WhenSelectingCardsSelectFirst(this TestContext context)
         {
             context.SetSelectCardsBehavior(message => message.Cards.Take(message.Min).Select(x => x.Id));
+        }
+
+        public static void WhenSelectingCardsSelect(this TestContext context, params Card[] cards)
+        {
+            context.SetSelectCardsBehavior(message => cards.Select(c => c.Id));
         }
 
         public static void HeroEquipsWeapon(this TestContext context, Card hero, Card weapon)
@@ -131,6 +136,17 @@ namespace Slugburn.Thunderstone.Lib.Test
         public static bool IsAbilityUsable(this TestContext context, Ability ability)
         {
             return ability.IsUsableByOwner() && ability.Condition(context.Player);
+        }
+
+        public static Card GetMonsterInRank(this TestContext context, int number)
+        {
+            return context.Game.Dungeon.Ranks.First(r => r.Number == number).Card;
+        }
+
+        public static void SetDungeonHall(this TestContext context, params Card[] monsters)
+        {
+            context.SetTopOfDungeonDeck(monsters);
+            context.AdvanceMonsterToFirstRank(monsters[0]);
         }
     }
 }

@@ -58,7 +58,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Curses
             var card2 = context.CreateBasicCard<Regular>();
             context.SetPlayerHand(curse, card1, card2);
             context.SetTestPlayerState(phase);
-            context.GivenSelectingFirstMatchingCards();
+            context.WhenSelectingCardsSelectFirst();
 
             // Act
             context.UseAbilityOf(curse);
@@ -78,7 +78,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Curses
             var card2 = context.CreateBasicCard<Regular>();
             context.SetPlayerHand(curse, card1, card2);
             context.SetTestPlayerState(Phase.Village);
-            context.GivenSelectingFirstMatchingCards();
+            context.WhenSelectingCardsSelectFirst();
 
             // Act
             context.UseAbilityOf(curse);

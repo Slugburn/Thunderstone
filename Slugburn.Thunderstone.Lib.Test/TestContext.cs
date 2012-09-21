@@ -58,6 +58,5 @@ namespace Slugburn.Thunderstone.Lib.Test
         public Player Player { get { return Get<Player>(); } }
 
         public IEnumerable<long> SelectCardsIds { get { return Get<SelectCardsMessage>().Cards.Select(x=>x.Id); } }
-
     }
 }
