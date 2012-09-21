@@ -6,7 +6,7 @@ namespace Slugburn.Thunderstone.Lib.Selectors
     public interface ISelectionContext
     {
         Player Player { get; }
-        Card TriggeredBy { get; }
+        Ability TriggeredBy { get; }
         ICardSource Source { get; }
         IList<Card> Selected { get; set; }
         IList<Card> PreviousSelection { get; }

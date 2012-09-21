@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Slugburn.Thunderstone.Lib.Events;
 using Slugburn.Thunderstone.Lib.Messages;
 using Slugburn.Thunderstone.Lib.Models;
 using Slugburn.Thunderstone.Lib.Selectors.Sources;
@@ -9,7 +10,7 @@ namespace Slugburn.Thunderstone.Lib.Selectors
 {
     public class SelectionContext : ISelectionContext, ISelectSource, IDefineSelection, ISelectionCallback 
     {
-        public SelectionContext(Player player, Card triggeredBy)
+        public SelectionContext(Player player, Ability triggeredBy)
         {
             Player = player;
             TriggeredBy = triggeredBy;
@@ -29,7 +30,7 @@ namespace Slugburn.Thunderstone.Lib.Selectors
         public ICardSource Source { get; set; }
         public IList<Card> Selected { get; set; }
         public IList<Card> PreviousSelection { get; private set; }
-        public Card TriggeredBy { get; private set; }
+        public Ability TriggeredBy { get; private set; }
 
         public List<Action<ISelectionContext>> Callbacks { get; private set; }
         public string Caption { get; set; }
@@ -41,6 +42,9 @@ namespace Slugburn.Thunderstone.Lib.Selectors
         public void SendRequest(Action<SelectionContext> continuation)
         {
             var selectFrom = GetSourceCards();
+            var ev = new SelectingCards(TriggeredBy, selectFrom);
+            Player.PublishEvent(ev);
+            selectFrom = ev.Selection;
             Action<IEnumerable<long>> callback = selectedIds =>
             {
                 PreviousSelection = Selected;

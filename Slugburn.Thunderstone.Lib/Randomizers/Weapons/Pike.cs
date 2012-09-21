@@ -1,4 +1,5 @@
 using Slugburn.Thunderstone.Lib.Abilities;
+using Slugburn.Thunderstone.Lib.Events;
 using Slugburn.Thunderstone.Lib.Modifiers;
 
 namespace Slugburn.Thunderstone.Lib.Randomizers.Weapons
@@ -21,6 +22,15 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Weapons
             card.CreateAbility()
                 .EquipWeapon(Attr.PhysicalAttack, 2)
                 .On(Phase.Equip);
+
+            card.AddEventHandler(
+                events =>
+                events.Subscribe<SelectingCards>(
+                    message =>
+                        {
+                            if (message.TriggeringAbility != null && message.TriggeringAbility.Phase == Phase.Battle && card.IsEquipped)
+                                message.Selection.Remove(card.GetEquipped());
+                        }));
         }
     }
 }

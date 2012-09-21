@@ -10,7 +10,7 @@ namespace Slugburn.Thunderstone.Lib.Selectors
             var c = (SelectionContext)context;
             var message = c.TriggeredBy == null
                 ? "Destroy 1 card."
-                : "{0} destroys 1 card.".Template(c.TriggeredBy.Name);
+                : "{0} destroys 1 card.".Template(c.TriggeredBy.Card.Name);
             c.Message(message)
                 .Callback(x => x.Source.Destroy(x.Selected, destructionSource));
             return c;

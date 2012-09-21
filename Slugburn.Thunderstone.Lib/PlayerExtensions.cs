@@ -4,9 +4,9 @@ namespace Slugburn.Thunderstone.Lib
 {
     public static class PlayerExtensions
     {
-        public static ISelectSource SelectCard(this Player player, Card triggerCard = null)
+        public static ISelectSource SelectCard(this Player player, Ability triggerAbility = null)
         {
-            return new SelectionContext(player, triggerCard);
+            return new SelectionContext(player, triggerAbility);
         }
     }
 }

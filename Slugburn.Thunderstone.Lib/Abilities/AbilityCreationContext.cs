@@ -74,14 +74,15 @@ namespace Slugburn.Thunderstone.Lib.Abilities
                     };
                     nextAction = action;
                 }
-                Action<Player> firstAction = player => nextAction((SelectionContext) player.SelectCard(Card));
-                ability = new Ability(phase, Description, firstAction) {Continuation = x => { }};
+                ability = new Ability(phase, Description, player => { }) { Continuation = x => { } };
+                var triggerAbility = ability;
+                ability.Action = player => nextAction((SelectionContext) player.SelectCard(triggerAbility));
 
                 // The default condition is that there are enough cards in the source to meet the minimum
                 // selection criteria
                 Func<Player, bool> defaultCondition = player =>
                     {
-                        var selectionContext = ((SelectionContext) CardSelections.Last().Select(player.SelectCard(Card)));
+                        var selectionContext = ((SelectionContext) CardSelections.Last().Select(player.SelectCard(ability)));
                         var selectable = selectionContext.GetSourceCards();
                         return selectable.Count() >= selectionContext.Min ;
                     };

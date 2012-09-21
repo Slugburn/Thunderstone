@@ -70,6 +70,7 @@
     <Compile Include="Events\IEventAggregator.cs" />
     <Compile Include="Events\AttackRankSelected.cs" />
     <Compile Include="Events\MonsterDefeated.cs" />
+    <Compile Include="Events\SelectingCards.cs" />
     <Compile Include="Events\SimpleAggregator.cs" />
     <Compile Include="IPlayerView.cs" />
     <Compile Include="MessageHandlers\DungeonHandler.cs" />
@@ -135,6 +136,7 @@
     <Compile Include="Randomizers\Curses\CurseRandomizer.cs" />
     <Compile Include="Randomizers\Heroes\Bhoidwood.cs" />
     <Compile Include="Randomizers\Heroes\Criochan.cs" />
+    <Compile Include="Randomizers\Heroes\Disowned.cs" />
     <Compile Include="Randomizers\Heroes\Drua.cs" />
     <Compile Include="Randomizers\Heroes\HeroDef.cs" />
     <Compile Include="Randomizers\Heroes\HeroRandomizer.cs" />
