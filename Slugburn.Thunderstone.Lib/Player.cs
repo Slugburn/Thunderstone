@@ -541,5 +541,11 @@ namespace Slugburn.Thunderstone.Lib
         {
             _mods.Add(mod);
         }
+
+        public void DiscardToTopOfDeck(Card card)
+        {
+            RemoveFromHand(card);
+            AddToTopOfDeck(card);
+        }
     }
 }

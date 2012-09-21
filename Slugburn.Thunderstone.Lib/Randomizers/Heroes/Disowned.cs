@@ -87,6 +87,18 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Heroes
                            Modify = card =>
                                {
                                    card.CanEquip = () => card.GetEquipped() == null || card.GetEquipped().Count() < 2;
+                                   card.CreateAbility()
+                                       .Description("Destroy all other heroes. Place Bloodrager on top of your deck.")
+                                       .Action(player =>
+                                           {
+                                               player.SelectCard()
+                                                   .FromHand()
+                                                   .Filter(c => c != card && c.IsHero())
+                                                   .Matches()
+                                                   .Each(c => player.DestroyCard(c, card.Name));
+                                               player.DiscardToTopOfDeck(card);
+                                           })
+                                       .On(Phase.Aftermath);
                                }
                        };
         }

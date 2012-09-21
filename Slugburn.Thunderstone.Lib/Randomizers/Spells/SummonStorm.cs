@@ -1,4 +1,6 @@
-﻿namespace Slugburn.Thunderstone.Lib.Randomizers.Spells
+﻿using Slugburn.Thunderstone.Lib.Abilities;
+
+namespace Slugburn.Thunderstone.Lib.Randomizers.Spells
 {
     class SummonStorm :SpellRandomizer
     {
@@ -13,12 +15,10 @@
         {
             base.Modify(card);
             card.MagicAttack = 2;
-            card.AddAbility(new Ability(Phase.Village, "Put this card on top of your deck.",
-                player=>
-                    {
-                        player.RemoveFromHand(card);
-                        player.AddToTopOfDeck(card);
-                    }));
+            card.CreateAbility()
+                .Description("Put Summon Storm on top of your deck.")
+                .Action(player => player.DiscardToTopOfDeck(card))
+                .On(Phase.Village);
         }
     }
 }

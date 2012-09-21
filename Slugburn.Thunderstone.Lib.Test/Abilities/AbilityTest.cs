@@ -17,7 +17,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Abilities
         [TestCase(Phase.Village, true)]
         [TestCase(Phase.Dungeon, true)]
         [TestCase(Phase.Battle, false)]
-        [TestCase(Phase.Aftermath, false)]
+        [TestCase(Phase.Aftermath, true)]
         [TestCase(Phase.Spoils, true)]
         [TestCase(Phase.Trophy, true)]
         public void Is_usable_when_owned_by_player(Phase phase, bool expected)
@@ -52,9 +52,11 @@ namespace Slugburn.Thunderstone.Lib.Test.Abilities
         }
 
         [Test]
-        [TestCase(CardOwner.Dungeon, true)]
-        [TestCase(CardOwner.Player, false)]
-        public void Monster_spoils_abilities_are_not_usable_from_hand(CardOwner owner, bool expected)
+        [TestCase(Phase.Aftermath, CardOwner.Dungeon, true)]
+        [TestCase(Phase.Aftermath, CardOwner.Player, false)]
+        [TestCase(Phase.Spoils, CardOwner.Dungeon, true)]
+        [TestCase(Phase.Spoils, CardOwner.Player, false)]
+        public void Some_monster_abilities_are_not_usable_from_hand(Phase phase, CardOwner owner, bool expected)
         {
             // Arrange
             var ability = new Ability(Phase.Spoils, "test", player => { }) { Card = new Card(_game) { Type = CardType.Monster, Owner = owner } };
@@ -65,5 +67,6 @@ namespace Slugburn.Thunderstone.Lib.Test.Abilities
             // Assert
             Assert.That(isUsable, Is.EqualTo(expected));
         }
+
     }
 }

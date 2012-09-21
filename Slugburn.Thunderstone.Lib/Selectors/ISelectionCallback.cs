@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Slugburn.Thunderstone.Lib.Selectors
 {
@@ -21,6 +22,12 @@ namespace Slugburn.Thunderstone.Lib.Selectors
             var c = (SelectionContext)context;
             context.Callback(x => x.Source.Discard(x.Selected));
             return c;
+        }
+
+        public static IEnumerable<Card> Matches(this IDefineSelectionOrCallback context)
+        {
+            var c = (SelectionContext)context;
+            return c.GetSourceCards();
         }
     }
 }
