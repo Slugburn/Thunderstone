@@ -142,6 +142,7 @@
     <Compile Include="Randomizers\Heroes\HeroDef.cs" />
     <Compile Include="Randomizers\Heroes\HeroRandomizer.cs" />
     <Compile Include="Randomizers\Heroes\Rapparee.cs" />
+    <Compile Include="Randomizers\Heroes\Skinshifter.cs" />
     <Compile Include="Randomizers\Heroes\Thundermage.cs" />
     <Compile Include="Randomizers\Heroes\Whetmage.cs" />
     <Compile Include="Randomizers\IRandomizer.cs" />

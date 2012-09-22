@@ -50,7 +50,12 @@ namespace Slugburn.Thunderstone.Lib.Test
 
         public static Card GetHeroFromTopOfDeck(this TestContext context, Func<Card, bool> filter)
         {
-            return context.Game.Village[CardType.Hero].First(x => filter(x.TopCard)).Draw();
+            return GetVillageCardFromTopOfDeck(context, filter, CardType.Hero);
+        }
+
+        private static Card GetVillageCardFromTopOfDeck(TestContext context, Func<Card, bool> filter, CardType cardType)
+        {
+            return context.Game.Village[cardType].First(x => filter(x.TopCard)).Draw();
         }
 
         public static Card GetHeroFromVillage(this TestContext context, Func<Card, bool> filter)
