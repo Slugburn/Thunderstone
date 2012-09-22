@@ -34,7 +34,7 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Curses
             
             card.CreateAbility()
                 .Description("Select 2 random cards from your hand. You may destroy 1 of them to destroy this card.")
-                .SelectCards(source => source.FromRandomHandSelection(2, c => c != card)
+                .SelectCards(x => x.Select().FromRandomHandSelection(2, c => c != card)
                                            .Caption("Curse of War").Message("Destroy 1 card."))
                 .OnCardsSelected(x =>
                     {

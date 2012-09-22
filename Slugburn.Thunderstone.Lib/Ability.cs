@@ -1,4 +1,5 @@
 ﻿using System;
+using Slugburn.Thunderstone.Lib.Abilities;
 using Slugburn.Thunderstone.Lib.Models;
 
 namespace Slugburn.Thunderstone.Lib
@@ -9,15 +10,15 @@ namespace Slugburn.Thunderstone.Lib
         public Card Card { get; set; }
         public Phase Phase { get; set; }
         public string Description { get; set; }
-        public Action<Player> Action { get; set; }
+        public Action<AbilityUseContext> Action { get; set; }
         public Func<Player, bool> Condition { get; set; }
 
-        public Ability(Phase type, string description, Action<Player> action) :this(description,action)
+        public Ability(Phase type, string description, Action<AbilityUseContext> action) :this(description,action)
         {
             Phase = type;
         }
 
-        public Ability(string description, Action<Player> action)
+        public Ability(string description, Action<AbilityUseContext> action)
         {
             Id = UniqueId.Next();
             Description = description;

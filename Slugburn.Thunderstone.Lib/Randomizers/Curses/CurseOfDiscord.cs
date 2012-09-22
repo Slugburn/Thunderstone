@@ -18,11 +18,11 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Curses
         {
             card.CreateAbility()
                 .Description("Discard 2 cards to destroy this curse.")
-                .SelectCards(source => source.FromHand()
+                .SelectCards(x => x.Select().FromHand()
                                            .Filter(c => c != card)
                                            .Caption("Curse of Neglect").Message("Discard 2 cards.").Min(2).Max(2))
                 .OnCardsSelected(context => context.Player.DiscardCards(context.Selected))
-                .Action(player => player.DestroyCard(card, card.Name))
+                .Action(x => x.Player.DestroyCard(card, card.Name))
 //                .Condition(player => player.Hand.Count >= 3)
                 .On(Phase.Village, Phase.Dungeon);
         }

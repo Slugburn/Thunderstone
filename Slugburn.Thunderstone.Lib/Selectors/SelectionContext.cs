@@ -29,7 +29,6 @@ namespace Slugburn.Thunderstone.Lib.Selectors
 
         public ICardSource Source { get; set; }
         public IList<Card> Selected { get; set; }
-        public IList<Card> PreviousSelection { get; private set; }
         public Ability TriggeredBy { get; private set; }
 
         public List<Action<ISelectionContext>> Callbacks { get; private set; }
@@ -47,7 +46,6 @@ namespace Slugburn.Thunderstone.Lib.Selectors
             selectFrom = ev.Selection;
             Action<IEnumerable<long>> callback = selectedIds =>
             {
-                PreviousSelection = Selected;
                 Selected = selectFrom.Where(card => selectedIds.Contains(card.Id)).ToArray();
                 Callbacks.Each(action => action(this));
                 continuation(this);

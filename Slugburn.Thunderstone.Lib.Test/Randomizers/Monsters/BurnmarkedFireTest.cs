@@ -11,21 +11,21 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Monsters
         public void When_using_phoenix_trophy()
         {
             // Arrange
-            var game = TestFactory.CreateGame();
-            var player = game.CurrentPlayer;
-            player.State = PlayerState.Village;
-            var phoenix = new BurnmarkedFire().CreateCards(game).First(x => x.Name == "Phoenix");
-            player.AddCardToHand(phoenix);
+            var context = new TestContext();
+            var player = context.Player;
+            context.SetTestPlayerState(Phase.Trophy);
+            var phoenix = context.CreateCard<BurnmarkedFire>("Phoenix");
+            context.SetPlayerHand(phoenix);
+
             var startingXp = player.Xp;
-            var trophyAbility = phoenix.GetAbilities(Phase.Trophy).First();
 
             // Act
-            trophyAbility.Action(player);
+            context.UseAbilityOf(phoenix);
             player.EndTurn();
 
             // Assert
             Assert.That(player.Xp, Is.EqualTo(startingXp + 3));
-            Assert.That(game.Dungeon.Ranks.Last().Card, Is.SameAs(phoenix));
+            Assert.That(context.GetMonsterInRank(4), Is.SameAs(phoenix));
             Assert.That(phoenix.Owner, Is.EqualTo(CardOwner.Dungeon));
         }
 

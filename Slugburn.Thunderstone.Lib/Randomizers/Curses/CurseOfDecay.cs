@@ -18,10 +18,10 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Curses
         {
             card.CreateAbility()
                 .Description("If this is the first ability you use this turn, destroy this card. You cannot use any more abilities this turn.")
-                .Action(player =>
+                .Action(x =>
                 {
-                    player.DestroyCard(card, card.Name);
-                    player.ActiveAbilities.RemoveAll(x => x.Card.Owner == CardOwner.Player);
+                    x.Player.DestroyCard(card, card.Name);
+                    x.Player.ActiveAbilities.RemoveAll(a => a.Card.Owner == CardOwner.Player);
                 })
                 .On(Phase.Village, Phase.Dungeon);
 

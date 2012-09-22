@@ -70,11 +70,11 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Heroes
                            Modify = card => card.CreateAbility()
                                                 .Description("Buy 1 village card. Place it on top of your deck.")
                                                 .BuyCard()
-                                                .Action(player =>
+                                                .Action(x =>
                                                             {
-                                                                var bought = player.Discard.Last();
-                                                                player.Discard.Remove(bought);
-                                                                player.AddToTopOfDeck(bought);
+                                                                var bought = x.Player.Discard.Last();
+                                                                x.Player.Discard.Remove(bought);
+                                                                x.Player.AddToTopOfDeck(bought);
                                                             })
                                                 .On(Phase.Spoils)
                        };

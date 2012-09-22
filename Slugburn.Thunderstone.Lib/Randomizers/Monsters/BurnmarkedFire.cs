@@ -41,10 +41,10 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Monsters
                            Text = "<b>Battle:</b> Each player must either show a curse or gain 2 curses.",
                            Modify = card => card.CreateAbility()
                                                 .Description("Each player must either show a curse or gain 2 curses")
-                                                .Action(player =>
-                                                        player.Game.Players.Each(p =>
+                                                .Action(x =>
+                                                        x.Player.Game.Players.Each(p =>
                                                                                      {
-                                                                                         if (p.Hand.All(x => x.Type != CardType.Curse))
+                                                                                         if (p.Hand.All(c => c.Type != CardType.Curse))
                                                                                              p.GainCurse(2);
                                                                                      }))
                                                 .On(Phase.Battle)
@@ -67,12 +67,12 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Monsters
                            Modify = card =>
                                     card.CreateAbility()
                                         .Description("Gain 1 curse. Each other player must discard 1 hero, or show a hand with none.")
-                                        .Action(player=>player.GainCurse())
+                                        .Action(x=>x.Player.GainCurse())
                                         .On(Phase.Battle)
                                         // TODO: Complete implementation of battle ability
                                         .CreateAbility()
                                         .Description("Gain 1 curse")
-                                        .Action(player => player.GainCurse())
+                                        .Action(x => x.Player.GainCurse())
                                         .Condition(player => !player.Won)
                                         .On(Phase.Aftermath)
                        };
@@ -94,15 +94,15 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Monsters
                            Modify = card =>
                                     card.CreateAbility()
                                         .Description("Gain a curse")
-                                        .Action(player => player.GainCurse())
+                                        .Action(x => x.Player.GainCurse())
                                         .On(Phase.Battle)
                                         .CreateAbility()
                                         .Description("Gain 3 XP. Place Phoenix on top of the dungeon deck.")
-                                        .Action(player =>
+                                        .Action(x =>
                                                     {
-                                                        player.Xp += 3;
-                                                        player.RemoveFromHand(card);
-                                                        player.Game.Dungeon.AddToTopOfDeck(card);
+                                                        x.Player.Xp += 3;
+                                                        x.Player.RemoveFromHand(card);
+                                                        x.Game.Dungeon.AddToTopOfDeck(card);
                                                     })
                                         .On(Phase.Trophy)
                        };
@@ -143,7 +143,7 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Monsters
                                     card.CreateAbility()
                                         // TODO: Complete implementation of ability
                                         .Description("Each player must discard 3 cards or lose 1 XP")
-                                        .SelectCards(source => source.FromHand().Caption("Discard Cards").Message("Discard 3 cards or lose 1 XP").Min(0).Max(3))
+                                        .SelectCards(x => x.Select().FromHand().Caption("Discard Cards").Message("Discard 3 cards or lose 1 XP").Min(0).Max(3))
                                         .OnCardsSelected(x =>
                                                              {
                                                                  if (x.Selected.Count == 3)

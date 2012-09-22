@@ -18,10 +18,10 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Curses
         {
             card.CreateAbility()
                 .Description("Lose 2 gold to destroy this curse.")
-                .Action(player =>
+                .Action(x =>
                     {
-                        player.AddModifier(new PlusMod(card, Attr.Gold, -2));
-                        player.DestroyCard(card, card.Name);
+                        x.Player.AddModifier(new PlusMod(card, Attr.Gold, -2));
+                        x.Player.DestroyCard(card, card.Name);
                     })
                 .On(Phase.Village);
         }

@@ -96,16 +96,16 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Heroes
         {
             return card.CreateAbility()
                 .Description(abilityDescription)
-                .SelectCards(source => source.HeroToLevel(validCardFilter))
+                .SelectCards(x => x.Select().HeroToLevel(validCardFilter))
                 .OnCardsSelected(x => { })
-                .SelectCards(source =>
+                .SelectCards(x =>
                     {
-                        var hero = source.SelectionContext.Selected.First();
-                        return source.SelectHeroUpgrade(hero);
+                        var hero = x.Select().SelectionContext.Selected.First();
+                        return x.Select().SelectHeroUpgrade(hero);
                     })
                 .OnCardsSelected(x =>
                     {
-                        var hero = x.PreviousSelection.First();
+                        var hero = x.Selections[0].First();
                         var upgrade = x.Selected.First();
                         x.Source.Draw(new[] {upgrade});
                         x.Player.Xp -= (hero.Xp ?? 0);
@@ -114,7 +114,6 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Heroes
                         leveledUp.Add(upgrade);
                         card.SetData(leveledUp);
                     });
-//                .Condition(player => player.Hand.Any(validCardFilter));
         }
 
     }

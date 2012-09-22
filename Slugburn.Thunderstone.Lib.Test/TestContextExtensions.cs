@@ -48,14 +48,19 @@ namespace Slugburn.Thunderstone.Lib.Test
             return gen.Create(context.Game);
         }
 
-        public static Card GetHeroFromTopOfDeck(this TestContext context, Func<Card, bool> filter)
+        public static Card DrawHeroFromTopOfDeck(this TestContext context, Func<Card, bool> filter)
         {
-            return GetVillageCardFromTopOfDeck(context, filter, CardType.Hero);
+            return DrawVillageCardFromTopOfDeck(context, CardType.Hero, filter);
         }
 
-        private static Card GetVillageCardFromTopOfDeck(TestContext context, Func<Card, bool> filter, CardType cardType)
+        public static Card DrawVillageCardFromTopOfDeck(this TestContext context, CardType cardType, Func<Card, bool> filter)
         {
-            return context.Game.Village[cardType].First(x => filter(x.TopCard)).Draw();
+            return GetVillageDeck(context, cardType, filter).Draw();
+        }
+
+        public static Deck GetVillageDeck(this TestContext context, CardType cardType, Func<Card, bool> filter)
+        {
+            return context.Game.Village[cardType].First(x => filter(x.TopCard));
         }
 
         public static Card GetHeroFromVillage(this TestContext context, Func<Card, bool> filter)
@@ -152,7 +157,12 @@ namespace Slugburn.Thunderstone.Lib.Test
 
         public static Card GetMonsterInRank(this TestContext context, int number)
         {
-            return context.Game.Dungeon.Ranks.First(r => r.Number == number).Card;
+            return context.GetRank(number).Card;
+        }
+
+        public static Rank GetRank(this TestContext context, int number)
+        {
+            return context.Game.Dungeon.Ranks.First(r => r.Number == number);
         }
 
         public static void SetDungeonHall(this TestContext context, params Card[] monsters)

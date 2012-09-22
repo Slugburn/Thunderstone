@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Slugburn.Thunderstone.Lib.Abilities;
+﻿using Slugburn.Thunderstone.Lib.Abilities;
 
 namespace Slugburn.Thunderstone.Lib.Randomizers.Spells
 {
@@ -21,10 +16,10 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Spells
             base.Modify(card);
             card.CreateAbility()
                 .Description("Draw 3 cards. You cannot use any more Dungeon abilities this turn <i>(you may still equip weapons).</i>")
-                .Action(player =>
+                .Action(x =>
                             {
-                                player.Draw(3);
-                                player.ActiveAbilities.RemoveAll(x => x.Phase == Phase.Dungeon);
+                                x.Player.Draw(3);
+                                x.Player.ActiveAbilities.RemoveAll(a => a.Phase == Phase.Dungeon);
                             })
                 .On(Phase.Dungeon);
         }

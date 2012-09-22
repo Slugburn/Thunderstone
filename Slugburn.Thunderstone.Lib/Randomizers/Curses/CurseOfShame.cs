@@ -18,10 +18,10 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Curses
         {
             card.CreateAbility()
                 .Description("Destroy this curse. Draw 2 fewer cards when you draw a new hand.")
-                .Action(player =>
+                .Action(x =>
                 {
-                    player.DestroyCard(card, card.Name);
-                    player.AddModifier(new PlusMod(card, Attr.HandSize, -2));
+                    x.Player.DestroyCard(card, card.Name);
+                    x.Player.AddModifier(new PlusMod(card, Attr.HandSize, -2));
                 })
                 .On(Phase.Village, Phase.Dungeon);
         }

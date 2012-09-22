@@ -56,20 +56,20 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Heroes
                            PhysicalAttack = 4,
                            Modify = card => card.CreateAbility()
                                                 .Description("Switch the positions of two adjacent monsters in the hall")
-                                                .SelectCards(source => source.FromHall().Caption("Switch Positions").Message("Pick first monster to switch"))
+                                                .SelectCards(x => x.Select().FromHall().Caption("Switch Positions").Message("Pick first monster to switch"))
                                                 .OnCardsSelected(x => {})
-                                                .SelectCards(source => source
+                                                .SelectCards(x => x.Select()
                                                                            .FromHall()
-                                                                           .Filter(x =>
+                                                                           .Filter(c =>
                                                                                        {
-                                                                                           var firstCard = source.SelectionContext.PreviousSelection.First();
-                                                                                           return Math.Abs(x.Rank.Number - firstCard.Rank.Number) == 1;
+                                                                                           var firstCard = x.Selections[0].First();
+                                                                                           return Math.Abs(c.Rank.Number - firstCard.Rank.Number) == 1;
                                                                                        })
                                                                            .Caption("Switch Positions")
                                                                            .Message("Pick second monster to switch"))
                                                 .OnCardsSelected(x =>
                                                                      {
-                                                                         var monster1 = x.PreviousSelection.First();
+                                                                         var monster1 = x.Selections[0].First();
                                                                          var monster2 = x.Selected.First();
                                                                          var dungeon = x.Game.Dungeon;
                                                                          var rank1 = dungeon.GetRankOf(monster1);

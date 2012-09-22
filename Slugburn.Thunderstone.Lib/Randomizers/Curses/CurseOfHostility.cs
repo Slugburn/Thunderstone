@@ -17,10 +17,10 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Curses
         {
             card.CreateAbility()
                 .Description("Discard 2 XP to destroy this curse.")
-                .Action(player =>
+                .Action(x =>
                 {
-                    player.DestroyCard(card, card.Name);
-                    player.Xp -= 2;
+                    x.Player.DestroyCard(card, card.Name);
+                    x.Player.Xp -= 2;
                 })
                 .Condition(player => player.Xp >= 2)
                 .On(Phase.Village, Phase.Dungeon);

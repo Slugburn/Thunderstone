@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Slugburn.Thunderstone.Lib.Abilities;
 using Slugburn.Thunderstone.Lib.Modifiers;
 using Slugburn.Thunderstone.Lib.Selectors;
@@ -76,7 +73,7 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Heroes
                                             card.CreateAbility()
                                                 .Description("Destroy a card to add Physical Attack +4 and Strength +3. "
                                                              + "If the card was a disease, you may use this ability a second time this turn.")
-                                                .SelectCards(source => source.FromHand().Filter(c => c != card).Caption(card.Name).Message("Destroy a card."))
+                                                .SelectCards(x => x.Select().FromHand().Filter(c => c != card).Caption(card.Name).Message("Destroy a card."))
                                                 .OnCardsSelected(x =>
                                                                      {
                                                                          x.Player.DestroyCard(x.Selected.First(), card.Name);
@@ -92,7 +89,7 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Heroes
         {
             card.CreateAbility()
                 .Description("Discard a card to add Physical Attack +{0} and Strength +{1}.".Template(attack, strength))
-                .SelectCards(source => source.FromHand().Filter(c => c != card).Caption(card.Name).Message("Discard a card."))
+                .SelectCards(x => x.Select().FromHand().Filter(c => c != card).Caption(card.Name).Message("Discard a card."))
                 .OnCardsSelected(x =>
                 {
                     x.Player.DiscardCard(x.Selected.First());

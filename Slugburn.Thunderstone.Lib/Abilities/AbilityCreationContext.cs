@@ -9,7 +9,7 @@ namespace Slugburn.Thunderstone.Lib.Abilities
     public class AbilityCreationContext : ICreateAbilitySyntax, IAbilityCardsSelectedContext, IAbilityCardsSelectedSyntax
     {
         public string Description { get; set; }
-        private Action<Player> Action { get; set; }
+        private Action<AbilityUseContext> Action { get; set; }
         private List<CardSelection> CardSelections { get; set; }
         public Func<Player, bool> Condition { get; set; }
         public Action<Player> Continuation { get; set; }
@@ -26,20 +26,20 @@ namespace Slugburn.Thunderstone.Lib.Abilities
             return Card;
         }
 
-        public void SetAction(Action<Player> action)
+        public void SetAction(Action<AbilityUseContext> action)
         {
             if (CardSelections.Count == 0)
                 Action = action;
             else
-                CardSelections.Last().Callbacks.Add(context => action(context.Player));
+                CardSelections.Last().Callbacks.Add(action);
         }
 
-        public void AddSelection(Func<ISelectSource, IDefineSelection> cardSelection)
+        public void AddSelection(Func<AbilityUseContext, IDefineSelection> cardSelection)
         {
             CardSelections.Add(new CardSelection {Select = cardSelection});
         }
 
-        public void AddCallback(Action<ISelectionContext> callback)
+        public void AddCallback(Action<AbilityUseContext> callback)
         {
             CardSelections.Last().Callbacks.Add(callback);
         }
@@ -53,36 +53,39 @@ namespace Slugburn.Thunderstone.Lib.Abilities
             }
             else
             {
-                Action<SelectionContext> nextAction = null;
+                Action<AbilityUseContext> nextAction = null;
                 CardSelections.Reverse();
                 foreach (var selection in CardSelections)
                 {
                     var localSelection = selection;
                     var localNextAction = nextAction;
-                    Action<SelectionContext> action = context =>
+                    Action<AbilityUseContext> action = context =>
                     {
                         var selector = localSelection.Select(context);
-                        var requestor = localSelection.Callbacks.Select(selector.Callback).ToList().Last();
-                        var continuation = localNextAction ?? (selectionContext =>
+                        var requestor = localSelection.Callbacks
+                            .Select(callback => selector.Callback(selectionContext => context.ProcessSelection(selectionContext, callback))).ToList().Last();
+                        var continuation = localNextAction ?? (x =>
                                                                    {
                                                                        if (Continuation != null) 
                                                                            Continuation(context.Player);
                                                                        else 
                                                                            context.Player.UseAbilities();
                                                                    });
-                        requestor.SendRequest(continuation);
+                        requestor.SendRequest(selectionContext => continuation(context));
                     };
                     nextAction = action;
                 }
-                ability = new Ability(phase, Description, player => { }) { Continuation = x => { } };
-                var triggerAbility = ability;
-                ability.Action = player => nextAction((SelectionContext) player.SelectCard(triggerAbility));
+                ability = new Ability(phase, Description, player => { })
+                              {
+                                  Action = useContext => { nextAction(useContext); },
+                                  Continuation = x => { }, 
+                              };
 
                 // The default condition is that there are enough cards in the source to meet the minimum
                 // selection criteria
                 Func<Player, bool> defaultCondition = player =>
                     {
-                        var selectionContext = ((SelectionContext) CardSelections.Last().Select(player.SelectCard(ability)));
+                        var selectionContext = ((SelectionContext) CardSelections.Last().Select(new AbilityUseContext(player, ability)));
                         var selectable = selectionContext.GetSourceCards();
                         return selectable.Count() >= selectionContext.Min ;
                     };
@@ -114,11 +117,11 @@ namespace Slugburn.Thunderstone.Lib.Abilities
         {
             public CardSelection()
             {
-                Callbacks = new List<Action<ISelectionContext>>();
+                Callbacks = new List<Action<AbilityUseContext>>();
             }
 
-            public Func<ISelectSource, IDefineSelection> Select { get; set; }
-            public List<Action<ISelectionContext>> Callbacks { get; private set; }
+            public Func<AbilityUseContext, IDefineSelection> Select { get; set; }
+            public List<Action<AbilityUseContext>> Callbacks { get; private set; }
         }
 
     }

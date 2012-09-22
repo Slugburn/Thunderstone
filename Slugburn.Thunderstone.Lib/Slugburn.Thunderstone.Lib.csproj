@@ -60,6 +60,7 @@
     <Compile Include="Abilities\AbilityCreationSyntax.cs" />
     <Compile Include="Abilities\AbilityCreationExtensions.cs" />
     <Compile Include="Abilities\AbilityCreationContext.cs" />
+    <Compile Include="Abilities\AbilityUseContext.cs" />
     <Compile Include="Ability.cs" />
     <Compile Include="CardOwner.cs" />
     <Compile Include="Debug\Assert.cs" />

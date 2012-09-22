@@ -20,11 +20,11 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Curses
             card.CreateAbility()
                 .Description("Destroy this curse. Lower your Total Attack Value by 3. " +
                    "You cannot equip any more weapons, use any other Dungeon abilities, or use any other Trophy effects this turn.")
-                .Action(player =>
+                .Action(x =>
                 {
-                    player.AddModifier(new PlusMod(card, Attr.TotalAttack, -3));
-                    player.ActiveAbilities.RemoveAll(x => x.Phase == Phase.Equip || x.Phase == Phase.Dungeon || x.Phase == Phase.Trophy);
-                    player.DestroyCard(card, card.Name);
+                    x.Player.AddModifier(new PlusMod(card, Attr.TotalAttack, -3));
+                    x.Player.ActiveAbilities.RemoveAll(a => a.Phase == Phase.Equip || a.Phase == Phase.Dungeon || a.Phase == Phase.Trophy);
+                    x.Player.DestroyCard(card, card.Name);
                 })
                 .On(Phase.Dungeon);
         }

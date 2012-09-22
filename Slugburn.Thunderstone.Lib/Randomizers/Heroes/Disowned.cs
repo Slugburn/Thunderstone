@@ -40,9 +40,9 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Heroes
         {
             return card.CreateAbility()
                 .Description("Destroy 1 other hero.")
-                .SelectCards(
-                    source =>
-                    source.FromHand().Filter(x => x != card && x.IsHero()).Caption(card.Name).Message("Destroy 1 hero."))
+                .SelectCards(x => x.Select().FromHand()
+                                      .Filter(c => c != card && c.IsHero())
+                                      .Caption(card.Name).Message("Destroy 1 hero."))
                 .OnCardsSelected(x => x.Player.DestroyCard(x.Selected.First(), card.Name));
         }
 
@@ -89,14 +89,14 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Heroes
                                    card.CanEquip = () => card.GetEquipped() == null || card.GetEquipped().Count() < 2;
                                    card.CreateAbility()
                                        .Description("Destroy all other heroes. Place Bloodrager on top of your deck.")
-                                       .Action(player =>
+                                       .Action(x =>
                                            {
-                                               player.SelectCard()
+                                               x.Player.SelectCard()
                                                    .FromHand()
                                                    .Filter(c => c != card && c.IsHero())
                                                    .Matches()
-                                                   .Each(c => player.DestroyCard(c, card.Name));
-                                               player.DiscardToTopOfDeck(card);
+                                                   .Each(c => x.Player.DestroyCard(c, card.Name));
+                                               x.Player.DiscardToTopOfDeck(card);
                                            })
                                        .On(Phase.Aftermath);
                                }

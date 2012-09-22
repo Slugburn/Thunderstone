@@ -59,13 +59,13 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Monsters
                            Modify = card => card
                                                 .CreateAbility()
                                                 .Description("If there is Darkness, gain 1 curse.")
-                                                .Action(player => player.GainCurse())
+                                                .Action(x => x.Player.GainCurse())
                                                 .Condition(player => (player.TotalLight + card.Darkness) < 0)
                                                 .On(Phase.Battle)
                                                 .CreateAbility()
                                                 .Description("If you defeat this card's Health by 4 or more, each other player gains 1 curse.")
-                                                .Action(player => player.Game.Players
-                                                                      .Where(p => p != player)
+                                                .Action(x => x.Player.Game.Players
+                                                                      .Where(p => p != x.Player)
                                                                       .Each(p => p.GainCurse()))
                                                 .Condition(player => player.GetBattleMarginVersus(card) >= 4)
                                                 .On(Phase.Battle)
@@ -114,16 +114,16 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Monsters
                                             Func<Card, bool> validCardFilter = c => c.IsHero() && c.Level <= 1 && c.Player.AvailableLevelUps(c).Any();
                                             card.CreateAbility()
                                                 .Description("Destroy Necrophidius to level up a Regular or level 1 hero without paying XP.")
-                                                .SelectCards(source => source.HeroToLevel(validCardFilter))
+                                                .SelectCards(x => x.Select().HeroToLevel(validCardFilter))
                                                 .OnCardsSelected(x => { })
-                                                .SelectCards(source =>
+                                                .SelectCards(x =>
                                                                  {
-                                                                     var hero = source.SelectionContext.Selected.First();
-                                                                     return source.SelectHeroUpgrade(hero);
+                                                                     var hero = x.Select().SelectionContext.Selected.First();
+                                                                     return x.Select().SelectHeroUpgrade(hero);
                                                                  })
                                                 .OnCardsSelected(x =>
                                                                      {
-                                                                         var hero = x.PreviousSelection.First();
+                                                                         var hero = x.Selections[0].First();
                                                                          var upgrade = x.Selected.First();
                                                                          x.Player.DestroyCard(card, card.Name);
                                                                          x.Source.Discard(new[] { upgrade });
@@ -151,18 +151,18 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Monsters
                                   + "<b>Trophy:</b> You may discard this card to draw a card.",
                            Modify = card => card.CreateAbility()
                                                 .Description("Gain 2 curses. Each other player gains 1 curse.")
-                                                .Action(player =>
+                                                .Action(x =>
                                                             {
-                                                                player.GainCurse(2);
-                                                                player.Game.Players.Where(x => x != player).Each(x => x.GainCurse());
+                                                                x.Player.GainCurse(2);
+                                                                x.Game.Players.Where(p => p != x.Player).Each(p => p.GainCurse());
                                                             })
                                                 .On(Phase.Battle)
                                                 .CreateAbility()
                                                 .Description("You may discard this card to draw a card.")
-                                                .Action(player =>
+                                                .Action(x =>
                                                             {
-                                                                player.DiscardCard(card);
-                                                                player.Draw(1);
+                                                                x.Player.DiscardCard(card);
+                                                                x.Player.Draw(1);
                                                             })
                                                 .Required(false)
                                                 .On(Phase.Trophy)

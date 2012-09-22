@@ -7,23 +7,23 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Heroes
     public class RappareeTest
     {
         [Test]
-        public void Stalker_ability_switches_adjacent_monsters()
+        public void Looter_spoils_ability_buys_card_and_puts_on_top_of_deck()
         {
             // Arrange
             var context = new TestContext();
-            var stalker = context.CreateCard<Bhoidwood>("Bhoidwood Stalker");
-            context.SetPlayerHand(stalker);
-            context.SetTestPlayerState(Phase.Dungeon);
-            var monster1 = context.GetMonsterInRank(1);
-            var monster2 = context.GetMonsterInRank(2);
-            context.WhenSelectingCardsSelect(monster1);
+            var player = context.Player;
+            var looter = context.CreateCard<Rapparee>("Rapparee Looter");
+            context.SetPlayerHand(looter);
+            context.SetTestPlayerState(Phase.Spoils);
+            var longspear = context.GetVillageDeck(CardType.Weapon, card => card.Name == "Longspear").TopCard;
+            context.WhenSelectingCardsSelect(longspear);
 
             // Act
-            context.UseAbilityOf(stalker);
+            context.UseAbilityOf(looter);
 
             // Assert
-            Assert.That(context.GetMonsterInRank(1), Is.SameAs(monster2));
-            Assert.That(context.GetMonsterInRank(2), Is.SameAs(monster1));
+            Assert.That(player.Deck.TopCard, Is.SameAs(longspear));
+            Assert.That(player.Discard, Has.No.Member(longspear));
         }
     }
 }

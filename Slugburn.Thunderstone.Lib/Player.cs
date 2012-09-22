@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Slugburn.Thunderstone.Lib.Abilities;
 using Slugburn.Thunderstone.Lib.BasicCards;
 using Slugburn.Thunderstone.Lib.Debug;
 using Slugburn.Thunderstone.Lib.Events;
@@ -510,7 +511,8 @@ namespace Slugburn.Thunderstone.Lib
             if (!ability.IsRepeatable)
                 ActiveAbilities.Remove(ability);
 
-            ability.Action(this);
+            var context = new AbilityUseContext(this, ability);
+            ability.Action(context);
             PublishEvent(new CardAbilityUsed(ability));
             SendUpdateHand();
             

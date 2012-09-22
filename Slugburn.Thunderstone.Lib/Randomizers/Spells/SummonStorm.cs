@@ -17,7 +17,7 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Spells
             card.MagicAttack = 2;
             card.CreateAbility()
                 .Description("Put Summon Storm on top of your deck.")
-                .Action(player => player.DiscardToTopOfDeck(card))
+                .Action(x => x.Player.DiscardToTopOfDeck(card))
                 .On(Phase.Village);
         }
     }

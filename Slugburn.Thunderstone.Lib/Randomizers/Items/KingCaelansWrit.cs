@@ -17,7 +17,7 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Items
         {
             card.CreateAbility()
                 .Description("Destroy this card to place the top card of any hero stack on top of your deck. End your turn.")
-                .SelectCards(select => select.FromTopOfHeroDecks().Caption(card.Name).Message("Select one hero card to add to your deck"))
+                .SelectCards(x => x.Select().FromTopOfHeroDecks().Caption(card.Name).Message("Select one hero card to add to your deck"))
                 .OnCardsSelected(x =>
                                      {
                                          var hero = x.Selected.First();

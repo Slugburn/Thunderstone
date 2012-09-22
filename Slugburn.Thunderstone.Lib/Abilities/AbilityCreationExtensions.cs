@@ -36,21 +36,21 @@ namespace Slugburn.Thunderstone.Lib.Abilities
             return c;
         }
 
-        public static IAbilityDefinedSyntax Action(this IAbilityDescriptionCompleteSyntax context, Action<Player> action)
+        public static IAbilityDefinedSyntax Action(this IAbilityDescriptionCompleteSyntax context, Action<AbilityUseContext> action)
         {
             var c = (AbilityCreationContext)context;
             c.SetAction(action);
             return c;
         }
 
-        public static IAbilitySelectCardsSyntax SelectCards(this IAbilityDescriptionCompleteSyntax context, Func<ISelectSource, IDefineSelection> cardSelection)
+        public static IAbilitySelectCardsSyntax SelectCards(this IAbilityDescriptionCompleteSyntax context, Func<AbilityUseContext, IDefineSelection> cardSelection)
         {
             var c = (AbilityCreationContext)context;
             c.AddSelection(cardSelection);
             return c;
         }
 
-        public static IAbilityCardsSelectedSyntax OnCardsSelected(this IAbilitySelectCardsSyntax syntax, Action<ISelectionContext> callback)
+        public static IAbilityCardsSelectedSyntax OnCardsSelected(this IAbilitySelectCardsSyntax syntax, Action<AbilityUseContext> callback)
         {
             var c = (AbilityCreationContext)syntax;
             c.AddCallback(callback);
@@ -78,14 +78,14 @@ namespace Slugburn.Thunderstone.Lib.Abilities
 
         public static IAbilityDefinedSyntax DrawCards(this IAbilityDescriptionCompleteSyntax syntax, int count)
         {
-            return syntax.Action(player => player.Draw(count));
+            return syntax.Action(x => x.Player.Draw(count));
         }
 
         public static IAbilityDefinedSyntax EquipWeapon(this ICreateAbilitySyntax syntax, Action<Player, Card> onEquip)
         {
             Func<Card, bool> heroCanEquip = hero => hero.IsHero() && hero.CanEquip() && hero.Strength >= syntax.Card.Strength;
             return syntax.Description("Equip {0}.".Template(syntax.Card.Name))
-                .SelectCards(source => source.FromHand().Filter(heroCanEquip))
+                .SelectCards(context => context.Select().FromHand().Filter(heroCanEquip))
                 .OnCardsSelected(x => x.Player.Equip(x.Selected.First(), syntax.Card, onEquip))
                 .Condition(player => !syntax.Card.IsEquipped && player.Hand.Any(heroCanEquip));
         }
@@ -95,23 +95,23 @@ namespace Slugburn.Thunderstone.Lib.Abilities
             return syntax.EquipWeapon((player, hero) => hero.AddModifier(new PlusMod(syntax.Card, attribute, amount)));
         }
 
-        public static IAbilityDefinedSyntax DestroyCard(this ICreateAbilitySyntax context, string description = "Destroy 1 card in your hand.", Func<Card, bool> filter = null)
+        public static IAbilityDefinedSyntax DestroyCard(this ICreateAbilitySyntax syntax, string description = "Destroy 1 card in your hand.", Func<Card, bool> filter = null)
         {
             filter = filter ?? (card => true);
-            return context
+            return syntax
                 .Description(description)
-                .SelectCards(select => @select.FromHand().Filter(filter).Caption("Destroy Card").Message(description))
-                .Destroy(context.Card.Name)
+                .SelectCards(x => x.Select().FromHand().Filter(filter).Caption("Destroy Card").Message(description))
+                .Destroy(syntax.Card.Name)
                 .Condition( player => player.Hand.Any(filter));
         }
 
-        public static IAbilityDefinedSyntax DestroyDiseaseToDrawCard(this ICreateAbilitySyntax context, int drawCount = 1)
+        public static IAbilityDefinedSyntax DestroyDiseaseToDrawCard(this ICreateAbilitySyntax syntax, int drawCount = 1)
         {
             Func<Card, bool> isDisease = x => x.Type == CardType.Curse;
-            return context
+            return syntax
                 .Description("Destroy 1 disease to draw {0} {1}.".Template(drawCount, GetCountText(drawCount)))
-                .SelectCards(select => @select.FromHand().Filter(isDisease).Caption("Destroy Disease").Message("Select 1 card."))
-                .Destroy(context.Card.Name)
+                .SelectCards(x => x.Select().FromHand().Filter(isDisease).Caption("Destroy Disease").Message("Select 1 card."))
+                .Destroy(syntax.Card.Name)
                 .DrawCards(1)
                 .Condition(player => player.Hand.Any(isDisease));
         }
@@ -120,7 +120,7 @@ namespace Slugburn.Thunderstone.Lib.Abilities
         {
             return context
                 .Description(description)
-                .SelectCards(source => source.FromHall().Filter(selector).Caption("Discard Monster").Message("Pick a monster to discard."))
+                .SelectCards(x => x.Select().FromHall().Filter(selector).Caption("Discard Monster").Message("Pick a monster to discard."))
                 .OnCardsSelected(x => x.Source.Discard(x.Selected))
                 .Condition(player => player.Game.Dungeon.Ranks.Select(r => r.Card).Any(selector));
         }
@@ -129,7 +129,7 @@ namespace Slugburn.Thunderstone.Lib.Abilities
         {
             return context
                 .Description(description)
-                .SelectCards(source => source.FromHand().Filter(filter).Caption("Discard a card").Message(description))
+                .SelectCards(x => x.Select().FromHand().Filter(filter).Caption("Discard a card").Message(description))
                 .OnCardsSelected(x => x.Source.Discard(x.Selected))
                 .Condition(player => player.Hand.Any(filter));
         }
@@ -144,16 +144,16 @@ namespace Slugburn.Thunderstone.Lib.Abilities
         {
             return syntax
                 .SelectCards(
-                    source => source.FromTopOfVillageDecks()
+                    context => context.Select().FromTopOfVillageDecks()
                                   .Min(0)
                                   .Filter(x =>
                                               {
                                                   Func<Card, bool> cardFilter = filter ?? (c => true);
-                                                  Func<Card, bool> costsLessThanAvailableGold = c => c.Cost <= source.Player.AvailableGold;
+                                                  Func<Card, bool> costsLessThanAvailableGold = c => c.Cost <= context.Player.AvailableGold;
                                                   return cardFilter(x) && costsLessThanAvailableGold(x);
                                               })
                                   .Caption("Buy Card")
-                                  .Message("Buy 1 card ({0} gold available).".Template(source.Player.AvailableGold)))
+                                  .Message("Buy 1 card ({0} gold available).".Template(context.Player.AvailableGold)))
                 .OnCardsSelected(x => x.Source.Discard(x.Selected));
         }
     }

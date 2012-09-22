@@ -9,7 +9,6 @@ namespace Slugburn.Thunderstone.Lib.Selectors
         Ability TriggeredBy { get; }
         ICardSource Source { get; }
         IList<Card> Selected { get; set; }
-        IList<Card> PreviousSelection { get; }
         Game Game { get; }
     }
 }
