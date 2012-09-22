@@ -64,24 +64,25 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Heroes
                            Cost = 13,
                            Text = "<small><b>Physical Attack +4</b>"
                                   + "<br/><br/>"
-                                  + "<b>Dungeon:</b> Discard or destroy a card to add Physical Attack +4 and Strength +3. " 
+                                  + "<b>Dungeon:</b> Discard or destroy a card to add Physical Attack +4 and Strength +3. "
                                   + "If the card was a disease, you may use this ability a second time this turn.</small>",
                            PhysicalAttack = 4,
-                           Modify = card =>
-                                        {
-                                            CreateSkinshifterAbility(card,4, 3);
-                                            card.CreateAbility()
-                                                .Description("Destroy a card to add Physical Attack +4 and Strength +3. "
+                           Modify = card => card.CreateAbility()
+                                                .Description("Discard or destroy a card to add Physical Attack +4 and Strength +3. "
                                                              + "If the card was a disease, you may use this ability a second time this turn.")
+                                                .SelectOption(new SelectOptionArg(card.Name, "Discard or destroy card?", "Discard", "Destroy"))
                                                 .SelectCards(x => x.Select().FromHand().Filter(c => c != card).Caption(card.Name).Message("Destroy a card."))
                                                 .OnCardsSelected(x =>
                                                                      {
-                                                                         x.Player.DestroyCard(x.Selected.First(), card.Name);
+                                                                         var selectedCard = x.Selected.First();
+                                                                         if (x.Option == "Destroy")
+                                                                             x.Player.DestroyCard(selectedCard, card.Name);
+                                                                         else
+                                                                             x.Player.DiscardCard(selectedCard);
                                                                          card.AddModifier(new PlusMod(card, Attr.PhysicalAttack, 4));
                                                                          card.AddModifier(new PlusMod(card, Attr.Strength, 3));
                                                                      })
-                                                .On(Phase.Dungeon);
-                                        }
+                                                .On(Phase.Dungeon)
                        };
         }
 

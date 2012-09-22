@@ -13,7 +13,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Heroes
             // Arrange
             var context = new TestContext();
             var player = context.Player;
-            context.SetTestPlayerState(Phase.Dungeon);
+            context.SetPlayerState(Phase.Dungeon);
             var honer = context.CreateCard<Whetmage>();
             var otherHero = context.DrawHeroFromTopOfDeck(c => c.Level > 0);
             context.SetPlayerHand(honer, otherHero);
@@ -37,7 +37,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Heroes
             var honer = context.CreateCard<Whetmage>("Whetmage Honer");
             context.SetPlayerHand(honer);
             player.Xp = 2;
-            context.SetTestPlayerState(Phase.Dungeon);
+            context.SetPlayerState(Phase.Dungeon);
             var ability = context.GetAbilityOf(honer);
 
             // Act
@@ -52,7 +52,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Heroes
         {
             // Arrange
             var context = new TestContext();
-            context.SetTestPlayerState(Phase.Dungeon);
+            context.SetPlayerState(Phase.Dungeon);
             var polisher = context.CreateCard<Whetmage>("Whetmage Polisher");
             var hero1 = context.DrawHeroFromTopOfDeck(x=>x.Level==1);
             var hero2 = context.DrawHeroFromTopOfDeck(x => x.Level == 1);

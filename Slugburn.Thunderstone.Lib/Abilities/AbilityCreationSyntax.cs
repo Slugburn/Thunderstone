@@ -11,11 +11,13 @@
 
     public interface IAbilityCardsSelectedContext : IAbilityCard { }
 
-    public interface IAbilityDescriptionCompleteSyntax : IAbilityCard {}
+    public interface IActionOrSelectCardsSyntax : IAbilityCard {}
 
     public interface IAbilityActionSyntax : IAbilityCard {}
 
-    public interface IAbilityCardsSelectedSyntax : IAbilityDefinedSyntax, IAbilityDescriptionCompleteSyntax, IAbilitySelectCardsSyntax { }
+    public interface IAbilityCardsSelectedSyntax : IAbilityDefinedSyntax, IActionOrSelectCardsSyntax, IAbilitySelectCardsSyntax { }
+
+    public interface IDescriptionDefinedSyntax : IActionOrSelectCardsSyntax {}
 
     public interface IAbilityDefinedSyntax
     {

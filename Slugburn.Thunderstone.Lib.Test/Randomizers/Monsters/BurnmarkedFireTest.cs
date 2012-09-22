@@ -13,7 +13,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Monsters
             // Arrange
             var context = new TestContext();
             var player = context.Player;
-            context.SetTestPlayerState(Phase.Trophy);
+            context.SetPlayerState(Phase.Trophy);
             var phoenix = context.CreateCard<BurnmarkedFire>("Phoenix");
             context.SetPlayerHand(phoenix);
 

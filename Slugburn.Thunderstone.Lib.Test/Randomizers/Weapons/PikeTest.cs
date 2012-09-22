@@ -41,7 +41,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Weapons
 
             // Act
             context.HeroEquipsWeapon(hero, pike);
-            context.SetTestPlayerState(Phase.Aftermath);
+            context.SetPlayerState(Phase.Aftermath);
             player.OnSelectMonster(ogre);
             context.UseAbilityOf(ogre);
 

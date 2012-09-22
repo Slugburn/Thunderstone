@@ -12,6 +12,20 @@ namespace Slugburn.Thunderstone.Lib.Abilities
             return new AbilityCreationContext(card);
         }
 
+        public static IDescriptionDefinedSyntax Description(this ICreateAbilitySyntax context, string description)
+        {
+            var c = (AbilityCreationContext)context;
+            c.Description = description;
+            return c;
+        }
+
+        public static IActionOrSelectCardsSyntax SelectOption(this IDescriptionDefinedSyntax context, SelectOptionArg arg)
+        {
+            var c = (AbilityCreationContext)context;
+            c.SetSelectOption(arg);
+            return c;
+        }
+
         public static IAbilityDefinedSyntax Required(this IAbilityDefinedSyntax syntax, bool isRequired = true)
         {
             ((AbilityCreationContext)syntax).IsRequired = isRequired;
@@ -29,21 +43,14 @@ namespace Slugburn.Thunderstone.Lib.Abilities
             return OnCardsSelected(syntax, x => x.Source.Destroy(x.Selected, destructionSource));
         }
 
-        public static IAbilityDescriptionCompleteSyntax Description(this ICreateAbilitySyntax context, string description)
-        {
-            var c = (AbilityCreationContext)context;
-            c.Description = description;
-            return c;
-        }
-
-        public static IAbilityDefinedSyntax Action(this IAbilityDescriptionCompleteSyntax context, Action<AbilityUseContext> action)
+        public static IAbilityDefinedSyntax Action(this IActionOrSelectCardsSyntax context, Action<AbilityUseContext> action)
         {
             var c = (AbilityCreationContext)context;
             c.SetAction(action);
             return c;
         }
 
-        public static IAbilitySelectCardsSyntax SelectCards(this IAbilityDescriptionCompleteSyntax context, Func<AbilityUseContext, IDefineSelection> cardSelection)
+        public static IAbilitySelectCardsSyntax SelectCards(this IActionOrSelectCardsSyntax context, Func<AbilityUseContext, IDefineSelection> cardSelection)
         {
             var c = (AbilityCreationContext)context;
             c.AddSelection(cardSelection);
@@ -76,7 +83,7 @@ namespace Slugburn.Thunderstone.Lib.Abilities
                 .DrawCards(count);
         }
 
-        public static IAbilityDefinedSyntax DrawCards(this IAbilityDescriptionCompleteSyntax syntax, int count)
+        public static IAbilityDefinedSyntax DrawCards(this IActionOrSelectCardsSyntax syntax, int count)
         {
             return syntax.Action(x => x.Player.Draw(count));
         }
@@ -140,7 +147,7 @@ namespace Slugburn.Thunderstone.Lib.Abilities
             return count == 1 ? "card" : "cards";
         }
 
-        public static IAbilityCardsSelectedSyntax BuyCard(this IAbilityDescriptionCompleteSyntax syntax, Func<Card,bool> filter = null)
+        public static IAbilityCardsSelectedSyntax BuyCard(this IActionOrSelectCardsSyntax syntax, Func<Card,bool> filter = null)
         {
             return syntax
                 .SelectCards(

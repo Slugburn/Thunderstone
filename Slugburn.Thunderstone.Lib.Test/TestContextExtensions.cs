@@ -32,7 +32,7 @@ namespace Slugburn.Thunderstone.Lib.Test
         {
             var randomizer = Activator.CreateInstance<TRandomizer>();
             var cards = randomizer.CreateCards(context.Game);
-            return name == null ? cards.First() : cards.First(x => x.Name == name);
+            return name == null ? cards.First() : cards.First(x => x.Name.EndsWith(name));
         }
 
         public static Card[] CreateCards<TRandomizer>(this TestContext context, int count = int.MaxValue) where TRandomizer : IRandomizer
@@ -77,11 +77,6 @@ namespace Slugburn.Thunderstone.Lib.Test
             context.Player.AddCardsToHand(cards);
         }
 
-        public static void SetPlayerState(this TestContext context, PlayerState state)
-        {
-            context.Player.State = state;
-        }
-
         public static Ability GetAbility(this Card card)
         {
             return card.GetAbilities().First();
@@ -97,7 +92,7 @@ namespace Slugburn.Thunderstone.Lib.Test
         public static Ability GetAbilityOf(this TestContext context, Card card)
         {
             Assert.That(context.Player.State, Is.Not.Null, "Player state has not been set.");
-            var ability = card.GetAbilities().FirstOrDefault(x => context.Player.State.AbilityTypes.Contains(x.Phase));
+            var ability = card.GetAbilities().SingleOrDefault(x => context.Player.State.AbilityTypes.Contains(x.Phase));
             Assert.That(ability, Is.Not.Null, "No matching ability found");
             return ability;
         }
@@ -111,12 +106,12 @@ namespace Slugburn.Thunderstone.Lib.Test
         public static void WhenBattling(this TestContext context, Card monster)
         {
             context.Player.OnSelectMonster(monster);
-            context.SetTestPlayerState(Phase.Battle);
+            context.SetPlayerState(Phase.Battle);
             if (monster.GetAbilities(Phase.Battle).Any())
                 context.UseAbilityOf(monster);
         }
 
-        public static void SetTestPlayerState(this TestContext context, params Phase[] abilityTypes)
+        public static void SetPlayerState(this TestContext context, params Phase[] abilityTypes)
         {
             context.Player.State = new PlayerState(null, p => { }, abilityTypes);
         }
@@ -143,9 +138,15 @@ namespace Slugburn.Thunderstone.Lib.Test
             context.SetSelectCardsBehavior(message => cards.Select(c => c.Id));
         }
 
+        public static void WhenSelectingOptionSelect(this TestContext context, string option)
+        {
+            Func<SelectOptionMessage, string> behavior = message=> option;
+            context.Set(behavior);
+        }
+
         public static void HeroEquipsWeapon(this TestContext context, Card hero, Card weapon)
         {
-            context.SetTestPlayerState(Phase.Equip);
+            context.SetPlayerState(Phase.Equip);
             context.SetSelectCardsBehavior(message => new[] {hero.Id});
             context.UseAbilityOf(weapon);
         }

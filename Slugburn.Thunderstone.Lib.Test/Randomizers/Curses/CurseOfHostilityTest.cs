@@ -14,7 +14,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Curses
             var player = context.Player;
             var curse = context.CreateCard<CurseOfHostility>();
             context.SetPlayerHand(curse);
-            context.SetTestPlayerState(Phase.Dungeon);
+            context.SetPlayerState(Phase.Dungeon);
             player.Xp = 2;
 
             // Act

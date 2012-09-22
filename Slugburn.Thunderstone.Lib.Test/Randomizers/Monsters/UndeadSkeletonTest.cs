@@ -51,7 +51,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Monsters
             var hero1 = context.DrawHeroFromTopOfDeck(x => x.Level == 1);
             var hero2 = context.GetHeroFromVillage(x => x.Level == 2);
             context.SetPlayerHand(necrophidius, hero0, hero1, hero2);
-            context.SetTestPlayerState(Phase.Trophy);
+            context.SetPlayerState(Phase.Trophy);
 
             // Act
             context.UseAbilityOf(necrophidius);

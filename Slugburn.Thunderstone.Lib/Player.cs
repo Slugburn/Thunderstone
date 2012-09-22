@@ -404,6 +404,8 @@ namespace Slugburn.Thunderstone.Lib
 
         public Action<IEnumerable<long>> SelectCardsCallback { get; set; }
 
+        public Action<string> SelectOptionCallback { get; set; }
+
         public object CardSelectionContext { get; set; }
 
         public int TotalLight

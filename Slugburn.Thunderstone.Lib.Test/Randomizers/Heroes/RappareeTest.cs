@@ -14,7 +14,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Heroes
             var player = context.Player;
             var looter = context.CreateCard<Rapparee>("Rapparee Looter");
             context.SetPlayerHand(looter);
-            context.SetTestPlayerState(Phase.Spoils);
+            context.SetPlayerState(Phase.Spoils);
             var longspear = context.GetVillageDeck(CardType.Weapon, card => card.Name == "Longspear").TopCard;
             context.WhenSelectingCardsSelect(longspear);
 

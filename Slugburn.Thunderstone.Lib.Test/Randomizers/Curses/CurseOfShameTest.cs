@@ -14,7 +14,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Curses
             var player = context.Player;
             var curse = context.CreateCard<CurseOfShame>();
             context.SetPlayerHand(curse);
-            context.SetTestPlayerState(Phase.Village);
+            context.SetPlayerState(Phase.Village);
 
             // Act
             context.UseAbilityOf(curse);
@@ -31,7 +31,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Curses
             var player = context.Player;
             var curse = context.CreateCard<CurseOfShame>();
             context.SetPlayerHand(curse);
-            context.SetTestPlayerState(Phase.Village);
+            context.SetPlayerState(Phase.Village);
 
             // Act
             context.UseAbilityOf(curse);

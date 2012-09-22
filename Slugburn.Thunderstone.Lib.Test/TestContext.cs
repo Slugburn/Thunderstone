@@ -26,6 +26,16 @@ namespace Slugburn.Thunderstone.Lib.Test
                         if (selectCardBehavior != null)
                             Player.SelectCardsCallback(selectCardBehavior(message));
                     });
+            Player.View.Stub(x => x.SelectOption(null))
+                .IgnoreArguments()
+                .WhenCalled(inv =>
+                                {
+                                    var message = (SelectOptionMessage) inv.Arguments[0];
+                                    Set(message);
+                                    var selectOptionBehavior = Get<Func<SelectOptionMessage, string>>();
+                                    if (selectOptionBehavior != null)
+                                        Player.SelectOptionCallback(selectOptionBehavior(message));
+                                });
             Player.View.Stub(x => x.StartTurn(null))
                 .IgnoreArguments()
                 .WhenCalled(inv => Set((StartTurnMessage) inv.Arguments[0]));
@@ -58,5 +68,6 @@ namespace Slugburn.Thunderstone.Lib.Test
         public Player Player { get { return Get<Player>(); } }
 
         public IEnumerable<long> SelectCardsIds { get { return Get<SelectCardsMessage>().Cards.Select(x=>x.Id); } }
+
     }
 }

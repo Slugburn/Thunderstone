@@ -13,7 +13,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Heroes
             // Arrange
             var context = new TestContext();
             var player = context.Player;
-            context.SetTestPlayerState(Phase.Dungeon);
+            context.SetPlayerState(Phase.Dungeon);
             var bolter = context.CreateCard<Thundermage>("Thundermage Bolter");
             context.SetPlayerHand(bolter);
 

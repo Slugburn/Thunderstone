@@ -67,6 +67,7 @@
     <Compile Include="Randomizers\Heroes\BhoidwoodTest.cs" />
     <Compile Include="Randomizers\Heroes\DisownedTest.cs" />
     <Compile Include="Randomizers\Heroes\RappareeTest.cs" />
+    <Compile Include="Randomizers\Heroes\SkinshifterTest.cs" />
     <Compile Include="Randomizers\Heroes\ThundermageTest.cs" />
     <Compile Include="Randomizers\Heroes\WhetmageTest.cs" />
     <Compile Include="Randomizers\Monsters\BurnmarkedFireTest.cs" />

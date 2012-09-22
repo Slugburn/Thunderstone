@@ -13,7 +13,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Heroes
             var context = new TestContext();
             var stalker = context.CreateCard<Bhoidwood>("Bhoidwood Stalker");
             context.SetPlayerHand(stalker);
-            context.SetTestPlayerState(Phase.Dungeon);
+            context.SetPlayerState(Phase.Dungeon);
             var monster1 = context.GetMonsterInRank(1);
             var monster2 = context.GetMonsterInRank(2);
             context.WhenSelectingCardsSelect(monster1);

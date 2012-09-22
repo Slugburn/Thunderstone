@@ -17,5 +17,6 @@ namespace Slugburn.Thunderstone.Lib
         void UpdateHand(UpdateHandMessage message);
         void UpdateStatus(StatusModel model);
         void UseAbility(UseAbilityMessage message);
+        void SelectOption(SelectOptionMessage message);
     }
 }

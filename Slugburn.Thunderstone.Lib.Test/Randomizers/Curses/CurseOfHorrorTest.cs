@@ -18,7 +18,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Curses
             var curse = context.CreateCard<CurseOfHorror>();
             var torch = context.CreateBasicCard<Torch>();
             context.SetPlayerHand(curse, torch);
-            context.SetTestPlayerState(Phase.Dungeon);
+            context.SetPlayerState(Phase.Dungeon);
 
             // Act
             context.UseAbilityOf(curse);
@@ -36,7 +36,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Curses
             var curse = context.CreateCard<CurseOfHorror>();
             var torch = context.CreateBasicCard<Torch>();
             context.SetPlayerHand(curse, torch);
-            context.SetTestPlayerState(Phase.Dungeon);
+            context.SetPlayerState(Phase.Dungeon);
 
             // Act
             context.UseAbilityOf(curse);
@@ -58,7 +58,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Curses
             var curse = context.CreateCard<CurseOfHorror>();
             context.SetPlayerHand(curse);
             var otherAbility = context.AddAbilityStub(phase);
-            context.SetTestPlayerState(Phase.Dungeon);
+            context.SetPlayerState(Phase.Dungeon);
 
             // Act
             context.UseAbilityOf(curse);

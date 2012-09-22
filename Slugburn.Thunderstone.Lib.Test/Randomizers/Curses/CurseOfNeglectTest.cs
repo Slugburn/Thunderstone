@@ -16,7 +16,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Curses
             var curse = context.CreateCard<CurseOfNeglect>();
             var longspear = context.CreateBasicCard<Longspear>();
             context.SetPlayerHand(curse, longspear);
-            context.SetTestPlayerState(Phase.Village);
+            context.SetPlayerState(Phase.Village);
 
             // Act
             context.UseAbilityOf(curse);
@@ -34,7 +34,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Curses
             var curse = context.CreateCard<CurseOfNeglect>();
             var longspear = context.CreateBasicCard<Longspear>();
             context.SetPlayerHand(curse, longspear);
-            context.SetTestPlayerState(Phase.Village);
+            context.SetPlayerState(Phase.Village);
 
             // Act
             context.UseAbilityOf(curse);

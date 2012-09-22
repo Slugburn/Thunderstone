@@ -18,7 +18,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Heroes
             var otherHero = context.CreateBasicCard<Regular>();
             var weapon = context.CreateCard<Pike>();
             context.SetPlayerHand(berserker, otherHero, weapon);
-            context.SetTestPlayerState(Phase.Aftermath);
+            context.SetPlayerState(Phase.Aftermath);
 
             // Act
             context.UseAbilityOf(berserker);
@@ -36,7 +36,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Heroes
             var weapon1 = context.CreateCard<Pike>();
             var weapon2 = context.CreateCard<SnakeheadFlail>();
             context.SetPlayerHand(bloodrager, weapon1, weapon2);
-            context.SetTestPlayerState(Phase.Dungeon);
+            context.SetPlayerState(Phase.Dungeon);
 
             // Act
             context.HeroEquipsWeapon(bloodrager, weapon1);
@@ -60,7 +60,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Heroes
             var hero2 = context.CreateBasicCard<Regular>();
             var weapon = context.CreateCard<Pike>();
             context.SetPlayerHand(bloodrager, hero1, hero2, weapon);
-            context.SetTestPlayerState(Phase.Aftermath);
+            context.SetPlayerState(Phase.Aftermath);
 
             // Act
             context.UseAbilityOf(bloodrager);
@@ -78,7 +78,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.Heroes
             var weapon = context.CreateCard<Pike>();
             context.SetPlayerHand(bloodrager, weapon);
             context.HeroEquipsWeapon(bloodrager,weapon);
-            context.SetTestPlayerState(Phase.Aftermath);
+            context.SetPlayerState(Phase.Aftermath);
 
             // Act
             context.UseAbilityOf(bloodrager);

@@ -35,7 +35,7 @@ namespace Slugburn.Thunderstone.Lib.Test
             var regular = context.CreateBasicCard<Regular>();
             var spear = context.CreateBasicCard<Longspear>();
             context.SetPlayerHand(regular, spear);
-            context.SetTestPlayerState(Phase.Dungeon, Phase.Equip);
+            context.SetPlayerState(Phase.Dungeon, Phase.Equip);
             context.HeroEquipsWeapon(regular, spear);
 
             // Act

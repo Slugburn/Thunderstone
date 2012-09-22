@@ -91,6 +91,11 @@ namespace Slugburn.Thunderstone.Web
             Caller.displayUseAbility(message);
         }
 
+        public void SelectOption(SelectOptionMessage message)
+        {
+            Caller.displaySelectOption(message);
+        }
+
         void IPlayerView.HideUseAbility()
         {
             Caller.displayUseAbility(false);

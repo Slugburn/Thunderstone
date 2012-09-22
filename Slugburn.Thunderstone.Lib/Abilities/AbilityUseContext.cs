@@ -42,6 +42,8 @@ namespace Slugburn.Thunderstone.Lib.Abilities
             get { return Player.Game; }
         }
 
+        public string Option { get; set; }
+
         public ISelectSource Select()
         {
             return _select ?? (_select = Player.SelectCard(Ability));
