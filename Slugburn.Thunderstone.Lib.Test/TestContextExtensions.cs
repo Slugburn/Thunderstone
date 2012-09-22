@@ -35,6 +35,13 @@ namespace Slugburn.Thunderstone.Lib.Test
             return name == null ? cards.First() : cards.First(x => x.Name == name);
         }
 
+        public static Card[] CreateCards<TRandomizer>(this TestContext context, int count = int.MaxValue) where TRandomizer : IRandomizer
+        {
+            var randomizer = Activator.CreateInstance<TRandomizer>();
+            return randomizer.CreateCards(context.Game).Take(count).ToArray();
+        }
+
+
         public static Card CreateBasicCard<T>(this TestContext context) where T : ICardGen
         {
             var gen = Activator.CreateInstance<T>();

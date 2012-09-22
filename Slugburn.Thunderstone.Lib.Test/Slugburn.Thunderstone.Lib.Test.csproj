@@ -72,6 +72,7 @@
     <Compile Include="Randomizers\Monsters\KoboldHumanoidTest.cs" />
     <Compile Include="Randomizers\Monsters\UndeadSkeletonTest.cs" />
     <Compile Include="Randomizers\ThunderstoneBearers\StramstTest.cs" />
+    <Compile Include="Randomizers\Weapons\FalconArbalestTest.cs" />
     <Compile Include="Randomizers\Weapons\PikeTest.cs" />
     <Compile Include="Selectors\SelectionBehaviorTest.cs" />
     <Compile Include="TestContext.cs" />

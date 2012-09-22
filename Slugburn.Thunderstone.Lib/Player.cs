@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Slugburn.Thunderstone.Lib.BasicCards;
+using Slugburn.Thunderstone.Lib.Debug;
 using Slugburn.Thunderstone.Lib.Events;
 using Slugburn.Thunderstone.Lib.Messages;
 using Slugburn.Thunderstone.Lib.Models;
@@ -95,6 +96,10 @@ namespace Slugburn.Thunderstone.Lib
                 });
             Hand.AddRange(cardList);
             ActiveAbilities.AddRange(cardList.SelectMany(x => x.GetAbilities()));
+
+            Assert.That(Hand.Select(x => x.Id).Distinct().Count() == Hand.Count, "Duplicate card ID found in Hand");
+            Assert.That(ActiveAbilities.Select(x => x.Id).Distinct().Count() == ActiveAbilities.Count, "Duplicate ability ID found in ActiveAbilities");
+
             Hand.Each(c => PublishEvent(new CardDrawnToHand(c)));
             SendUpdateHand();
         }
@@ -268,6 +273,9 @@ namespace Slugburn.Thunderstone.Lib
         {
             AttackedCard = monster;
             ActiveAbilities.AddRange(AttackedCard.GetAbilities());
+
+            Assert.That(ActiveAbilities.Select(x => x.Id).Distinct().Count() == ActiveAbilities.Count, "Duplicate ability found in ActiveAbilities");
+
             PublishEvent(new AttackRankSelected { Player = this, AttackedRank = AttackedCard.Rank });
         }
 

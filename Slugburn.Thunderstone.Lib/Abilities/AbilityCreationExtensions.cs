@@ -139,5 +139,22 @@ namespace Slugburn.Thunderstone.Lib.Abilities
         {
             return count == 1 ? "card" : "cards";
         }
+
+        public static IAbilityCardsSelectedSyntax BuyCard(this IAbilityDescriptionCompleteSyntax syntax, Func<Card,bool> filter = null)
+        {
+            return syntax
+                .SelectCards(
+                    source => source.FromTopOfVillageDecks()
+                                  .Min(0)
+                                  .Filter(x =>
+                                              {
+                                                  Func<Card, bool> cardFilter = filter ?? (c => true);
+                                                  Func<Card, bool> costsLessThanAvailableGold = c => c.Cost <= source.Player.AvailableGold;
+                                                  return cardFilter(x) && costsLessThanAvailableGold(x);
+                                              })
+                                  .Caption("Buy Card")
+                                  .Message("Buy 1 card ({0} gold available).".Template(source.Player.AvailableGold)))
+                .OnCardsSelected(x => x.Source.Discard(x.Selected));
+        }
     }
 }

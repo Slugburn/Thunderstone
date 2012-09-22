@@ -6,7 +6,7 @@ using System;
 
 namespace Slugburn.Thunderstone.Lib.Randomizers.Weapons
 {
-    class FalconArbalest : WeaponRandomizer
+    public class FalconArbalest : WeaponRandomizer
     {
         public FalconArbalest() : base("Falcon Arbalest")
         {

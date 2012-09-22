@@ -26,7 +26,9 @@ namespace Slugburn.Thunderstone.Lib.Selectors.Sources
 
         public IEnumerable<Card> GetCards()
         {
-            return _decks.Select(x => x.TopCard).Where(x => x != null && (_all || x.Type == _type));
+            return _decks.Select(x => x.TopCard)
+                .Where(x => x != null && (_all || x.Type == _type))
+                .OrderByDescending(x=>x.Cost);
         }
 
         public void Destroy(IEnumerable<Card> cards, string source)

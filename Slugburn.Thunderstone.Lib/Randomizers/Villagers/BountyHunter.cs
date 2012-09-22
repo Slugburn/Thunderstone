@@ -18,14 +18,7 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Villagers
             card.PhysicalAttack = 1;
             card.CreateAbility()
                 .Description("Buy 1 village card.")
-                .SelectCards(
-                    source => source.FromTopOfVillageDecks()
-                                  .Min(0)
-                                  .Filter(x => x.Cost <= card.Player.AvailableGold)
-                                  .Caption("Buy Card")
-                                  .Message("Buy 1 village card ({0} gold available).".Template(source.Player.AvailableGold)))
-                .OnCardsSelected(x => x.Source.Discard(x.Selected))
-//                .Condition(player => player.Game.GetBuyableDecks(player.AvailableGold).Any())
+                .BuyCard()
                 .On(Phase.Spoils);
         }
     }

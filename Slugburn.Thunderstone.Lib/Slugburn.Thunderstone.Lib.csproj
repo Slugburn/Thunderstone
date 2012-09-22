@@ -62,6 +62,7 @@
     <Compile Include="Abilities\AbilityCreationContext.cs" />
     <Compile Include="Ability.cs" />
     <Compile Include="CardOwner.cs" />
+    <Compile Include="Debug\Assert.cs" />
     <Compile Include="Events\CardAbilityUsed.cs" />
     <Compile Include="Events\CardDrawnToHand.cs" />
     <Compile Include="Events\DungeonHallRefilled.cs" />
@@ -140,6 +141,7 @@
     <Compile Include="Randomizers\Heroes\Drua.cs" />
     <Compile Include="Randomizers\Heroes\HeroDef.cs" />
     <Compile Include="Randomizers\Heroes\HeroRandomizer.cs" />
+    <Compile Include="Randomizers\Heroes\Rapparee.cs" />
     <Compile Include="Randomizers\Heroes\Thundermage.cs" />
     <Compile Include="Randomizers\Heroes\Whetmage.cs" />
     <Compile Include="Randomizers\IRandomizer.cs" />
