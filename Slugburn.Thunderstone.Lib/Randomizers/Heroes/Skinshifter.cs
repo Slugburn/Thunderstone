@@ -81,6 +81,11 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Heroes
                                                                              x.Player.DiscardCard(selectedCard);
                                                                          card.AddModifier(new PlusMod(card, Attr.PhysicalAttack, 4));
                                                                          card.AddModifier(new PlusMod(card, Attr.Strength, 3));
+                                                                         if (selectedCard.HasTag("Disease") && card.GetData<bool?>() == null)
+                                                                         {
+                                                                             card.SetData<bool?>(true);
+                                                                             x.Player.ActiveAbilities.Add(x.Ability);
+                                                                         }
                                                                      })
                                                 .On(Phase.Dungeon)
                        };

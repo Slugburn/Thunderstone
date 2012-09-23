@@ -76,6 +76,7 @@
     <Compile Include="Randomizers\ThunderstoneBearers\StramstTest.cs" />
     <Compile Include="Randomizers\Weapons\FalconArbalestTest.cs" />
     <Compile Include="Randomizers\Weapons\PikeTest.cs" />
+    <Compile Include="Randomizers\Weapons\SnakeheadFlailTest.cs" />
     <Compile Include="Selectors\SelectionBehaviorTest.cs" />
     <Compile Include="TestContext.cs" />
     <Compile Include="TestContextExtensions.cs" />

@@ -79,7 +79,6 @@
     <Compile Include="MessageHandlers\DungeonHandler.cs" />
     <Compile Include="MessageHandlers\PrepareHandler.cs" />
     <Compile Include="MessageHandlers\RestHandler.cs" />
-    <Compile Include="MessageHandlers\SelectCardsHandler.cs" />
     <Compile Include="Messages\BuyCardMessage.cs" />
     <Compile Include="Messages\SelectCardsMessage.cs" />
     <Compile Include="Messages\SelectOptionMessage.cs" />

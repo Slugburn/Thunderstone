@@ -403,6 +403,16 @@
             <button data-bind="enable: Enabled, click: Done" class="center" style="margin-top: 5px;">Done</button>
         </div>
     </div>
+    
+    <div id="selectOption" data-bind="style: {display: visible() ? 'table' : 'none' }">
+        <div class="main">
+            <div data-bind="text: caption" class="block center sectionTitle" style="width: 100%"></div>
+            <div data-bind="text: message" class="block"></div>
+            <div data-bind="foreach: options" class="table" style="margin-bottom: 5px;">
+                <button data-bind="text: text, click: onClick"></button>
+            </div>
+        </div>
+    </div>
 
     <div id="log" style="position: absolute; top: 0px; left: 0px; height: 800px; width: 200px; overflow: auto; font-size: 10px; font-family: sans-serif"></div>
 
@@ -491,6 +501,9 @@
             var selectCards = new SelectCardsVm(hub);
             ko.applyBindings(selectCards, $('#selectCards').get(0));
 
+            var selectOption = new SelectOptionVm(hub);
+            ko.applyBindings(selectOption, document.getElementById('selectOption'));
+
             gameBoard = new GameBoardVm(hub);
             ko.applyBindings(gameBoard, $('#gameBoard').get(0));
 
@@ -565,6 +578,10 @@
             hub.displaySelectCards = function (message) {
                 selectCards.update(message);
                 createTooltips('#selectCards');
+            };
+
+            hub.displaySelectOption = function(message) {
+                selectOption.update(message);
             };
 
             hub.displayLog = function (message) {
@@ -787,6 +804,32 @@
             function enabled() {
                 return (self.Selected.size() >= self.Min() && self.Selected.size() <= self.Max());
             }
+        }
+        
+        function SelectOptionVm(hub) {
+            var self = this;
+            self.visible = ko.observable(false);
+            self.caption = ko.observable();
+            self.message = ko.observable();
+            self.options = ko.observableArray();
+            self.hub = hub;
+
+            self.update = function(model) {
+                self.caption(model.Caption);
+                self.message(model.Message);
+                self.options.removeAll();
+                $.each(model.Options, function() {
+                    self.options.push({
+                        text: this,
+                        onClick: function() {
+                            self.visible(false);
+                            self.hub.selectOption(this.text);
+                        }
+                    });
+                });
+                self.visible(true);
+                positionPopup('#selectOption');
+            };
         }
 
         function positionPopup(div) {

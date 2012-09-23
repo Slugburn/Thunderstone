@@ -56,7 +56,12 @@ namespace Slugburn.Thunderstone.Web
         public void UseAbility(UseAbilityResponse message)
         {
             var player = GetPlayer();
-            UseAbilityHandler.Do(player, message);
+            if (message.AbilityId == null)
+            {
+                player.State.ContinueWith(player);
+                return;
+            }
+            player.UseAbility(message.AbilityId.Value);
         }
 
         public void BuyCard(string deckId)
@@ -68,7 +73,13 @@ namespace Slugburn.Thunderstone.Web
         public void SelectCards(long[] cardIds)
         {
             var player = GetPlayer();
-            SelectCardsHandler.Do(player, cardIds);
+            player.SelectCardsCallback(cardIds);
+        }
+
+        public void SelectOption(string option)
+        {
+            var player = GetPlayer();
+            player.SelectOptionCallback(option);
         }
 
         void IPlayerView.StartTurn(StartTurnMessage message)
@@ -91,7 +102,7 @@ namespace Slugburn.Thunderstone.Web
             Caller.displayUseAbility(message);
         }
 
-        public void SelectOption(SelectOptionMessage message)
+        void IPlayerView.SelectOption(SelectOptionMessage message)
         {
             Caller.displaySelectOption(message);
         }

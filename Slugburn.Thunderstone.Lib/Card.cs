@@ -189,6 +189,8 @@ namespace Slugburn.Thunderstone.Lib
             _equipped = null;
             // Remove modifiers
             _mods.Clear();
+            // Remove custom data
+            _data = null;
             // Unsubscribe
             _subscriptions.Each(x=>x.Dispose());
             _subscriptions.Clear();
