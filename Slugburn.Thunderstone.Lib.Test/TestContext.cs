@@ -41,7 +41,7 @@ namespace Slugburn.Thunderstone.Lib.Test
                 .WhenCalled(inv => Set((StartTurnMessage) inv.Arguments[0]));
             // Fill up the dungeon hall
             while (game.Dungeon.Ranks[0].Card == null)
-                game.AdvanceDungeon();
+                game.Dungeon.Advance();
         }
 
         public void Set<T>(T value, string key = null)

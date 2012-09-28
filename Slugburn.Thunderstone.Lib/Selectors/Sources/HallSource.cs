@@ -38,7 +38,7 @@ namespace Slugburn.Thunderstone.Lib.Selectors.Sources
                                game.RemoveCardFromHall(card.Rank.Number);
                                Player.AddToDiscard(card);
                            });
-            game.RefillHallFrom(game.Dungeon.Ranks[0]);
+            game.Dungeon.RefillHall();
             Player.View.UpdateStatus(StatusModel.From(Player));
         }
 

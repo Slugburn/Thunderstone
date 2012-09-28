@@ -15,7 +15,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.ThunderstoneBearers
             var stramst = GivenStramstIsInTheLastRank(game);
 
             // Act
-            game.AdvanceDungeon();
+            game.Dungeon.Advance();
 
             // Assert
             var lastRank = game.Dungeon.Ranks.Last();
@@ -35,7 +35,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.ThunderstoneBearers
             dungeonDeck.Draw(dungeonDeck.Count-1);
 
             // Act
-            game.AdvanceDungeon();
+            game.Dungeon.Advance();
 
             // Assert
             var lastRank = game.Dungeon.Ranks.Last();
@@ -56,7 +56,7 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.ThunderstoneBearers
             dungeonDeck.Draw(dungeonDeck.Count);
 
             // Act
-            game.AdvanceDungeon();
+            game.Dungeon.Advance();
 
             // Assert
             var lastRank = game.Dungeon.Ranks.Last();
@@ -67,15 +67,15 @@ namespace Slugburn.Thunderstone.Lib.Test.Randomizers.ThunderstoneBearers
         private static Card GivenStramstIsInTheLastRank(Game game)
         {
             var stramst = new Stramst().CreateCards(game).First();
+            var dungeon = game.Dungeon;
+            dungeon.FirstActiveRank = dungeon.FirstRank;
 
             // Fill up the dungeon with monsters
-            var rank1 = game.Dungeon.Ranks[0];
-            while (rank1.Card == null)
-                game.RefillHallFrom(rank1);
+            dungeon.RefillHall();
 
             // put Stramst into the last rank
-            game.Dungeon.Deck.AddToTop(stramst);
-            game.AdvanceDungeon();
+            dungeon.Deck.AddToTop(stramst);
+            dungeon.Advance();
             return stramst;
         }
 

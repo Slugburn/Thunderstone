@@ -2,6 +2,15 @@ namespace Slugburn.Thunderstone.Lib
 {
     public class Rank
     {
+        private readonly Dungeon _dungeon;
+
+        public Rank(Dungeon dungeon, int number, int darkness)
+        {
+            _dungeon = dungeon;
+            Number = number;
+            Darkness = darkness;
+        }
+
         private Card _card;
         
         public int Number { get; private set; }
@@ -18,32 +27,27 @@ namespace Slugburn.Thunderstone.Lib
             }
         }
 
-        public Rank(int number, int darkness)
+        public Rank NextRank 
         {
-            Number = number;
-            Darkness = darkness;
+            get { return _dungeon.GetRankNumber(Number - 1); }
         }
 
-        public void RefillHall(Game game)
+        public Rank PreviousRank
         {
-            var ranks = game.Dungeon.Ranks;
-            var lastRankIndex = ranks.Length - 1;
-            var attackedRankIndex = Number - 1;
-            for (var i = attackedRankIndex; i < lastRankIndex - 1; i++)
-            {
-                if (ranks[i].Card == null)
-                {
-                    ranks[i].Card = ranks[i + 1].Card;
-                    ranks[i + 1].Card = null;
-                }
-            }
-            if (ranks[lastRankIndex].Card == null)
-                ranks[lastRankIndex].Card = game.Dungeon.Deck.Draw();
+            get { return _dungeon.GetRankNumber(Number + 1); }
         }
 
         public override string ToString()
         {
             return "Rank {0}".Template(Number);
+        }
+
+        public void RemoveCard()
+        {
+            var removedCard = Card;
+            if (removedCard != null)
+                removedCard.Reset();
+            Card = null;
         }
     }
 }

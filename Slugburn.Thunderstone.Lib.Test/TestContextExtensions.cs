@@ -25,7 +25,7 @@ namespace Slugburn.Thunderstone.Lib.Test
         public static void AdvanceMonsterToFirstRank(this TestContext context, Card monster)
         {
             while (context.Game.Dungeon.Ranks[0].Card != monster)
-                context.Game.AdvanceDungeon();
+                context.Game.Dungeon.Advance();
         }
 
         public static Card CreateCard<TRandomizer>(this TestContext context, string name = null) where TRandomizer : IRandomizer

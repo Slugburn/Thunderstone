@@ -114,7 +114,7 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.Monsters
                                                                     .Where(x => x != null && x != card && x.HasTag("Kobold")).ToArray();
                                                             player.AddToDiscard(otherKobolds);
                                                             otherKobolds.Each(game.RemoveCardFromHall);
-                                                            game.RefillHall();
+                                                            game.Dungeon.RefillHall();
                                                         }
                                                     }));
                                         }

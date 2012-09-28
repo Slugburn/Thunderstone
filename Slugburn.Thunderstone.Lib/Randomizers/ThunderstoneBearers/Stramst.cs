@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Slugburn.Thunderstone.Lib.Abilities;
 using Slugburn.Thunderstone.Lib.Events;
 
@@ -29,19 +30,18 @@ namespace Slugburn.Thunderstone.Lib.Randomizers.ThunderstoneBearers
 
         private static void KeepStramstFromAdvancing(Card stramst, DungeonHallRefilled e)
         {
+            // if any monster is in a higher rank than Stramst then
+            // move Stramst right one and move the monster into his old place
             var dungeon = e.Game.Dungeon;
+            var monsterRank = dungeon.GetRanksAfter(stramst.Rank).FirstOrDefault(r => r.Card != null);
+            if (monsterRank == null)
+                return;
+            var monster = monsterRank.Card;
 
-            // switch Stramst with the monster in front of him
-            var oldRank = stramst.Rank;
-            var newRank = dungeon.GetRankNumber(oldRank.Number + 1);
-
-            // if Stramst is in the last rank, or if there is no card to the right of Stramst then do nothing
-            if (newRank == null || newRank.Card == null) return;
-
-            // switch Stramst with the card in the next higher rank
-            var switchWith = newRank.Card;
-            oldRank.Card = switchWith;
-            newRank.Card = stramst;
+            var currentRank = stramst.Rank;
+            monsterRank.Card = null;
+            currentRank.PreviousRank.Card = stramst;
+            currentRank.Card = monster;
         }
     }
 }

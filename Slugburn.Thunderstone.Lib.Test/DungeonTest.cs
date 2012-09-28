@@ -22,7 +22,7 @@ namespace Slugburn.Thunderstone.Lib.Test
             Enumerable.Range(0, deck.Count).Each(x => deck.Draw());
 
             // Act
-            game.AdvanceDungeon();
+            game.Dungeon.Advance();
 
             // Assert
             Assert.That(game.Dungeon.Ranks.Last().Card, Is.Null);
@@ -33,16 +33,18 @@ namespace Slugburn.Thunderstone.Lib.Test
         {
             // Arrange
             var game = TestFactory.CreateGame();
-            var lastRank = game.Dungeon.Ranks.Last();
+            var dungeon = game.Dungeon;
+            dungeon.FirstActiveRank = dungeon.FirstRank;
+            var lastRank = dungeon.LastRank;
             lastRank.Card = null;
 
-            var deck = game.Dungeon.Deck;
+            var deck = dungeon.Deck;
 
             // draw all cards from deck
             Enumerable.Range(0, deck.Count).Each(x => deck.Draw());
 
             // Act
-            game.RefillHallFrom(lastRank);
+            dungeon.RefillHall();
 
             // Assert
             Assert.That(lastRank.Card, Is.Null);

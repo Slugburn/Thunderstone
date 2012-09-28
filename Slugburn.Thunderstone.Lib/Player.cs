@@ -256,7 +256,7 @@ namespace Slugburn.Thunderstone.Lib
 
         public void RefillHall()
         {
-            Game.RefillHallFrom(_attackedMonsterRank);
+            Game.Dungeon.RefillHall();
             ResolveRaidAndBreachEffects();
         }
 

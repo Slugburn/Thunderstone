@@ -91,7 +91,7 @@ namespace Slugburn.Thunderstone.Lib
         {
             var thunderstoneBearer = _randomizers.Single(x => x.Type == CardType.ThunderstoneBearer).CreateCards(game).Single();
             var monsters = _randomizers.Where(x => x.Type == CardType.Monster).SelectMany(x => x.CreateCards(game));
-            return new Dungeon(thunderstoneBearer, monsters);
+            return new Dungeon(game, thunderstoneBearer, monsters);
         }
 
         private Village CreateVillage(Game game)
