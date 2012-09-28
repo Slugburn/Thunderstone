@@ -76,9 +76,6 @@
     <Compile Include="Events\SelectingCards.cs" />
     <Compile Include="Events\SimpleAggregator.cs" />
     <Compile Include="IPlayerView.cs" />
-    <Compile Include="MessageHandlers\DungeonHandler.cs" />
-    <Compile Include="MessageHandlers\PrepareHandler.cs" />
-    <Compile Include="MessageHandlers\RestHandler.cs" />
     <Compile Include="Messages\BuyCardMessage.cs" />
     <Compile Include="Messages\SelectCardsMessage.cs" />
     <Compile Include="Messages\SelectOptionMessage.cs" />
@@ -115,14 +112,6 @@
     <Compile Include="GameSetup.cs" />
     <Compile Include="ICardGen.cs" />
     <Compile Include="Id.cs" />
-    <Compile Include="MessageHandlers\BuyCardHandler.cs" />
-    <Compile Include="MessageHandlers\GameSetupHandler.cs" />
-    <Compile Include="MessageHandlers\IMessageHandler.cs" />
-    <Compile Include="MessageHandlers\Message.cs" />
-    <Compile Include="MessageHandlers\MessageHandlerBase.cs" />
-    <Compile Include="MessageHandlers\StartGameHandler.cs" />
-    <Compile Include="MessageHandlers\UseAbilityHandler.cs" />
-    <Compile Include="MessageHandlers\VillageHandler.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="PlayerAction.cs" />
     <Compile Include="PlayerState.cs" />

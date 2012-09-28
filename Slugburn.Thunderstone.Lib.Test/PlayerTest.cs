@@ -2,7 +2,6 @@
 using NUnit.Framework;
 using Rhino.Mocks;
 using Slugburn.Thunderstone.Lib.BasicCards;
-using Slugburn.Thunderstone.Lib.MessageHandlers;
 using Slugburn.Thunderstone.Lib.Messages;
 
 namespace Slugburn.Thunderstone.Lib.Test

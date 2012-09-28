@@ -1,6 +1,5 @@
 ﻿using SignalR.Hubs;
 using Slugburn.Thunderstone.Lib;
-using Slugburn.Thunderstone.Lib.MessageHandlers;
 using Slugburn.Thunderstone.Lib.Messages;
 using Slugburn.Thunderstone.Lib.Models;
 
@@ -8,6 +7,11 @@ namespace Slugburn.Thunderstone.Web
 {
     public class PlayerHub : Hub, IPlayerView
     {
+        private Player GetPlayer()
+        {
+            return PlayerStore.Instance.Get(Context.ConnectionId);
+        }
+
         public void NewPlayer()
         {
             var session = new GameSession();
@@ -15,42 +19,46 @@ namespace Slugburn.Thunderstone.Web
             PlayerStore.Instance.Store(player);
 
             session.Join(player);
-            GameSetupHandler.Do(player);
+            var setup = new GameSetup();
+            player.Session.Setup = setup;
+            player.Session.SendAll(x => x.View.GameSetup(GameSetupModel.From(setup)));
         }
 
         public void StartGame()
         {
             var player = GetPlayer();
-            StartGameHandler.Do(player);
-        }
-
-        private Player GetPlayer()
-        {
-            return PlayerStore.Instance.Get(Context.ConnectionId);
+            var game = new Game();
+            game.Initialize(player.Session);
+            game.Players.Each(p => p.View.GameBoard(GameBoardModel.From(p)));
+            game.CurrentPlayer.StartTurn();
         }
 
         public void Village()
         {
             var player = GetPlayer();
-            VillageHandler.Do(player);
+            player.State = PlayerState.Village;
+            player.UseAbilities();
         }
 
         public void Dungeon()
         {
             var player = GetPlayer();
-            DungeonHandler.Do(player);
+            player.State = PlayerState.Dungeon;
+            player.UseAbilities();
         }
 
         public void Prepare()
         {
             var player = GetPlayer();
-            PrepareHandler.Do(player);
+            player.State = PlayerState.Prepare;
+            player.Prepare();
         }
 
         public void Rest()
         {
             var player = GetPlayer();
-            RestHandler.Do(player);
+            player.State = PlayerState.Rest;
+            player.UseAbilities();
         }
 
         public void UseAbility(UseAbilityResponse message)
@@ -67,7 +75,9 @@ namespace Slugburn.Thunderstone.Web
         public void BuyCard(string deckId)
         {
             var player = GetPlayer();
-            BuyCardHandler.Do(player, long.Parse(deckId));
+            var card = player.Game.BuyCard(long.Parse(deckId));
+            player.AddToDiscard(card);
+            player.LevelHeroes();
         }
 
         public void SelectCards(long[] cardIds)
