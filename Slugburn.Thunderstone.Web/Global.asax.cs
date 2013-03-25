@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Security;
-using System.Web.SessionState;
+using System.Web.Routing;
 
 namespace Slugburn.Thunderstone.Web
 {
@@ -12,7 +8,8 @@ namespace Slugburn.Thunderstone.Web
 
         protected void Application_Start(object sender, EventArgs e)
         {
-            Console.WriteLine("Test");
+            // Register the default hubs route: ~/signalr
+            RouteTable.Routes.MapHubs();
         }
 
         protected void Session_Start(object sender, EventArgs e)

@@ -3,10 +3,10 @@
 <head>
     <title>Thunderstone</title>
     <link rel="stylesheet" type="text/css" href="Scripts/jquery.qtip.min.css" />
-    <script type="text/javascript" src="Scripts/jquery-1.6.4.js"> </script>
-    <script type="text/javascript" src="Scripts/knockout-2.1.0.js"> </script>
-    <script type="text/javascript" src="Scripts/jquery.qtip.js"> </script>
-    <script type="text/javascript" src="Scripts/jquery.signalR-0.5.3.js"></script>
+    <script src="Scripts/jquery-1.6.4.js"type="text/javascript" ></script>
+    <script src="Scripts/knockout-2.1.0.js" type="text/javascript" > </script>
+    <script src="Scripts/jquery.qtip.js" type="text/javascript" > </script>
+    <script src="Scripts/jquery.signalR-1.0.1.min.js" type="text/javascript"></script>
     <script src="signalr/hubs" type="text/javascript"></script>
     <style>
         a > .minicard
@@ -493,34 +493,34 @@
 
             var gameBoard;
 
-            var hub = $.connection.playerHub;
+            var playerHub = $.connection.playerHub;
 
-            var useAbility = new UseAbilityVm(hub);
+            var useAbility = new UseAbilityVm(playerHub);
             ko.applyBindings(useAbility, $('#useAbility').get(0));
 
-            var selectCards = new SelectCardsVm(hub);
+            var selectCards = new SelectCardsVm(playerHub);
             ko.applyBindings(selectCards, $('#selectCards').get(0));
 
-            var selectOption = new SelectOptionVm(hub);
+            var selectOption = new SelectOptionVm(playerHub);
             ko.applyBindings(selectOption, document.getElementById('selectOption'));
 
-            gameBoard = new GameBoardVm(hub);
+            gameBoard = new GameBoardVm(playerHub);
             ko.applyBindings(gameBoard, $('#gameBoard').get(0));
 
-            hub.displayGameSetup = function (message) {
+            playerHub.client.displayGameSetup = function (message) {
                 var vm = new GameSetupVm(message);
                 ko.applyBindings(vm, $('#gameSetup').get(0));
                 createTooltips();
                 $('#gameSetup').show();
             };
 
-            hub.displayGameBoard = function (message) {
+            playerHub.client.displayGameBoard = function (message) {
                 gameBoard.update(message);
                 $('#gameBoard').show();
                 createTooltips();
             };
 
-            hub.displayStartTurn = function (message) {
+            playerHub.client.displayStartTurn = function (message) {
                 gameBoard.playerPanel.text('');
                 gameBoard.playerPanel.commandsVisible(true);
                 gameBoard.playerPanel.villageEnabled($.inArray('Village', message.AvailableActions) !== -1);
@@ -529,30 +529,30 @@
                 gameBoard.playerPanel.restEnabled($.inArray('Rest', message.AvailableActions) !== -1);
             };
 
-            hub.displayBuyCard = function (message) {
+            playerHub.client.displayBuyCard = function (message) {
                 gameBoard.playerPanel.text('Buy a card.');
                 message.AvailableDecks.forEach(function (deckId) {
                     var button = $('<button class="center smallButton buyButton" style="position:absolute; top:48px; left: 39px;">Buy</button>');
                     $('#deck_' + deckId).append(button);
                     button
                         .click(function () {
-                            hub.buyCard(deckId);
+                            playerHub.server.buyCard(deckId);
                             $(".buyButton").remove();
                         });
                 });
             };
 
-            hub.displayDungeon = function (message) {
+            playerHub.client.displayDungeon = function (message) {
                 gameBoard.Dungeon(message);
                 createTooltips('#dungeon');
             };
 
-            hub.displayDeck = function (message) {
+            playerHub.client.displayDeck = function (message) {
                 gameBoard.Decks[message.Id](message);
                 createTooltips('#deck_' + message.Id);
             };
 
-            hub.displayHand = function (message) {
+            playerHub.client.displayHand = function (message) {
                 var hand = message.Hand;
                 var handParts = [];
                 while (hand.length > 0) {
@@ -563,11 +563,11 @@
                 createTooltips('#hand');
             };
 
-            hub.displayStatus = function (message) {
+            playerHub.client.displayStatus = function (message) {
                 gameBoard.Status(message);
             };
 
-            hub.displayUseAbility = function (message) {
+            playerHub.client.displayUseAbility = function (message) {
                 if (message) {
                     useAbility.update(message);
                 } else {
@@ -575,16 +575,16 @@
                 }
             };
 
-            hub.displaySelectCards = function (message) {
+            playerHub.client.displaySelectCards = function (message) {
                 selectCards.update(message);
                 createTooltips('#selectCards');
             };
 
-            hub.displaySelectOption = function(message) {
+            playerHub.client.displaySelectOption = function (message) {
                 selectOption.update(message);
             };
 
-            hub.displayLog = function (message) {
+            playerHub.client.displayLog = function (message) {
                 $('#log').append(message + '<br/>');
             };
 
@@ -593,13 +593,13 @@
             });
 
             $.connection.hub.start().done(function () {
-                hub.newPlayer();
+                playerHub.server.newPlayer();
             });
 
             $('#startGame').click(function () {
                 ko.applyBindings({ sets: [] }, $('#gameSetup').get(0)); // unbind the game setup
                 $('#gameSetup').hide();
-                hub.startGame();
+                playerHub.server.startGame();
             });
 
 
@@ -691,9 +691,9 @@
             };
         }
 
-        function PlayerPanelVm(hub) {
+        function PlayerPanelVm(playerHub) {
             var self = this;
-            self.hub = hub;
+            self.playerHub = playerHub;
             self.text = ko.observable();
             self.commandsVisible = ko.observable(false);
             self.villageEnabled = ko.observable();
@@ -703,28 +703,28 @@
 
             self.village = function () {
                 self.commandsVisible(false);
-                hub.village();
+                self.playerHub.server.village();
             };
 
             self.dungeon = function () {
                 self.commandsVisible(false);
-                hub.dungeon();
+                self.playerHub.server.dungeon();
             };
 
             self.prepare = function () {
                 self.commandsVisible(false);
-                hub.prepare();
+                self.playerHub.server.prepare();
             };
 
             self.rest = function () {
                 self.commandsVisible(false);
-                hub.rest();
+                self.playerHub.server.rest();
             };
         }
 
-        function UseAbilityVm(hub) {
+        function UseAbilityVm(playerHub) {
             var self = this;
-            self.hub = hub;
+            self.playerHub = playerHub;
             self.Visible = ko.observable(false);
             self.Phase = ko.observable();
             self.Abilities = ko.observableArray();
@@ -745,16 +745,16 @@
             };
 
             self.use = function (ability) {
-                self.hub.useAbility({ Phase: self.Phase, AbilityId: ability.Id });
+                self.playerHub.server.useAbility({ Phase: self.Phase, AbilityId: ability.Id });
             };
 
             self.Done = function () {
                 self.Visible(false);
-                self.hub.useAbility({ Phase: self.Phase });
+                self.playerHub.server.useAbility({ Phase: self.Phase });
             };
         }
 
-        function SelectCardsVm(hub) {
+        function SelectCardsVm(playerHub) {
             var self = this;
             self.Visible = ko.observable(false);
             self.Caption = ko.observable();
@@ -766,7 +766,7 @@
 
             self.Done = function () {
                 self.Visible(false);
-                hub.selectCards(self.Selected.keys());
+                playerHub.server.selectCards(self.Selected.keys());
             };
 
             self.update = function (model) {
@@ -806,13 +806,13 @@
             }
         }
         
-        function SelectOptionVm(hub) {
+        function SelectOptionVm(playerHub) {
             var self = this;
             self.visible = ko.observable(false);
             self.caption = ko.observable();
             self.message = ko.observable();
             self.options = ko.observableArray();
-            self.hub = hub;
+            self.playerHub = playerHub;
 
             self.update = function(model) {
                 self.caption(model.Caption);
@@ -823,7 +823,7 @@
                         text: this,
                         onClick: function() {
                             self.visible(false);
-                            self.hub.selectOption(this.text);
+                            self.playerHub.server.selectOption(this.text);
                         }
                     });
                 });

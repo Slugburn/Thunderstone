@@ -1,4 +1,4 @@
-﻿using SignalR.Hubs;
+﻿using Microsoft.AspNet.SignalR;
 using Slugburn.Thunderstone.Lib;
 using Slugburn.Thunderstone.Lib.Messages;
 using Slugburn.Thunderstone.Lib.Models;
@@ -94,67 +94,67 @@ namespace Slugburn.Thunderstone.Web
 
         void IPlayerView.StartTurn(StartTurnMessage message)
         {
-            Caller.displayStartTurn(message);
+            Clients.Caller.displayStartTurn(message);
         }
 
         void IPlayerView.Log(string message)
         {
-            Caller.displayLog(message);
+            Clients.Caller.displayLog(message);
         }
 
         void IPlayerView.BuyCard(BuyCardMessage message)
         {
-            Caller.displayBuyCard(message);
+            Clients.Caller.displayBuyCard(message);
         }
 
         void IPlayerView.UseAbility(UseAbilityMessage message)
         {
-            Caller.displayUseAbility(message);
+            Clients.Caller.displayUseAbility(message);
         }
 
         void IPlayerView.SelectOption(SelectOptionMessage message)
         {
-            Caller.displaySelectOption(message);
+            Clients.Caller.displaySelectOption(message);
         }
 
         void IPlayerView.HideUseAbility()
         {
-            Caller.displayUseAbility(false);
+            Clients.Caller.displayUseAbility(false);
         }
 
         void IPlayerView.SelectCards(SelectCardsMessage message)
         {
-            Caller.displaySelectCards(message);
+            Clients.Caller.displaySelectCards(message);
         }
 
         void IPlayerView.UpdateDeck(DeckModel model)
         {
-            Caller.displayDeck(model);
+            Clients.Caller.displayDeck(model);
         }
 
         void IPlayerView.UpdateDungeon(DungeonModel model)
         {
-            Caller.displayDungeon(model);
+            Clients.Caller.displayDungeon(model);
         }
 
         void IPlayerView.GameSetup(GameSetupModel model)
         {
-            Caller.displayGameSetup(model);
+            Clients.Caller.displayGameSetup(model);
         }
 
         void IPlayerView.GameBoard(GameBoardModel model)
         {
-            Caller.displayGameBoard(model);
+            Clients.Caller.displayGameBoard(model);
         }
 
         void IPlayerView.UpdateHand(UpdateHandMessage message)
         {
-            Caller.displayHand(message);
+            Clients.Caller.displayHand(message);
         }
 
         void IPlayerView.UpdateStatus(StatusModel model)
         {
-            Caller.displayStatus(model);
+            Clients.Caller.displayStatus(model);
         }
 
     }
