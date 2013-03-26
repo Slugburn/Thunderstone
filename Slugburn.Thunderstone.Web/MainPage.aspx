@@ -521,12 +521,13 @@
             };
 
             playerHub.client.displayStartTurn = function (message) {
-                gameBoard.playerPanel.text('');
-                gameBoard.playerPanel.commandsVisible(true);
-                gameBoard.playerPanel.villageEnabled($.inArray('Village', message.AvailableActions) !== -1);
-                gameBoard.playerPanel.dungeonEnabled($.inArray('Dungeon', message.AvailableActions) !== -1);
-                gameBoard.playerPanel.prepareEnabled($.inArray('Prepare', message.AvailableActions) !== -1);
-                gameBoard.playerPanel.restEnabled($.inArray('Rest', message.AvailableActions) !== -1);
+                var panel = gameBoard.playerPanel;
+                panel.text('');
+                panel.commandsVisible(true);
+                panel.villageEnabled($.inArray('Village', message.AvailableActions) !== -1);
+                panel.dungeonEnabled($.inArray('Dungeon', message.AvailableActions) !== -1);
+                panel.prepareEnabled($.inArray('Prepare', message.AvailableActions) !== -1);
+                panel.restEnabled($.inArray('Rest', message.AvailableActions) !== -1);
             };
 
             playerHub.client.displayBuyCard = function (message) {
